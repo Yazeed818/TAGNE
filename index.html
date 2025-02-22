@@ -2,13 +2,16 @@
 <html lang="ar">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>الموقع التقني الشامل</title>
+  <!-- رمز Google AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6906663830989419"
+     crossorigin="anonymous"></script>
   <style>
     /* إعادة تعيين الأنماط الأساسية */
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
-      font-family: 'Arial', sans-serif;
+      font-family: Arial, sans-serif;
       background: #f4f4f4;
       color: #333;
       line-height: 1.6;
@@ -33,13 +36,13 @@
       z-index: 100;
       overflow-y: auto;
     }
-    #rightAd img {
+    #rightAd ins.adsbygoogle {
+      display: block;
       width: 100%;
       height: auto;
-      margin-bottom: 10px;
     }
     
-    /* رأس الصفحة مع بانر جذاب */
+    /* رأس الصفحة */
     header {
       position: relative;
       height: 600px;
@@ -88,7 +91,6 @@
       background: #d35400;
     }
     
-    /* الحركات والانتقالات */
     @keyframes fadeInDown {
       from { opacity: 0; transform: translateY(-50px); }
       to { opacity: 1; transform: translateY(0); }
@@ -377,7 +379,6 @@
     }
     footer p { margin: 5px 0; }
     
-    /* استجابة الموقع */
     @media (max-width: 768px) {
       header { height: 400px; }
       .header-content h1 { font-size: 2.5rem; }
@@ -391,13 +392,20 @@
   </style>
 </head>
 <body>
-  <!-- إعلان الجانب الأيمن الثابت بطول الصفحة -->
+  <!-- قسم الإعلان الثابت على الجانب الأيمن -->
   <div id="rightAd">
-    <img src="https://via.placeholder.com/150x600?text=إعلان" alt="إعلان">
-    <p>مساحة إعلانية</p>
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-6906663830989419"
+         data-ad-slot="1234567890"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
   </div>
   
-  <!-- رأس الصفحة مع البانر -->
+  <!-- الهيدر -->
   <header>
     <div class="header-content">
       <h1>الموقع التقني الشامل</h1>
@@ -658,7 +666,7 @@
   <!-- زر العودة للأعلى -->
   <button id="scrollTopBtn" onclick="scrollToTop()">&#8679;</button>
   
-  <!-- تذييل الصفحة -->
+  <!-- التذييل -->
   <footer>
     <p>&copy; 2025 الموقع التقني الشامل. جميع الحقوق محفوظة.</p>
   </footer>
@@ -686,10 +694,10 @@
       } else if (section === 'contact') {
         document.getElementById('contact-section').style.display = 'block';
       }
-      window.scrollTo(0,0);
+      window.scrollTo(0, 0);
     }
     
-    // تغيير لون الخلفية تفاعلياً
+    // دالة تغيير لون الخلفية تفاعلياً
     function changeBackground() {
       const colors = ['#f4f4f4', '#e0f7fa', '#ffe0b2', '#e1bee7', '#dcedc8'];
       document.body.style.background = colors[Math.floor(Math.random() * colors.length)];
@@ -700,7 +708,7 @@
       alert('شكراً لاشتراكك! سيتم إرسال آخر الأخبار إلى بريدك الإلكتروني.');
     }
     
-    // دالة إرسال نموذج الاتصال
+    // دالة إرسال نموذج التواصل
     function submitForm() {
       alert('تم إرسال رسالتك بنجاح!');
       return false;
@@ -721,8 +729,9 @@
       }
     }
     
-    // عرض قسم الأخبار بشكل افتراضي عند تحميل الصفحة
+    // عرض قسم الأخبار افتراضياً عند تحميل الصفحة
     navigateTo('news');
   </script>
 </body>
 </html>
+
