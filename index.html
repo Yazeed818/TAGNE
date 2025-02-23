@@ -1,37 +1,70 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>الموقع التقني الشامل</title>
-
-  <!-- وسم التحقق من جوجل سيرش كونسول (مثال) -->
+  <meta name="description" content="موقع تقني شامل يقدم مقالات تقنية متعمقة، شروحات برمجية، ومصادر تعليمية عربية وعالمية.">
+  
+  <!-- وسم التحقق من جوجل سيرش كونسول -->
   <meta name="google-site-verification" content="UqSFt1CyIbFCPFVpf5N30mOq-dJoR5YRDBjUqDOmJIU" />
 
   <!-- رمز Google AdSense -->
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6906663830989419"
-     crossorigin="anonymous"></script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6906663830989419" crossorigin="anonymous"></script>
 
+  <!-- مكتبة Three.js لتأثير الهولوجرام -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+  <!-- تعريف المتغيرات للثيم (Light & Dark) -->
   <style>
-    /* إعادة تعيين الأنماط الأساسية */
+    :root {
+      --bg-color: #f4f4f4;
+      --text-color: #333;
+      --primary-color: #007BFF;
+      --secondary-color: #f39c12;
+      --header-bg: #000;
+    }
+    body.dark {
+      --bg-color: #1e1e1e;
+      --text-color: #e0e0e0;
+      --primary-color: #4da6ff;
+      --secondary-color: #f1c40f;
+    }
+    /* القيم الأساسية */
     * {
-      margin: 0; 
-      padding: 0; 
+      margin: 0;
+      padding: 0;
       box-sizing: border-box;
     }
     body {
       font-family: Arial, sans-serif;
-      background: #f4f4f4;
-      color: #333;
+      background: var(--bg-color);
+      color: var(--text-color);
       line-height: 1.6;
       scroll-behavior: smooth;
+      transition: background 0.3s, color 0.3s;
     }
     a {
       text-decoration: none;
       color: inherit;
+      cursor: pointer;
     }
-    ul {
-      list-style: none;
+    ul { list-style: none; }
+
+    /* شريط مؤشر التمرير */
+    #progressBarContainer {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 5px;
+      background: rgba(0,0,0,0.1);
+      z-index: 9999;
+    }
+    #progressBar {
+      width: 0;
+      height: 100%;
+      background: var(--secondary-color);
     }
 
     /* رأس الصفحة */
@@ -68,35 +101,23 @@
       text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
       animation: fadeInUp 1s ease;
     }
-    .header-content button {
+    .header-content .cta-btn {
       padding: 12px 25px;
       font-size: 1.1rem;
       border: none;
       border-radius: 5px;
-      background: #f39c12;
+      background: var(--secondary-color);
       color: #fff;
-      cursor: pointer;
       transition: background 0.3s;
       animation: fadeInUp 1s ease;
     }
-    .header-content button:hover {
-      background: #d35400;
+    .header-content .cta-btn:hover {
+      background: darken(var(--secondary-color), 10%);
     }
-
-    @keyframes fadeInDown {
-      from { opacity: 0; transform: translateY(-50px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(50px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* صندوق الإعلان أسفل العنوان */
     .adBanner {
       margin: 20px auto 0 auto;
       text-align: center;
-      max-width: 728px; 
+      max-width: 728px;
       background: #fff;
       border: 1px solid #ccc;
       padding: 10px;
@@ -107,29 +128,47 @@
     nav {
       background: #333;
       padding: 15px 0;
-      text-align: center;
       position: sticky;
-      top: 0;
-      z-index: 10;
+      top: 5px; /* أسفل شريط مؤشر التمرير */
+      z-index: 1000;
     }
+    nav ul {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+    nav li { display: inline; }
     nav a {
       color: #fff;
-      margin: 0 15px;
       font-size: 1.1rem;
-      cursor: pointer;
       transition: color 0.3s;
     }
-    nav a:hover {
-      color: #f39c12;
+    nav a:hover,
+    nav a.active {
+      color: var(--secondary-color);
+    }
+    /* زر تبديل الوضع الليلي */
+    .theme-toggle {
+      background: transparent;
+      border: 2px solid #fff;
+      padding: 5px 10px;
+      border-radius: 5px;
+      color: #fff;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: background 0.3s;
+    }
+    .theme-toggle:hover {
+      background: var(--secondary-color);
     }
 
-    /* الحاوية الرئيسية */
-    .container {
+    /* المحتوى الرئيسي */
+    main.container {
       max-width: 1200px;
       margin: 40px auto;
       padding: 0 20px;
     }
-
     /* الأقسام العامة */
     section {
       margin: 60px 0;
@@ -160,9 +199,10 @@
     section p {
       position: relative;
       z-index: 1;
+      text-align: justify;
     }
 
-    /* قسم المقالات */
+    /* مقالات تقنية */
     .articles {
       display: flex;
       flex-wrap: wrap;
@@ -179,34 +219,25 @@
       box-shadow: 0 2px 6px rgba(0,0,0,0.1);
       transition: transform 0.3s;
     }
-    .article:hover {
-      transform: translateY(-5px);
-    }
+    .article:hover { transform: translateY(-5px); }
     .article h3 {
       font-size: 1.5rem;
-      color: #007BFF;
+      color: var(--primary-color);
       margin-bottom: 10px;
     }
-    .article p {
-      font-size: 1rem;
-      margin-bottom: 15px;
-      text-align: justify;
-    }
-    .article button {
-      background: #007BFF;
+    .article p { font-size: 1rem; margin-bottom: 15px; }
+    .article .read-btn {
+      background: var(--primary-color);
       border: none;
       padding: 8px 15px;
       border-radius: 5px;
       color: #fff;
-      cursor: pointer;
       transition: background 0.3s;
     }
-    .article button:hover {
-      background: #0056b3;
-    }
+    .article .read-btn:hover { background: darken(var(--primary-color), 10%); }
 
-    /* قسم لغات البرمجة */
-    .languages {
+    /* أقسام لغات البرمجة ومواقع التعليم */
+    .languages, .websites {
       display: flex;
       flex-wrap: wrap;
       gap: 20px;
@@ -214,74 +245,42 @@
       position: relative;
       z-index: 1;
     }
-    .language {
+    .language, .website {
       background: #fafafa;
       border-radius: 10px;
       padding: 20px;
-      width: 280px;
       box-shadow: 0 2px 6px rgba(0,0,0,0.1);
       transition: transform 0.3s;
     }
-    .language:hover {
-      transform: translateY(-5px);
-    }
+    .language:hover, .website:hover { transform: translateY(-5px); }
+    .language { width: 280px; }
     .language h3 {
       color: #28a745;
       font-size: 1.4rem;
       margin-bottom: 10px;
     }
-    .language p {
+    .language p, .website p {
       margin-bottom: 10px;
       text-align: justify;
     }
-    .language ul {
+    .language ul, .website ul {
       list-style: disc;
       margin-left: 20px;
     }
-    .language ul li {
-      margin-bottom: 5px;
-    }
-
-    /* قسم المواقع */
-    .websites {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 20px;
-      justify-content: center;
-      position: relative;
-      z-index: 1;
-    }
-    .website {
-      background: #fafafa;
-      border-radius: 10px;
-      padding: 20px;
-      width: 300px;
-      text-align: center;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-      transition: transform 0.3s;
-    }
-    .website:hover {
-      transform: translateY(-5px);
-    }
+    .website { width: 300px; text-align: center; }
     .website h3 {
       color: #e74c3c;
       font-size: 1.4rem;
       margin-bottom: 10px;
-    }
-    .website p {
-      margin-bottom: 15px;
-      text-align: justify;
     }
     .website a {
       color: #3498db;
       font-size: 1.1rem;
       transition: color 0.3s;
     }
-    .website a:hover {
-      color: #2c3e50;
-    }
+    .website a:hover { color: #2c3e50; }
 
-    /* قسم النشرة الإخبارية */
+    /* النشرة الإخبارية */
     .newsletter {
       text-align: center;
       margin: 40px 0;
@@ -295,20 +294,17 @@
       border-radius: 5px;
       font-size: 1rem;
     }
-    .newsletter button {
+    .newsletter .subscribe-btn {
       padding: 10px 20px;
       border: none;
       border-radius: 5px;
       background: #28a745;
       color: #fff;
-      cursor: pointer;
       margin-left: 10px;
       font-size: 1rem;
       transition: background 0.3s;
     }
-    .newsletter button:hover {
-      background: #218838;
-    }
+    .newsletter .subscribe-btn:hover { background: #218838; }
 
     /* قسم التفاعل */
     .interactive {
@@ -316,18 +312,23 @@
       position: relative;
       z-index: 1;
     }
-    .interactive button {
-      background: #f39c12;
+    .interactive .change-bg-btn {
+      background: var(--secondary-color);
       border: none;
       padding: 12px 25px;
       font-size: 1.1rem;
       border-radius: 5px;
       color: #fff;
-      cursor: pointer;
       transition: background 0.3s;
     }
-    .interactive button:hover {
-      background: #d35400;
+    .interactive .change-bg-btn:hover { background: darken(var(--secondary-color), 10%); }
+
+    /* قسم الهولوجرامات التقنية */
+    #holograms-section { display: none; }
+    #hologramContainer {
+      width: 100%;
+      height: 500px;
+      background: var(--header-bg);
     }
 
     /* قسم الشهادات */
@@ -341,17 +342,35 @@
       position: relative;
       z-index: 1;
     }
-    .testimonial {
-      margin: 20px 0;
+    .testimonial { margin: 20px 0; }
+    .testimonial p { font-style: italic; margin-bottom: 10px; }
+    .testimonial span { font-weight: bold; color: var(--primary-color); }
+
+    /* قسم من نحن */
+    .about {
+      background: #fafafa;
+      padding: 40px 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      margin: 60px 0;
+      position: relative;
+      z-index: 1;
     }
-    .testimonial p {
-      font-style: italic;
-      margin-bottom: 10px;
+    .about h2 { text-align: center; margin-bottom: 30px; font-size: 2rem; color: #333; }
+    .about p { text-align: justify; margin-bottom: 15px; }
+
+    /* قسم سياسة الخصوصية */
+    .privacy {
+      background: #fafafa;
+      padding: 40px 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      margin: 60px 0;
+      position: relative;
+      z-index: 1;
     }
-    .testimonial span {
-      font-weight: bold;
-      color: #007BFF;
-    }
+    .privacy h2 { text-align: center; margin-bottom: 30px; font-size: 2rem; color: #333; }
+    .privacy p { text-align: justify; margin-bottom: 15px; }
 
     /* قسم التواصل */
     .contact {
@@ -364,15 +383,13 @@
       position: relative;
       z-index: 1;
     }
-    .contact h3 {
-      margin-bottom: 15px;
-      font-size: 1.8rem;
-    }
+    .contact h3 { margin-bottom: 15px; font-size: 1.8rem; }
     .contact form {
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 15px;
+      width: 100%;
     }
     .contact form input,
     .contact form textarea {
@@ -383,7 +400,7 @@
       font-size: 1rem;
     }
     .contact form button {
-      background: #007BFF;
+      background: var(--primary-color);
       color: #fff;
       padding: 10px 20px;
       border: none;
@@ -391,58 +408,23 @@
       cursor: pointer;
       transition: background 0.3s;
     }
-    .contact form button:hover {
-      background: #0056b3;
-    }
+    .contact form button:hover { background: darken(var(--primary-color), 10%); }
 
-    /* قسم من نحن */
-    .about {
-      background: #fafafa;
-      padding: 40px 20px;
-      border-radius: 10px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-      margin: 60px 0;
-      position: relative;
-      z-index: 1;
-    }
-    .about h2 {
+    /* تذييل الصفحة */
+    footer {
+      background: #333;
+      color: #fff;
       text-align: center;
-      margin-bottom: 30px;
-      font-size: 2rem;
-      color: #333;
+      padding: 20px;
     }
-    .about p {
-      text-align: justify;
-      margin-bottom: 15px;
-    }
-
-    /* قسم سياسة الخصوصية */
-    .privacy {
-      background: #fafafa;
-      padding: 40px 20px;
-      border-radius: 10px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-      margin: 60px 0;
-      position: relative;
-      z-index: 1;
-    }
-    .privacy h2 {
-      text-align: center;
-      margin-bottom: 30px;
-      font-size: 2rem;
-      color: #333;
-    }
-    .privacy p {
-      text-align: justify;
-      margin-bottom: 15px;
-    }
+    footer p { margin: 5px 0; }
 
     /* زر العودة للأعلى */
     #scrollTopBtn {
       position: fixed;
       bottom: 30px;
       right: 30px;
-      background: #007BFF;
+      background: var(--primary-color);
       color: #fff;
       padding: 10px 15px;
       border: none;
@@ -452,25 +434,21 @@
       z-index: 100;
       transition: background 0.3s;
     }
-    #scrollTopBtn:hover {
-      background: #0056b3;
-    }
+    #scrollTopBtn:hover { background: darken(var(--primary-color), 10%); }
 
-    /* تذييل الصفحة */
-    footer {
-      background: #333;
-      color: #fff;
-      text-align: center;
-      padding: 20px;
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-50px); }
+      to { opacity: 1; transform: translateY(0); }
     }
-    footer p {
-      margin: 5px 0;
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(50px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     @media (max-width: 768px) {
       header { height: 400px; }
       .header-content h1 { font-size: 2.5rem; }
-      nav a { margin: 0 10px; font-size: 1rem; }
+      nav a { font-size: 1rem; }
       .article { width: calc(50% - 20px); }
       .language, .website { width: 90%; }
     }
@@ -481,16 +459,19 @@
   </style>
 </head>
 <body>
+  <!-- شريط مؤشر التمرير -->
+  <div id="progressBarContainer">
+    <div id="progressBar"></div>
+  </div>
 
   <!-- رأس الصفحة -->
   <header>
     <div class="header-content">
       <h1>الموقع التقني الشامل</h1>
       <p>مقالات تقنية متعمقة، شروحات برمجية، ومصادر تعليمية عربية وعالمية</p>
-      <button onclick="navigateTo('news')">ابدأ الآن</button>
-
-      <!-- الإعلان أسفل عنوان الموقع -->
-      <div class="adBanner">
+      <button class="cta-btn" id="startBtn">ابدأ الآن</button>
+      <!-- إعلان -->
+      <div class="adBanner" aria-label="إعلان">
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-6906663830989419"
@@ -504,65 +485,61 @@
     </div>
   </header>
 
-  <!-- شريط التنقل -->
+  <!-- شريط التنقل مع زر تبديل الوضع الليلي -->
   <nav>
-    <a onclick="navigateTo('news')">الأخبار</a>
-    <a onclick="navigateTo('languages')">لغات البرمجة</a>
-    <a onclick="navigateTo('websites')">مواقع التعليم</a>
-    <a onclick="navigateTo('interactive')">تفاعل</a>
-    <a onclick="navigateTo('testimonials')">الشهادات</a>
-    <a onclick="navigateTo('about')">من نحن</a>
-    <a onclick="navigateTo('privacy')">سياسة الخصوصية</a>
-    <a onclick="navigateTo('contact')">اتصل بنا</a>
+    <ul>
+      <li><a href="#" data-section="news" class="nav-link">الأخبار</a></li>
+      <li><a href="#" data-section="languages" class="nav-link">لغات البرمجة</a></li>
+      <li><a href="#" data-section="websites" class="nav-link">مواقع التعليم</a></li>
+      <li><a href="#" data-section="interactive" class="nav-link">تفاعل</a></li>
+      <li><a href="#" data-section="holograms" class="nav-link">الهولوجرامات التقنية</a></li>
+      <li><a href="#" data-section="testimonials" class="nav-link">الشهادات</a></li>
+      <li><a href="#" data-section="about" class="nav-link">من نحن</a></li>
+      <li><a href="#" data-section="privacy" class="nav-link">سياسة الخصوصية</a></li>
+      <li><a href="#" data-section="contact" class="nav-link">اتصل بنا</a></li>
+      <li><button class="theme-toggle" id="themeToggle">الوضع الليلي</button></li>
+    </ul>
   </nav>
 
-  <div class="container">
-
+  <!-- المحتوى الرئيسي -->
+  <main class="container">
     <!-- النشرة الإخبارية -->
-    <div class="newsletter">
-      <h2>اشترك في النشرة الإخبارية</h2>
-      <p>انضم إلينا لتصلك آخر المقالات والدروس التقنية مباشرة في بريدك.</p>
-      <input type="email" placeholder="أدخل بريدك الإلكتروني">
-      <button onclick="subscribe()">اشترك الآن</button>
-    </div>
+    <section id="newsletter">
+      <div class="newsletter">
+        <h2>اشترك في النشرة الإخبارية</h2>
+        <p>انضم إلينا لتصلك آخر المقالات والدروس التقنية مباشرة في بريدك.</p>
+        <input type="email" id="emailInput" placeholder="أدخل بريدك الإلكتروني" required>
+        <button class="subscribe-btn" id="subscribeBtn">اشترك الآن</button>
+      </div>
+    </section>
 
-    <!-- قسم الأخبار / المقالات التقنية -->
+    <!-- قسم الأخبار -->
     <section id="news-section">
       <h2>أحدث المقالات التقنية</h2>
       <div class="articles">
-        <div class="article">
+        <article class="article">
           <h3>1. الذكاء الاصطناعي وتأثيره على مستقبل العمل</h3>
           <p>
-            الذكاء الاصطناعي ليس مجرد تقنية جديدة، بل هو ثورة تعيد تشكيل أسواق العمل. 
-            تتيح خوارزميات التعلم العميق إمكانية أتمتة الكثير من المهام التقليدية، 
-            مما يفتح المجال لإبداع بشري أكبر في مجالات مثل التصميم والاستراتيجية. 
-            ومع ذلك، تظهر تحديات أخلاقية تتعلق بالخصوصية والتمييز الخوارزمي. 
-            في هذا المقال، نستعرض أهم التطبيقات والآفاق المستقبلية للذكاء الاصطناعي.
+            الذكاء الاصطناعي ليس مجرد تقنية جديدة، بل هو ثورة تعيد تشكيل أسواق العمل.
+            تتيح خوارزميات التعلم العميق إمكانية أتمتة الكثير من المهام التقليدية،
+            مما يفتح المجال لإبداع بشري أكبر.
           </p>
-          <button onclick="alert('اقرأ المزيد في المقال الكامل حول الذكاء الاصطناعي ومستقبل العمل.')">اقرأ المزيد</button>
-        </div>
-        <div class="article">
-          <h3>2. تطور شبكات الجيل الخامس (5G) وتأثيرها على الاتصالات</h3>
+          <button class="read-btn" data-alert="اقرأ المزيد حول الذكاء الاصطناعي ومستقبل العمل.">اقرأ المزيد</button>
+        </article>
+        <article class="article">
+          <h3>2. تطور شبكات الجيل الخامس (5G)</h3>
           <p>
-            تعتبر تقنية الجيل الخامس (5G) قفزة نوعية في عالم الاتصالات، 
-            حيث تقدم سرعات عالية جداً وزمن استجابة منخفض، ما يمكّن من ربط مليارات الأجهزة 
-            وتحقيق ثورة في إنترنت الأشياء (IoT). 
-            ينعكس ذلك على تطوير المدن الذكية، والطب عن بُعد، والسيارات ذاتية القيادة. 
-            في هذا المقال، نتعرف على أبرز المزايا والتحديات المتعلقة بنشر تقنية 5G عالمياً.
+            تعتبر تقنية الجيل الخامس (5G) قفزة نوعية في عالم الاتصالات، حيث تقدم سرعات عالية وزمن استجابة منخفض.
           </p>
-          <button onclick="alert('اقرأ المزيد في المقال الكامل حول 5G وتأثيرها على العالم الرقمي.')">اقرأ المزيد</button>
-        </div>
-        <div class="article">
-          <h3>3. الأمن السيبراني: حرب رقمية في عالم متصل</h3>
+          <button class="read-btn" data-alert="اقرأ المزيد حول 5G وتأثيرها على الاتصالات.">اقرأ المزيد</button>
+        </article>
+        <article class="article">
+          <h3>3. الأمن السيبراني: حرب رقمية</h3>
           <p>
-            في عصرنا الرقمي الحالي، أصبح الأمن السيبراني من أولويات الحكومات والشركات والأفراد. 
-            تزداد الهجمات الإلكترونية تعقيداً مع تطور الأدوات الخبيثة مثل برامج الفدية (Ransomware) 
-            والتصيد الاحتيالي (Phishing). 
-            يناقش هذا المقال أهم الممارسات لحماية البيانات والأجهزة، 
-            إضافة إلى دور الوعي المجتمعي في مواجهة هذه التهديدات.
+            أصبح الأمن السيبراني من أولويات الحكومات والشركات، مع تزايد الهجمات الإلكترونية وتعقيدها.
           </p>
-          <button onclick="alert('اقرأ المزيد في المقال الكامل حول الأمن السيبراني والحماية الرقمية.')">اقرأ المزيد</button>
-        </div>
+          <button class="read-btn" data-alert="اقرأ المزيد حول الأمن السيبراني والحماية الرقمية.">اقرأ المزيد</button>
+        </article>
       </div>
     </section>
 
@@ -572,186 +549,72 @@
       <div class="languages">
         <div class="language">
           <h3>HTML</h3>
-          <p>الأساس لبناء صفحات الويب وتنظيم المحتوى الهيكلي للمواقع.</p>
+          <p>الأساس لبناء صفحات الويب وتنظيم المحتوى.</p>
           <ul>
-            <li>إنشاء الهيكل العام للصفحات</li>
-            <li>تنظيم النصوص والصور والجداول</li>
+            <li>إنشاء هيكل الصفحات</li>
+            <li>تنظيم النصوص والصور</li>
           </ul>
         </div>
         <div class="language">
           <h3>CSS</h3>
-          <p>تُستخدم لتنسيق وتصميم صفحات الويب وجعلها جذابة بصريًا.</p>
+          <p>تُستخدم لتنسيق وتصميم صفحات الويب.</p>
           <ul>
             <li>تحسين الواجهة البصرية</li>
-            <li>تصميم متجاوب للشاشات المختلفة</li>
+            <li>تصميم متجاوب</li>
           </ul>
         </div>
         <div class="language">
           <h3>JavaScript</h3>
-          <p>لغة تضيف التفاعلية للمواقع، مثل النماذج المنبثقة والقوائم الديناميكية.</p>
+          <p>تضيف التفاعلية للمواقع، وتُستخدم في تطوير الواجهات.</p>
           <ul>
-            <li>تحريك العناصر والتعامل مع الأحداث</li>
-            <li>تطوير واجهات تفاعلية لتجربة مستخدم أفضل</li>
-          </ul>
-        </div>
-        <div class="language">
-          <h3>Python</h3>
-          <p>لغة متعددة الاستخدامات في تطوير الويب، تحليل البيانات، والذكاء الاصطناعي.</p>
-          <ul>
-            <li>تحليل البيانات والتعلم الآلي</li>
-            <li>تطوير تطبيقات الويب (Django/Flask)</li>
-          </ul>
-        </div>
-        <div class="language">
-          <h3>Java</h3>
-          <p>من اللغات الأكثر انتشارًا في تطبيقات الأندرويد وتطبيقات المؤسسات.</p>
-          <ul>
-            <li>تطبيقات الهواتف الذكية (Android)</li>
-            <li>أنظمة المؤسسات الضخمة</li>
-          </ul>
-        </div>
-        <div class="language">
-          <h3>C</h3>
-          <p>لغة منخفضة المستوى تُستخدم في برمجة الأنظمة والتطبيقات عالية الأداء.</p>
-          <ul>
-            <li>برمجة أنظمة التشغيل</li>
-            <li>التطبيقات المدمجة (Embedded Systems)</li>
-          </ul>
-        </div>
-        <div class="language">
-          <h3>C++</h3>
-          <p>مستخدمة لتطوير التطبيقات والألعاب ذات الأداء العالي.</p>
-          <ul>
-            <li>تطوير الألعاب (Unreal Engine)</li>
-            <li>البرامج ذات الأداء العالي</li>
-          </ul>
-        </div>
-        <div class="language">
-          <h3>C#</h3>
-          <p>تُستخدم لتطوير تطبيقات ويندوز والألعاب باستخدام Unity.</p>
-          <ul>
-            <li>تطبيقات سطح المكتب (Windows)</li>
-            <li>تطوير الألعاب (Unity)</li>
-          </ul>
-        </div>
-        <div class="language">
-          <h3>PHP</h3>
-          <p>لغة برمجة لتطوير مواقع ويب ديناميكية.</p>
-          <ul>
-            <li>أنظمة إدارة المحتوى (WordPress)</li>
-            <li>التطبيقات الإلكترونية</li>
-          </ul>
-        </div>
-        <div class="language">
-          <h3>Ruby</h3>
-          <p>لغة بسيطة لتطوير تطبيقات الويب عبر إطار Rails.</p>
-          <ul>
-            <li>تطوير سريع (Rapid Development)</li>
-            <li>سهولة الاستخدام والقراءة</li>
-          </ul>
-        </div>
-        <div class="language">
-          <h3>Go</h3>
-          <p>لغة من Google لتطوير الخدمات السحابية وتطبيقات السيرفر.</p>
-          <ul>
-            <li>الخدمات السحابية (Cloud Services)</li>
-            <li>أداء عالي وعمليات متوازية</li>
-          </ul>
-        </div>
-        <div class="language">
-          <h3>Swift</h3>
-          <p>الأساسية لتطوير تطبيقات iOS وmacOS.</p>
-          <ul>
-            <li>تطبيقات iPhone/iPad</li>
-            <li>تصميم واجهات متطورة (UIKit/SwiftUI)</li>
-          </ul>
-        </div>
-        <div class="language">
-          <h3>Kotlin</h3>
-          <p>لغة حديثة لتطوير تطبيقات Android وتطبيقات متعددة المنصات.</p>
-          <ul>
-            <li>تطبيقات Android (بديل Java)</li>
-            <li>تطوير متعدد المنصات (Kotlin Multiplatform)</li>
-          </ul>
-        </div>
-        <div class="language">
-          <h3>R</h3>
-          <p>متخصصة في تحليل البيانات والإحصاء.</p>
-          <ul>
-            <li>تحليل البيانات</li>
-            <li>الإحصاء والبحوث</li>
-          </ul>
-        </div>
-        <div class="language">
-          <h3>TypeScript</h3>
-          <p>امتداد لـJavaScript يضيف مفاهيم الأنواع (Types) لكتابة كود أكثر أمانًا.</p>
-          <ul>
-            <li>تطوير تطبيقات Angular</li>
-            <li>المشاريع الكبيرة المنضبطة</li>
-          </ul>
-        </div>
-        <div class="language">
-          <h3>Rust</h3>
-          <p>لغة حديثة تركز على الأمان والسرعة، تُستخدم في تطوير الأنظمة عالية الأداء.</p>
-          <ul>
-            <li>الأداء العالي (بديل C++)</li>
-            <li>إدارة الذاكرة الآمنة (Safe Memory)</li>
-          </ul>
-        </div>
-        <div class="language">
-          <h3>Dart</h3>
-          <p>لغة من Google تُستخدم في تطوير تطبيقات الويب والموبايل عبر إطار Flutter.</p>
-          <ul>
-            <li>تطبيقات متعددة المنصات (iOS/Android)</li>
-            <li>تطوير واجهات رسومية سريعة</li>
+            <li>التعامل مع الأحداث</li>
+            <li>تحريك العناصر</li>
           </ul>
         </div>
       </div>
     </section>
 
-    <!-- قسم مواقع التعليم (عالمية + سعودية) -->
+    <!-- قسم مواقع التعليم -->
     <section id="websites-section" style="display:none;">
       <h2>مواقع تعليمية ودورات برمجة</h2>
       <div class="websites">
-        <!-- مواقع عالمية -->
         <div class="website">
           <h3>W3Schools</h3>
-          <p>تعلم HTML, CSS, JavaScript وغيرها بأسلوب سهل وميسر.</p>
-          <a href="https://www.w3schools.com" target="_blank">زيارة الموقع</a>
+          <p>تعلم HTML, CSS, JavaScript بأسلوب سهل.</p>
+          <a href="https://www.w3schools.com" target="_blank" rel="noopener">زيارة الموقع</a>
         </div>
         <div class="website">
           <h3>freeCodeCamp</h3>
-          <p>منصة تفاعلية لتعلم البرمجة مجانًا عبر تحديات عملية.</p>
-          <a href="https://www.freecodecamp.org" target="_blank">زيارة الموقع</a>
+          <p>منصة تفاعلية لتعلم البرمجة مجانًا.</p>
+          <a href="https://www.freecodecamp.org" target="_blank" rel="noopener">زيارة الموقع</a>
         </div>
         <div class="website">
           <h3>Udemy</h3>
-          <p>منصة تقدم دورات تعليمية شاملة في مختلف المجالات التقنية والبرمجية.</p>
-          <a href="https://www.udemy.com" target="_blank">زيارة الموقع</a>
+          <p>دورات تعليمية شاملة في المجالات التقنية.</p>
+          <a href="https://www.udemy.com" target="_blank" rel="noopener">زيارة الموقع</a>
         </div>
       </div>
-
       <h3 style="text-align: center; margin-top: 40px;">مواقع سعودية للتعليم والبرمجة</h3>
       <div class="websites">
         <div class="website">
           <h3>رواق</h3>
-          <p>منصة عربية للتعليم المفتوح تقدم دورات مجانية عالية الجودة في مختلف المجالات.</p>
-          <a href="https://www.rwaq.org/" target="_blank">زيارة الموقع</a>
+          <p>منصة عربية للتعليم المفتوح تقدم دورات مجانية.</p>
+          <a href="https://www.rwaq.org/" target="_blank" rel="noopener">زيارة الموقع</a>
         </div>
         <div class="website">
           <h3>دروب</h3>
-          <p>منصة التدريب الإلكتروني في السعودية، تقدم دورات متنوعة لتطوير المهارات المهنية والتقنية.</p>
-          <a href="https://doroob.sa" target="_blank">زيارة الموقع</a>
+          <p>منصة تدريب إلكتروني تقدم دورات متنوعة.</p>
+          <a href="https://doroob.sa" target="_blank" rel="noopener">زيارة الموقع</a>
         </div>
         <div class="website">
           <h3>الأكاديمية السعودية الرقمية</h3>
-          <p>مبادرة وطنية تقدم معسكرات وبرامج تدريبية في مختلف مجالات التقنية والبرمجة.</p>
-          <a href="https://sda.edu.sa" target="_blank">زيارة الموقع</a>
+          <p>مبادرة وطنية للتدريب في مجالات التقنية.</p>
+          <a href="https://sda.edu.sa" target="_blank" rel="noopener">زيارة الموقع</a>
         </div>
         <div class="website">
           <h3>معسكر طويق</h3>
-          <p>أحد مبادرات الاتحاد السعودي للأمن السيبراني والبرمجة والدرونز، يقدم معسكرات مكثفة في البرمجة والتقنية.</p>
-          <a href="https://tuwaiq.edu.sa" target="_blank">زيارة الموقع</a>
+          <p>معسكرات مكثفة في البرمجة والتقنية.</p>
+          <a href="https://tuwaiq.edu.sa" target="_blank" rel="noopener">زيارة الموقع</a>
         </div>
       </div>
     </section>
@@ -761,24 +624,30 @@
       <h2>تفاعل مع الموقع</h2>
       <div class="interactive">
         <p>جرب تغيير لون خلفية الموقع بطريقة تفاعلية!</p>
-        <button onclick="changeBackground()">غير اللون</button>
+        <button class="change-bg-btn" id="changeBgBtn">غير اللون</button>
       </div>
     </section>
 
-    <!-- قسم الشهادات وآراء المستخدمين -->
+    <!-- قسم الهولوجرامات التقنية -->
+    <section id="holograms-section" style="display:none;">
+      <h2>الهولوجرامات التقنية</h2>
+      <div id="hologramContainer" aria-label="عرض هولوجرام تقني"></div>
+    </section>
+
+    <!-- قسم الشهادات -->
     <section id="testimonials-section" style="display:none;">
       <h2>آراء المستخدمين</h2>
       <div class="testimonials">
         <div class="testimonial">
-          <p>"الموقع التقني الشامل ساعدني على فهم أساسيات البرمجة بخطوات بسيطة وواضحة."</p>
+          <p>"الموقع التقني الشامل ساعدني على فهم أساسيات البرمجة بخطوات واضحة."</p>
           <span>- أحمد</span>
         </div>
         <div class="testimonial">
-          <p>"أفضل موقع عربي جمع لي أهم المصادر المحلية والعالمية لتعلم البرمجة والتقنية."</p>
+          <p>"أفضل موقع عربي يجمع المصادر المحلية والعالمية لتعلم البرمجة."</p>
           <span>- ليلى</span>
         </div>
         <div class="testimonial">
-          <p>"أسلوب عرض المقالات سهل وممتع، والمحتوى متجدد دائماً. أنصح به للجميع!"</p>
+          <p>"محتوى متجدد وتصميم رائع، أنصح به للجميع!"</p>
           <span>- محمد</span>
         </div>
       </div>
@@ -788,16 +657,10 @@
     <section id="about" class="about" style="display:none;">
       <h2>من نحن</h2>
       <p>
-        نحن فريق من المهتمين بالتقنية والبرمجة، نسعى لتقديم محتوى عربي ثري 
-        يساعد المبتدئين والمحترفين على حد سواء في تطوير مهاراتهم. 
-        بدأنا هذا الموقع بهدف نشر الثقافة الرقمية وتمكين الأفراد من مواكبة 
-        التطورات المتسارعة في عالم التكنولوجيا.
+        نحن فريق من المهتمين بالتقنية والبرمجة، نسعى لتقديم محتوى عربي ثري يساعد المبتدئين والمحترفين في تطوير مهاراتهم.
       </p>
       <p>
-        يضم فريقنا مبرمجين ومحللي بيانات وخبراء في الأمن السيبراني، 
-        يجمعنا شغفنا المشترك بمشاركة المعرفة وإثراء المحتوى العربي على الإنترنت. 
-        نؤمن بأن التعليم المستمر هو مفتاح النجاح في العصر الرقمي، 
-        لذا نسعى جاهدين لتوفير أحدث المقالات والأخبار والدروس المتخصصة.
+        يضم فريقنا خبراء في مجالات متعددة، نؤمن بأن التعليم المستمر هو مفتاح النجاح في العصر الرقمي.
       </p>
     </section>
 
@@ -805,15 +668,10 @@
     <section id="privacy" class="privacy" style="display:none;">
       <h2>سياسة الخصوصية</h2>
       <p>
-        نحرص في الموقع التقني الشامل على حماية خصوصية زوارنا. 
-        تُجمع بعض المعلومات مثل ملفات تعريف الارتباط (Cookies) بهدف تحسين تجربة المستخدم. 
-        كما نستخدم خدمات خارجية (مثل Google AdSense) التي قد تجمع بعض البيانات لأغراض تحليلية وإعلانية.
+        نحرص على حماية خصوصية زوارنا، وتُجمع المعلومات فقط لتحسين تجربة المستخدم.
       </p>
       <p>
-        لن نقوم ببيع أو مشاركة معلوماتك الشخصية مع أي جهة خارجية 
-        إلا في حال استلزم الأمر تطبيق القوانين أو حماية حقوقنا وحقوق المستخدمين الآخرين. 
-        بتصفحك للموقع، فإنك توافق على هذه السياسة. 
-        إذا كان لديك أي استفسارات، يُرجى التواصل معنا عبر صفحة "اتصل بنا".
+        لا نقوم بمشاركة بياناتك الشخصية مع أي جهة خارجية دون موافقتك.
       </p>
     </section>
 
@@ -822,7 +680,7 @@
       <h2>اتصل بنا</h2>
       <div>
         <h3>نحن هنا لمساعدتك</h3>
-        <form onsubmit="return submitForm();">
+        <form id="contactForm" novalidate>
           <input type="text" placeholder="اسمك" required>
           <input type="email" placeholder="بريدك الإلكتروني" required>
           <textarea placeholder="رسالتك" rows="4" required></textarea>
@@ -830,11 +688,10 @@
         </form>
       </div>
     </section>
+  </main>
 
-  </div>
-  
   <!-- زر العودة للأعلى -->
-  <button id="scrollTopBtn" onclick="scrollToTop()">&#8679;</button>
+  <button id="scrollTopBtn" aria-label="العودة للأعلى">&#8679;</button>
 
   <!-- التذييل -->
   <footer>
@@ -842,73 +699,142 @@
   </footer>
 
   <script>
-    // دالة التنقل بين الأقسام
-    function navigateTo(section) {
-      // إخفاء كل الأقسام
-      document.getElementById('news-section').style.display = 'none';
-      document.getElementById('languages-section').style.display = 'none';
-      document.getElementById('websites-section').style.display = 'none';
-      document.getElementById('interactive-section').style.display = 'none';
-      document.getElementById('testimonials-section').style.display = 'none';
-      document.getElementById('about').style.display = 'none';
-      document.getElementById('privacy').style.display = 'none';
-      document.getElementById('contact').style.display = 'none';
-      
-      // إظهار القسم المطلوب
-      if (section === 'news') {
-        document.getElementById('news-section').style.display = 'block';
-      } else if (section === 'languages') {
-        document.getElementById('languages-section').style.display = 'block';
-      } else if (section === 'websites') {
-        document.getElementById('websites-section').style.display = 'block';
-      } else if (section === 'interactive') {
-        document.getElementById('interactive-section').style.display = 'block';
-      } else if (section === 'testimonials') {
-        document.getElementById('testimonials-section').style.display = 'block';
-      } else if (section === 'about') {
-        document.getElementById('about').style.display = 'block';
-      } else if (section === 'privacy') {
-        document.getElementById('privacy').style.display = 'block';
-      } else if (section === 'contact') {
-        document.getElementById('contact').style.display = 'block';
+    document.addEventListener('DOMContentLoaded', () => {
+      const sections = {
+        news: document.getElementById('news-section'),
+        languages: document.getElementById('languages-section'),
+        websites: document.getElementById('websites-section'),
+        interactive: document.getElementById('interactive-section'),
+        holograms: document.getElementById('holograms-section'),
+        testimonials: document.getElementById('testimonials-section'),
+        about: document.getElementById('about'),
+        privacy: document.getElementById('privacy'),
+        contact: document.getElementById('contact')
+      };
+
+      const navLinks = document.querySelectorAll('.nav-link');
+      let hologramInitialized = false; // لمنع إعادة التهيئة
+
+      // دالة التنقل بين الأقسام
+      const navigateTo = (sectionKey) => {
+        Object.keys(sections).forEach(key => {
+          sections[key].style.display = (key === sectionKey) ? 'block' : 'none';
+        });
+        navLinks.forEach(link => {
+          link.classList.toggle('active', link.dataset.section === sectionKey);
+        });
+        window.scrollTo(0, 0);
+        if(sectionKey === 'holograms' && !hologramInitialized) {
+          initializeHologram();
+          hologramInitialized = true;
+        }
+      };
+
+      // ربط أحداث التنقل
+      navLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+          navigateTo(link.dataset.section);
+        });
+      });
+      navigateTo('news');
+
+      // زر بدء الموقع
+      document.getElementById('startBtn').addEventListener('click', (e) => {
+        e.preventDefault();
+        navigateTo('news');
+      });
+
+      // زر تغيير لون الخلفية
+      const changeBgBtn = document.getElementById('changeBgBtn');
+      if(changeBgBtn){
+        changeBgBtn.addEventListener('click', () => {
+          const colors = ['#f4f4f4', '#e0f7fa', '#ffe0b2', '#e1bee7', '#dcedc8'];
+          document.body.style.background = colors[Math.floor(Math.random() * colors.length)];
+        });
       }
-      window.scrollTo(0, 0);
-    }
-    
-    // دالة تغيير لون الخلفية تفاعلياً
-    function changeBackground() {
-      const colors = ['#f4f4f4', '#e0f7fa', '#ffe0b2', '#e1bee7', '#dcedc8'];
-      document.body.style.background = colors[Math.floor(Math.random() * colors.length)];
-    }
-    
-    // دالة اشتراك النشرة الإخبارية
-    function subscribe() {
-      alert('شكراً لاشتراكك! سيتم إرسال آخر الأخبار إلى بريدك الإلكتروني.');
-    }
-    
-    // دالة إرسال نموذج التواصل
-    function submitForm() {
-      alert('تم إرسال رسالتك بنجاح!');
-      return false;
-    }
-    
-    // دالة العودة للأعلى
-    function scrollToTop() {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-    
-    // إظهار زر العودة للأعلى عند التمرير
-    window.onscroll = function() {
-      const btn = document.getElementById('scrollTopBtn');
-      if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
-        btn.style.display = 'block';
-      } else {
-        btn.style.display = 'none';
+
+      // الاشتراك بالنشرة الإخبارية
+      document.getElementById('subscribeBtn').addEventListener('click', () => {
+        const emailInput = document.getElementById('emailInput');
+        if(emailInput.value.trim()){
+          alert('شكراً لاشتراكك! سيتم إرسال آخر الأخبار إلى بريدك الإلكتروني.');
+          emailInput.value = '';
+        } else {
+          alert('يرجى إدخال بريدك الإلكتروني.');
+        }
+      });
+
+      // نموذج التواصل
+      document.getElementById('contactForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        alert('تم إرسال رسالتك بنجاح!');
+        e.target.reset();
+      });
+
+      // زر العودة للأعلى
+      const scrollTopBtn = document.getElementById('scrollTopBtn');
+      scrollTopBtn.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+      window.addEventListener('scroll', () => {
+        // تحديث مؤشر التمرير
+        const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+        const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        const scrolled = (winScroll / height) * 100;
+        document.getElementById('progressBar').style.width = scrolled + "%";
+        // إظهار زر العودة للأعلى
+        scrollTopBtn.style.display = (document.documentElement.scrollTop > 200) ? 'block' : 'none';
+      });
+
+      // التعامل مع أزرار "اقرأ المزيد"
+      document.querySelectorAll('.read-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          alert(btn.dataset.alert);
+        });
+      });
+
+      // تهيئة قسم الهولوجرامات باستخدام Three.js
+      function initializeHologram() {
+        const container = document.getElementById('hologramContainer');
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, container.offsetWidth / container.offsetHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+        renderer.setSize(container.offsetWidth, container.offsetHeight);
+        container.appendChild(renderer.domElement);
+
+        const geometry = new THREE.BoxGeometry(2, 2, 2);
+        const material = new THREE.MeshBasicMaterial({
+          color: 0x00ffff,
+          wireframe: true,
+          opacity: 0.7,
+          transparent: true
+        });
+        const cube = new THREE.Mesh(geometry, material);
+        scene.add(cube);
+
+        camera.position.z = 5;
+        function animate() {
+          requestAnimationFrame(animate);
+          cube.rotation.x += 0.01;
+          cube.rotation.y += 0.01;
+          renderer.render(scene, camera);
+        }
+        animate();
+        window.addEventListener('resize', () => {
+          camera.aspect = container.offsetWidth / container.offsetHeight;
+          camera.updateProjectionMatrix();
+          renderer.setSize(container.offsetWidth, container.offsetHeight);
+        });
       }
-    }
-    
-    // عرض قسم الأخبار افتراضياً عند تحميل الصفحة
-    navigateTo('news');
+
+      // تبديل الوضع الليلي
+      const themeToggle = document.getElementById('themeToggle');
+      themeToggle.addEventListener('click', () => {
+        document.body.classList.toggle('dark');
+        themeToggle.textContent = document.body.classList.contains('dark') ? 'الوضع النهاري' : 'الوضع الليلي';
+      });
+    });
   </script>
 </body>
 </html>
