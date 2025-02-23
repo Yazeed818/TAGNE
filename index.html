@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>الموقع التقني الشامل</title>
 
-  <!-- وسم التحقق من جوجل سيرش كونسول -->
+  <!-- وسم التحقق من جوجل سيرش كونسول (مثال) -->
   <meta name="google-site-verification" content="UqSFt1CyIbFCPFVpf5N30mOq-dJoR5YRDBjUqDOmJIU" />
 
   <!-- رمز Google AdSense -->
@@ -24,29 +24,7 @@
     }
     a { text-decoration: none; }
     ul { list-style: none; }
-    
-    /* إعلان الجانب الأيمن الثابت بطول الصفحة */
-    #rightAd {
-      position: fixed;
-      top: 0;
-      bottom: 0;
-      right: 0;
-      width: 150px;
-      background: #fff;
-      border: 1px solid #ccc;
-      border-left: none;
-      padding: 10px;
-      text-align: center;
-      box-shadow: -2px 2px 8px rgba(0,0,0,0.2);
-      z-index: 100;
-      overflow-y: auto;
-    }
-    #rightAd ins.adsbygoogle {
-      display: block;
-      width: 100%;
-      height: auto;
-    }
-    
+
     /* رأس الصفحة */
     header {
       position: relative;
@@ -95,7 +73,7 @@
     .header-content button:hover {
       background: #d35400;
     }
-    
+
     @keyframes fadeInDown {
       from { opacity: 0; transform: translateY(-50px); }
       to { opacity: 1; transform: translateY(0); }
@@ -104,7 +82,7 @@
       from { opacity: 0; transform: translateY(50px); }
       to { opacity: 1; transform: translateY(0); }
     }
-    
+
     /* شريط التنقل */
     nav {
       background: #333;
@@ -124,14 +102,14 @@
     nav a:hover {
       color: #f39c12;
     }
-    
+
     /* الحاوية الرئيسية */
     .container {
       max-width: 1200px;
       margin: 40px auto;
       padding: 0 20px;
     }
-    
+
     /* أنماط الأقسام */
     section {
       margin: 60px 0;
@@ -159,7 +137,7 @@
       position: relative;
       z-index: 1;
     }
-    
+
     /* قسم الأخبار */
     .articles {
       display: flex;
@@ -198,7 +176,7 @@
       transition: background 0.3s;
     }
     .article button:hover { background: #0056b3; }
-    
+
     /* قسم لغات البرمجة */
     .languages {
       display: flex;
@@ -225,7 +203,7 @@
     .language p { margin-bottom: 10px; text-align: justify; }
     .language ul { list-style: disc; margin-left: 20px; }
     .language ul li { margin-bottom: 8px; }
-    
+
     /* قسم مواقع التعليم والدورات */
     .websites {
       display: flex;
@@ -260,7 +238,7 @@
       transition: color 0.3s;
     }
     .website a:hover { color: #2c3e50; }
-    
+
     /* قسم التفاعل */
     .interactive {
       text-align: center;
@@ -278,7 +256,7 @@
       transition: background 0.3s;
     }
     .interactive button:hover { background: #d35400; }
-    
+
     /* قسم النشرة الإخبارية */
     .newsletter {
       text-align: center;
@@ -305,7 +283,7 @@
       transition: background 0.3s;
     }
     .newsletter button:hover { background: #218838; }
-    
+
     /* قسم الشهادات وآراء المستخدمين */
     .testimonials {
       background: #fafafa;
@@ -320,7 +298,7 @@
     .testimonial { margin: 20px 0; }
     .testimonial p { font-style: italic; margin-bottom: 10px; }
     .testimonial span { font-weight: bold; color: #007BFF; }
-    
+
     /* قسم التواصل */
     .contact {
       text-align: center;
@@ -357,7 +335,7 @@
       transition: background 0.3s;
     }
     .contact form button:hover { background: #0056b3; }
-    
+
     /* زر العودة للأعلى */
     #scrollTopBtn {
       position: fixed;
@@ -374,7 +352,7 @@
       transition: background 0.3s;
     }
     #scrollTopBtn:hover { background: #0056b3; }
-    
+
     /* تذييل الصفحة */
     footer {
       background: #333;
@@ -383,7 +361,7 @@
       padding: 20px;
     }
     footer p { margin: 5px 0; }
-    
+
     @media (max-width: 768px) {
       header { height: 400px; }
       .header-content h1 { font-size: 2.5rem; }
@@ -397,25 +375,25 @@
   </style>
 </head>
 <body>
-  <!-- قسم الإعلان الثابت على الجانب الأيمن -->
-  <div id="rightAd">
-    <ins class="adsbygoogle"
-         style="display:block"
-         data-ad-client="ca-pub-6906663830989419"
-         data-ad-slot="1234567890"
-         data-ad-format="auto"
-         data-full-width-responsive="true"></ins>
-    <script>
-         (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
-  </div>
-  
-  <!-- الهيدر -->
+  <!-- رأس الصفحة -->
   <header>
     <div class="header-content">
       <h1>الموقع التقني الشامل</h1>
       <p>كل ما تحتاجه من أخبار التقنية، لغات البرمجة، ومصادر التعلم في مكان واحد</p>
       <button onclick="navigateTo('news')">اكتشف المزيد</button>
+
+      <!-- الإعلان أسفل عنوان الموقع -->
+      <div style="margin-top: 20px; text-align: center;">
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="ca-pub-6906663830989419"
+             data-ad-slot="1234567890"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+        <script>
+          (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+      </div>
     </div>
   </header>
   
@@ -583,10 +561,11 @@
       </div>
     </section>
     
-    <!-- قسم مواقع التعليم والدورات -->
+    <!-- قسم مواقع التعليم والدورات (عالمي + سعودي) -->
     <section id="websites-section" style="display:none;">
       <h2>مواقع تعليمية ودورات برمجة</h2>
       <div class="websites">
+        <!-- مواقع عالمية -->
         <div class="website">
           <h3>W3Schools</h3>
           <p>تعلم HTML, CSS, JavaScript وغيرها بأسلوب سهل وميسر.</p>
@@ -621,6 +600,25 @@
           <h3>Codecademy</h3>
           <p>منصة تفاعلية لتعلم البرمجة بأسلوب عملي وممتع.</p>
           <a href="https://www.codecademy.com" target="_blank">زيارة الموقع</a>
+        </div>
+      </div>
+
+      <h3 style="text-align: center; margin-top: 40px;">مواقع سعودية للتعليم والبرمجة</h3>
+      <div class="websites">
+        <div class="website">
+          <h3>رواق</h3>
+          <p>منصة عربية للتعليم المفتوح تقدم دورات مجانية عالية الجودة في مختلف المجالات.</p>
+          <a href="https://www.rwaq.org/" target="_blank">زيارة الموقع</a>
+        </div>
+        <div class="website">
+          <h3>دروب</h3>
+          <p>منصة التدريب الإلكتروني في السعودية، تقدم دورات متنوعة لتطوير المهارات المهنية والتقنية.</p>
+          <a href="https://doroob.sa" target="_blank">زيارة الموقع</a>
+        </div>
+        <div class="website">
+          <h3>الأكاديمية السعودية الرقمية</h3>
+          <p>مبادرة وطنية تقدم معسكرات وبرامج تدريبية في مختلف مجالات التقنية والبرمجة.</p>
+          <a href="https://sda.edu.sa" target="_blank">زيارة الموقع</a>
         </div>
       </div>
     </section>
@@ -739,6 +737,3 @@
   </script>
 </body>
 </html>
-
-
-
