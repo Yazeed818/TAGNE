@@ -14,7 +14,11 @@
 
   <style>
     /* إعادة تعيين الأنماط الأساسية */
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    * {
+      margin: 0; 
+      padding: 0; 
+      box-sizing: border-box;
+    }
     body {
       font-family: Arial, sans-serif;
       background: #f4f4f4;
@@ -22,8 +26,13 @@
       line-height: 1.6;
       scroll-behavior: smooth;
     }
-    a { text-decoration: none; }
-    ul { list-style: none; }
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+    ul {
+      list-style: none;
+    }
 
     /* رأس الصفحة */
     header {
@@ -48,20 +57,20 @@
       padding: 0 20px;
     }
     .header-content h1 {
-      font-size: 4rem;
+      font-size: 3.5rem;
       margin-bottom: 20px;
       text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
       animation: fadeInDown 1s ease;
     }
     .header-content p {
-      font-size: 1.5rem;
+      font-size: 1.3rem;
       margin-bottom: 30px;
       text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
       animation: fadeInUp 1s ease;
     }
     .header-content button {
-      padding: 15px 30px;
-      font-size: 1.2rem;
+      padding: 12px 25px;
+      font-size: 1.1rem;
       border: none;
       border-radius: 5px;
       background: #f39c12;
@@ -83,6 +92,17 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
+    /* صندوق الإعلان أسفل العنوان */
+    .adBanner {
+      margin: 20px auto 0 auto;
+      text-align: center;
+      max-width: 728px; 
+      background: #fff;
+      border: 1px solid #ccc;
+      padding: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+
     /* شريط التنقل */
     nav {
       background: #333;
@@ -94,7 +114,7 @@
     }
     nav a {
       color: #fff;
-      margin: 0 20px;
+      margin: 0 15px;
       font-size: 1.1rem;
       cursor: pointer;
       transition: color 0.3s;
@@ -110,7 +130,7 @@
       padding: 0 20px;
     }
 
-    /* أنماط الأقسام */
+    /* الأقسام العامة */
     section {
       margin: 60px 0;
       padding: 40px 20px;
@@ -132,13 +152,17 @@
     section h2 {
       text-align: center;
       margin-bottom: 30px;
-      font-size: 2.8rem;
+      font-size: 2.2rem;
       color: #333;
       position: relative;
       z-index: 1;
     }
+    section p {
+      position: relative;
+      z-index: 1;
+    }
 
-    /* قسم الأخبار */
+    /* قسم المقالات */
     .articles {
       display: flex;
       flex-wrap: wrap;
@@ -155,11 +179,13 @@
       box-shadow: 0 2px 6px rgba(0,0,0,0.1);
       transition: transform 0.3s;
     }
-    .article:hover { transform: translateY(-5px); }
+    .article:hover {
+      transform: translateY(-5px);
+    }
     .article h3 {
-      font-size: 1.8rem;
+      font-size: 1.5rem;
       color: #007BFF;
-      margin-bottom: 15px;
+      margin-bottom: 10px;
     }
     .article p {
       font-size: 1rem;
@@ -169,13 +195,15 @@
     .article button {
       background: #007BFF;
       border: none;
-      padding: 10px 15px;
+      padding: 8px 15px;
       border-radius: 5px;
       color: #fff;
       cursor: pointer;
       transition: background 0.3s;
     }
-    .article button:hover { background: #0056b3; }
+    .article button:hover {
+      background: #0056b3;
+    }
 
     /* قسم لغات البرمجة */
     .languages {
@@ -194,17 +222,20 @@
       box-shadow: 0 2px 6px rgba(0,0,0,0.1);
       transition: transform 0.3s;
     }
-    .language:hover { transform: translateY(-5px); }
+    .language:hover {
+      transform: translateY(-5px);
+    }
     .language h3 {
       color: #28a745;
-      font-size: 1.8rem;
+      font-size: 1.4rem;
       margin-bottom: 10px;
     }
-    .language p { margin-bottom: 10px; text-align: justify; }
-    .language ul { list-style: disc; margin-left: 20px; }
-    .language ul li { margin-bottom: 8px; }
+    .language p {
+      margin-bottom: 10px;
+      text-align: justify;
+    }
 
-    /* قسم مواقع التعليم والدورات */
+    /* قسم المواقع */
     .websites {
       display: flex;
       flex-wrap: wrap;
@@ -222,10 +253,12 @@
       box-shadow: 0 2px 6px rgba(0,0,0,0.1);
       transition: transform 0.3s;
     }
-    .website:hover { transform: translateY(-5px); }
+    .website:hover {
+      transform: translateY(-5px);
+    }
     .website h3 {
       color: #e74c3c;
-      font-size: 1.8rem;
+      font-size: 1.4rem;
       margin-bottom: 10px;
     }
     .website p {
@@ -237,25 +270,9 @@
       font-size: 1.1rem;
       transition: color 0.3s;
     }
-    .website a:hover { color: #2c3e50; }
-
-    /* قسم التفاعل */
-    .interactive {
-      text-align: center;
-      position: relative;
-      z-index: 1;
+    .website a:hover {
+      color: #2c3e50;
     }
-    .interactive button {
-      background: #f39c12;
-      border: none;
-      padding: 15px 25px;
-      font-size: 1.2rem;
-      border-radius: 5px;
-      color: #fff;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-    .interactive button:hover { background: #d35400; }
 
     /* قسم النشرة الإخبارية */
     .newsletter {
@@ -282,9 +299,31 @@
       font-size: 1rem;
       transition: background 0.3s;
     }
-    .newsletter button:hover { background: #218838; }
+    .newsletter button:hover {
+      background: #218838;
+    }
 
-    /* قسم الشهادات وآراء المستخدمين */
+    /* قسم التفاعل */
+    .interactive {
+      text-align: center;
+      position: relative;
+      z-index: 1;
+    }
+    .interactive button {
+      background: #f39c12;
+      border: none;
+      padding: 12px 25px;
+      font-size: 1.1rem;
+      border-radius: 5px;
+      color: #fff;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .interactive button:hover {
+      background: #d35400;
+    }
+
+    /* قسم الشهادات */
     .testimonials {
       background: #fafafa;
       padding: 40px 20px;
@@ -295,9 +334,17 @@
       position: relative;
       z-index: 1;
     }
-    .testimonial { margin: 20px 0; }
-    .testimonial p { font-style: italic; margin-bottom: 10px; }
-    .testimonial span { font-weight: bold; color: #007BFF; }
+    .testimonial {
+      margin: 20px 0;
+    }
+    .testimonial p {
+      font-style: italic;
+      margin-bottom: 10px;
+    }
+    .testimonial span {
+      font-weight: bold;
+      color: #007BFF;
+    }
 
     /* قسم التواصل */
     .contact {
@@ -310,7 +357,10 @@
       position: relative;
       z-index: 1;
     }
-    .contact h3 { margin-bottom: 15px; font-size: 1.8rem; }
+    .contact h3 {
+      margin-bottom: 15px;
+      font-size: 1.8rem;
+    }
     .contact form {
       display: flex;
       flex-direction: column;
@@ -334,7 +384,51 @@
       cursor: pointer;
       transition: background 0.3s;
     }
-    .contact form button:hover { background: #0056b3; }
+    .contact form button:hover {
+      background: #0056b3;
+    }
+
+    /* قسم من نحن */
+    .about {
+      background: #fafafa;
+      padding: 40px 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      margin: 60px 0;
+      position: relative;
+      z-index: 1;
+    }
+    .about h2 {
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 2rem;
+      color: #333;
+    }
+    .about p {
+      text-align: justify;
+      margin-bottom: 15px;
+    }
+
+    /* قسم سياسة الخصوصية */
+    .privacy {
+      background: #fafafa;
+      padding: 40px 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      margin: 60px 0;
+      position: relative;
+      z-index: 1;
+    }
+    .privacy h2 {
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 2rem;
+      color: #333;
+    }
+    .privacy p {
+      text-align: justify;
+      margin-bottom: 15px;
+    }
 
     /* زر العودة للأعلى */
     #scrollTopBtn {
@@ -351,7 +445,9 @@
       z-index: 100;
       transition: background 0.3s;
     }
-    #scrollTopBtn:hover { background: #0056b3; }
+    #scrollTopBtn:hover {
+      background: #0056b3;
+    }
 
     /* تذييل الصفحة */
     footer {
@@ -360,7 +456,9 @@
       text-align: center;
       padding: 20px;
     }
-    footer p { margin: 5px 0; }
+    footer p {
+      margin: 5px 0;
+    }
 
     @media (max-width: 768px) {
       header { height: 400px; }
@@ -371,19 +469,21 @@
     }
     @media (max-width: 480px) {
       .article { width: 100%; }
+      .header-content h1 { font-size: 2rem; }
     }
   </style>
 </head>
 <body>
+
   <!-- رأس الصفحة -->
   <header>
     <div class="header-content">
       <h1>الموقع التقني الشامل</h1>
-      <p>كل ما تحتاجه من أخبار التقنية، لغات البرمجة، ومصادر التعلم في مكان واحد</p>
-      <button onclick="navigateTo('news')">اكتشف المزيد</button>
+      <p>مقالات تقنية متعمقة، شروحات برمجية، ومصادر تعليمية عربية وعالمية</p>
+      <button onclick="navigateTo('news')">ابدأ الآن</button>
 
       <!-- الإعلان أسفل عنوان الموقع -->
-      <div style="margin-top: 20px; text-align: center;">
+      <div class="adBanner">
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-6906663830989419"
@@ -396,7 +496,7 @@
       </div>
     </div>
   </header>
-  
+
   <!-- شريط التنقل -->
   <nav>
     <a onclick="navigateTo('news')">الأخبار</a>
@@ -404,70 +504,87 @@
     <a onclick="navigateTo('websites')">مواقع التعليم</a>
     <a onclick="navigateTo('interactive')">تفاعل</a>
     <a onclick="navigateTo('testimonials')">الشهادات</a>
+    <a onclick="navigateTo('about')">من نحن</a>
+    <a onclick="navigateTo('privacy')">سياسة الخصوصية</a>
     <a onclick="navigateTo('contact')">اتصل بنا</a>
   </nav>
-  
+
   <div class="container">
+
     <!-- النشرة الإخبارية -->
     <div class="newsletter">
       <h2>اشترك في النشرة الإخبارية</h2>
+      <p>انضم إلينا لتصلك آخر المقالات والدروس التقنية مباشرة في بريدك.</p>
       <input type="email" placeholder="أدخل بريدك الإلكتروني">
       <button onclick="subscribe()">اشترك الآن</button>
     </div>
-    
-    <!-- قسم الأخبار -->
+
+    <!-- قسم الأخبار / المقالات التقنية -->
     <section id="news-section">
       <h2>أحدث المقالات التقنية</h2>
       <div class="articles">
         <div class="article">
-          <h3>ثورة الذكاء الاصطناعي وتأثيرها على المستقبل</h3>
-          <p>يشهد العالم تطورات مذهلة في مجال الذكاء الاصطناعي؛ مما يفتح آفاقًا جديدة للتكنولوجيا والتطبيقات المستقبلية عبر القطاعات.</p>
-          <button onclick="alert('تفاصيل المقال: ثورة الذكاء الاصطناعي وتأثيرها على المستقبل')">اقرأ المزيد</button>
+          <h3>1. الذكاء الاصطناعي وتأثيره على مستقبل العمل</h3>
+          <p>
+            الذكاء الاصطناعي ليس مجرد تقنية جديدة، بل هو ثورة تعيد تشكيل أسواق العمل. 
+            تتيح خوارزميات التعلم العميق إمكانية أتمتة الكثير من المهام التقليدية، 
+            مما يفتح المجال لإبداع بشري أكبر في مجالات مثل التصميم والاستراتيجية. 
+            ومع ذلك، تظهر تحديات أخلاقية تتعلق بالخصوصية والتمييز الخوارزمي. 
+            في هذا المقال، نستعرض أهم التطبيقات والآفاق المستقبلية للذكاء الاصطناعي.
+          </p>
+          <button onclick="alert('اقرأ المزيد في المقال الكامل حول الذكاء الاصطناعي ومستقبل العمل.')">اقرأ المزيد</button>
         </div>
         <div class="article">
-          <h3>تطور تقنيات الجيل الخامس (5G) وتأثيرها على الاتصالات</h3>
-          <p>تقنيات الجيل الخامس تُحدث نقلة نوعية في مجال الاتصالات بسرعات فائقة وفرص جديدة للابتكار.</p>
-          <button onclick="alert('تفاصيل المقال: تقنيات الجيل الخامس وتأثيرها')">اقرأ المزيد</button>
+          <h3>2. تطور شبكات الجيل الخامس (5G) وتأثيرها على الاتصالات</h3>
+          <p>
+            تعتبر تقنية الجيل الخامس (5G) قفزة نوعية في عالم الاتصالات، 
+            حيث تقدم سرعات عالية جداً وزمن استجابة منخفض، ما يمكّن من ربط مليارات الأجهزة 
+            وتحقيق ثورة في إنترنت الأشياء (IoT). 
+            ينعكس ذلك على تطوير المدن الذكية، والطب عن بُعد، والسيارات ذاتية القيادة. 
+            في هذا المقال، نتعرف على أبرز المزايا والتحديات المتعلقة بنشر تقنية 5G عالمياً.
+          </p>
+          <button onclick="alert('اقرأ المزيد في المقال الكامل حول 5G وتأثيرها على العالم الرقمي.')">اقرأ المزيد</button>
         </div>
         <div class="article">
-          <h3>الواقع الافتراضي والمعزز: مستقبل الترفيه والتعليم</h3>
-          <p>يقدم الواقع الافتراضي والمعزز تجارب غامرة تجمع بين التعليم والترفيه، معززة لتجربة المستخدم.</p>
-          <button onclick="alert('تفاصيل المقال: الواقع الافتراضي والمعزز')">اقرأ المزيد</button>
-        </div>
-        <div class="article">
-          <h3>أمن المعلومات في العصر الرقمي: التحديات والحلول</h3>
-          <p>يعد أمن المعلومات من أبرز القضايا المعاصرة، مع تطور التهديدات والحاجة لتقنيات حماية متقدمة.</p>
-          <button onclick="alert('تفاصيل المقال: أمن المعلومات في العصر الرقمي')">اقرأ المزيد</button>
+          <h3>3. الأمن السيبراني: حرب رقمية في عالم متصل</h3>
+          <p>
+            في عصرنا الرقمي الحالي، أصبح الأمن السيبراني من أولويات الحكومات والشركات والأفراد. 
+            تزداد الهجمات الإلكترونية تعقيداً مع تطور الأدوات الخبيثة مثل برامج الفدية (Ransomware) 
+            والتصيد الاحتيالي (Phishing). 
+            يناقش هذا المقال أهم الممارسات لحماية البيانات والأجهزة، 
+            إضافة إلى دور الوعي المجتمعي في مواجهة هذه التهديدات.
+          </p>
+          <button onclick="alert('اقرأ المزيد في المقال الكامل حول الأمن السيبراني والحماية الرقمية.')">اقرأ المزيد</button>
         </div>
       </div>
     </section>
-    
+
     <!-- قسم لغات البرمجة -->
     <section id="languages-section" style="display:none;">
       <h2>لغات البرمجة واستخداماتها</h2>
       <div class="languages">
         <div class="language">
           <h3>HTML</h3>
-          <p>الأساس لبناء صفحات الويب وتنظيم المحتوى.</p>
+          <p>الأساس لبناء صفحات الويب وتنظيم المحتوى الهيكلي للمواقع.</p>
           <ul>
-            <li>بناء الهيكل العام</li>
-            <li>تنظيم النصوص والصور</li>
+            <li>بناء الهيكل العام للصفحات</li>
+            <li>تنظيم النصوص والصور والجداول</li>
           </ul>
         </div>
         <div class="language">
           <h3>CSS</h3>
-          <p>تُستخدم لتصميم وتنسيق الصفحات وإضفاء الجمال على العرض.</p>
+          <p>تُستخدم لتنسيق وتصميم صفحات الويب وجعلها جذابة بصريًا.</p>
           <ul>
-            <li>تحسين العرض البصري</li>
-            <li>تصميم متجاوب وجذاب</li>
+            <li>تحسين الواجهة البصرية</li>
+            <li>تصميم متجاوب يناسب الشاشات المختلفة</li>
           </ul>
         </div>
         <div class="language">
           <h3>JavaScript</h3>
-          <p>لغة برمجة تضيف التفاعلية والحيوية للمواقع.</p>
+          <p>لغة تضيف التفاعلية للمواقع، مثل النماذج المنبثقة والقوائم الديناميكية.</p>
           <ul>
-            <li>تطوير واجهات تفاعلية</li>
-            <li>إنشاء تطبيقات الويب</li>
+            <li>تحريك العناصر والتعامل مع الأحداث</li>
+            <li>تطوير واجهات تفاعلية لتجربة مستخدم أفضل</li>
           </ul>
         </div>
         <div class="language">
@@ -475,93 +592,21 @@
           <p>لغة متعددة الاستخدامات في تطوير الويب، تحليل البيانات، والذكاء الاصطناعي.</p>
           <ul>
             <li>تحليل البيانات والتعلم الآلي</li>
-            <li>تطوير تطبيقات الويب</li>
+            <li>بناء تطبيقات الويب باستخدام أطر مثل Django</li>
           </ul>
         </div>
         <div class="language">
           <h3>Java</h3>
-          <p>لغة قوية تُستخدم في تطبيقات الأندرويد وتطبيقات المؤسسات.</p>
+          <p>من اللغات الأكثر انتشارًا في تطبيقات الأندرويد وتطبيقات المؤسسات.</p>
           <ul>
-            <li>تطبيقات الأندرويد</li>
-            <li>أنظمة المؤسسات</li>
-          </ul>
-        </div>
-        <div class="language">
-          <h3>C</h3>
-          <p>لغة منخفضة المستوى تُستخدم في برمجة الأنظمة والتطبيقات عالية الأداء.</p>
-          <ul>
-            <li>برمجة الأنظمة</li>
-            <li>تطبيقات الوقت الحقيقي</li>
-          </ul>
-        </div>
-        <div class="language">
-          <h3>C++</h3>
-          <p>مستخدمة لتطوير التطبيقات والألعاب ذات الأداء العالي.</p>
-          <ul>
-            <li>تطوير الألعاب</li>
-            <li>برمجيات عالية الأداء</li>
-          </ul>
-        </div>
-        <div class="language">
-          <h3>C#</h3>
-          <p>تُستخدم لتطوير تطبيقات ويندوز والألعاب باستخدام Unity.</p>
-          <ul>
-            <li>تطبيقات ويندوز</li>
-            <li>تطوير الألعاب</li>
-          </ul>
-        </div>
-        <div class="language">
-          <h3>PHP</h3>
-          <p>لغة برمجة لتطوير مواقع ويب ديناميكية.</p>
-          <ul>
-            <li>أنظمة إدارة المحتوى</li>
-            <li>تطبيقات الويب</li>
-          </ul>
-        </div>
-        <div class="language">
-          <h3>Ruby</h3>
-          <p>لغة بسيطة لتطوير تطبيقات الويب عبر إطار Rails.</p>
-          <ul>
-            <li>تطوير سريع</li>
-            <li>سهولة الاستخدام</li>
-          </ul>
-        </div>
-        <div class="language">
-          <h3>Go</h3>
-          <p>لغة من Google لتطوير الخدمات السحابية وتطبيقات السيرفر.</p>
-          <ul>
-            <li>الخدمات السحابية</li>
-            <li>أداء عالي</li>
-          </ul>
-        </div>
-        <div class="language">
-          <h3>Swift</h3>
-          <p>الأساسية لتطوير تطبيقات iOS وmacOS.</p>
-          <ul>
-            <li>تطبيقات iOS</li>
-            <li>تصميم واجهات متطورة</li>
-          </ul>
-        </div>
-        <div class="language">
-          <h3>Kotlin</h3>
-          <p>لغة حديثة لتطوير تطبيقات Android وتطبيقات متعددة المنصات.</p>
-          <ul>
-            <li>تطبيقات Android</li>
-            <li>تطوير متعدد المنصات</li>
-          </ul>
-        </div>
-        <div class="language">
-          <h3>R</h3>
-          <p>متخصصة في تحليل البيانات والإحصاء.</p>
-          <ul>
-            <li>تحليل البيانات</li>
-            <li>الإحصاء والبحوث</li>
+            <li>تطبيقات الهواتف الذكية</li>
+            <li>أنظمة المؤسسات الضخمة</li>
           </ul>
         </div>
       </div>
     </section>
-    
-    <!-- قسم مواقع التعليم والدورات (عالمي + سعودي) -->
+
+    <!-- قسم مواقع التعليم (عالمية + سعودية) -->
     <section id="websites-section" style="display:none;">
       <h2>مواقع تعليمية ودورات برمجة</h2>
       <div class="websites">
@@ -572,34 +617,14 @@
           <a href="https://www.w3schools.com" target="_blank">زيارة الموقع</a>
         </div>
         <div class="website">
-          <h3>MDN Web Docs</h3>
-          <p>مصدر موثوق لتعلم تقنيات الويب من موزيلا.</p>
-          <a href="https://developer.mozilla.org" target="_blank">زيارة الموقع</a>
-        </div>
-        <div class="website">
           <h3>freeCodeCamp</h3>
           <p>منصة تفاعلية لتعلم البرمجة مجانًا عبر تحديات عملية.</p>
           <a href="https://www.freecodecamp.org" target="_blank">زيارة الموقع</a>
         </div>
         <div class="website">
-          <h3>Coursera</h3>
-          <p>دورات معتمدة من جامعات عالمية تغطي جميع مجالات التقنية.</p>
-          <a href="https://www.coursera.org" target="_blank">زيارة الموقع</a>
-        </div>
-        <div class="website">
           <h3>Udemy</h3>
-          <p>منصة تقدم دورات تعليمية شاملة في البرمجة والتقنية.</p>
+          <p>منصة تقدم دورات تعليمية شاملة في مختلف المجالات التقنية والبرمجية.</p>
           <a href="https://www.udemy.com" target="_blank">زيارة الموقع</a>
-        </div>
-        <div class="website">
-          <h3>edX</h3>
-          <p>دورات تعليمية من جامعات مرموقة مع شهادات معتمدة.</p>
-          <a href="https://www.edx.org" target="_blank">زيارة الموقع</a>
-        </div>
-        <div class="website">
-          <h3>Codecademy</h3>
-          <p>منصة تفاعلية لتعلم البرمجة بأسلوب عملي وممتع.</p>
-          <a href="https://www.codecademy.com" target="_blank">زيارة الموقع</a>
         </div>
       </div>
 
@@ -622,7 +647,7 @@
         </div>
       </div>
     </section>
-    
+
     <!-- القسم التفاعلي -->
     <section id="interactive-section" style="display:none;">
       <h2>تفاعل مع الموقع</h2>
@@ -631,30 +656,63 @@
         <button onclick="changeBackground()">غير اللون</button>
       </div>
     </section>
-    
+
     <!-- قسم الشهادات وآراء المستخدمين -->
     <section id="testimonials-section" style="display:none;">
       <h2>آراء المستخدمين</h2>
       <div class="testimonials">
         <div class="testimonial">
-          <p>"هذا الموقع هو المصدر الأول لكل ما يتعلق بالتقنية والبرمجة. تصميمه جذاب ومحتواه مفيد جدًا!"</p>
+          <p>"الموقع التقني الشامل ساعدني على فهم أساسيات البرمجة بخطوات بسيطة وواضحة."</p>
           <span>- أحمد</span>
         </div>
         <div class="testimonial">
-          <p>"منصة متكاملة تجمع بين الأخبار التقنية والدورات التعليمية. أنصح بها لكل المهتمين بالتكنولوجيا."</p>
+          <p>"أفضل موقع عربي جمع لي أهم المصادر المحلية والعالمية لتعلم البرمجة والتقنية."</p>
           <span>- ليلى</span>
         </div>
         <div class="testimonial">
-          <p>"تجربة مستخدم رائعة، مع أقسام مفصلة وتفاعلية تجعل التعلم ممتعًا وسهل الوصول للمعلومات."</p>
+          <p>"أسلوب عرض المقالات سهل وممتع، والمحتوى متجدد دائماً. أنصح به للجميع!"</p>
           <span>- محمد</span>
         </div>
       </div>
     </section>
-    
+
+    <!-- قسم من نحن -->
+    <section id="about" class="about" style="display:none;">
+      <h2>من نحن</h2>
+      <p>
+        نحن فريق من المهتمين بالتقنية والبرمجة، نسعى لتقديم محتوى عربي ثري 
+        يساعد المبتدئين والمحترفين على حد سواء في تطوير مهاراتهم. 
+        بدأنا هذا الموقع بهدف نشر الثقافة الرقمية وتمكين الأفراد من مواكبة 
+        التطورات المتسارعة في عالم التكنولوجيا.
+      </p>
+      <p>
+        يضم فريقنا مبرمجين ومحللي بيانات وخبراء في الأمن السيبراني، 
+        يجمعنا شغفنا المشترك بمشاركة المعرفة وإثراء المحتوى العربي على الإنترنت. 
+        نؤمن بأن التعليم المستمر هو مفتاح النجاح في العصر الرقمي، 
+        لذا نسعى جاهدين لتوفير أحدث المقالات والأخبار والدروس المتخصصة.
+      </p>
+    </section>
+
+    <!-- قسم سياسة الخصوصية -->
+    <section id="privacy" class="privacy" style="display:none;">
+      <h2>سياسة الخصوصية</h2>
+      <p>
+        نحرص في الموقع التقني الشامل على حماية خصوصية زوارنا. 
+        تُجمع بعض المعلومات مثل ملفات تعريف الارتباط (Cookies) بهدف تحسين تجربة المستخدم. 
+        كما نستخدم خدمات خارجية (مثل Google AdSense) التي قد تجمع بعض البيانات لأغراض تحليلية وإعلانية.
+      </p>
+      <p>
+        لن نقوم ببيع أو مشاركة معلوماتك الشخصية مع أي جهة خارجية 
+        إلا في حال استلزم الأمر تطبيق القوانين أو حماية حقوقنا وحقوق المستخدمين الآخرين. 
+        بتصفحك للموقع، فإنك توافق على هذه السياسة. 
+        إذا كان لديك أي استفسارات، يُرجى التواصل معنا عبر صفحة "اتصل بنا".
+      </p>
+    </section>
+
     <!-- قسم التواصل -->
-    <section id="contact-section" style="display:none;">
+    <section id="contact-section" class="contact" style="display:none;">
       <h2>اتصل بنا</h2>
-      <div class="contact">
+      <div>
         <h3>نحن هنا لمساعدتك</h3>
         <form onsubmit="return submitForm();">
           <input type="text" placeholder="اسمك" required>
@@ -664,26 +722,31 @@
         </form>
       </div>
     </section>
+
   </div>
   
   <!-- زر العودة للأعلى -->
   <button id="scrollTopBtn" onclick="scrollToTop()">&#8679;</button>
-  
+
   <!-- التذييل -->
   <footer>
     <p>&copy; 2025 الموقع التقني الشامل. جميع الحقوق محفوظة.</p>
   </footer>
-  
+
   <script>
     // دالة التنقل بين الأقسام
     function navigateTo(section) {
+      // إخفاء كل الأقسام
       document.getElementById('news-section').style.display = 'none';
       document.getElementById('languages-section').style.display = 'none';
       document.getElementById('websites-section').style.display = 'none';
       document.getElementById('interactive-section').style.display = 'none';
       document.getElementById('testimonials-section').style.display = 'none';
       document.getElementById('contact-section').style.display = 'none';
+      document.getElementById('about').style.display = 'none';
+      document.getElementById('privacy').style.display = 'none';
       
+      // إظهار القسم المطلوب
       if (section === 'news') {
         document.getElementById('news-section').style.display = 'block';
       } else if (section === 'languages') {
@@ -696,6 +759,10 @@
         document.getElementById('testimonials-section').style.display = 'block';
       } else if (section === 'contact') {
         document.getElementById('contact-section').style.display = 'block';
+      } else if (section === 'about') {
+        document.getElementById('about').style.display = 'block';
+      } else if (section === 'privacy') {
+        document.getElementById('privacy').style.display = 'block';
       }
       window.scrollTo(0, 0);
     }
