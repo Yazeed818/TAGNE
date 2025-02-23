@@ -112,7 +112,7 @@
       animation: fadeInUp 1s ease;
     }
     .header-content .cta-btn:hover {
-      background: darken(var(--secondary-color), 10%);
+      background: #d35400;
     }
     .adBanner {
       margin: 20px auto 0 auto;
@@ -234,45 +234,64 @@
       color: #fff;
       transition: background 0.3s;
     }
-    .article .read-btn:hover { background: darken(var(--primary-color), 10%); }
+    .article .read-btn:hover { background: #0056b3; }
 
-    /* أقسام لغات البرمجة ومواقع التعليم */
-    .languages, .websites {
+    /* قسم لغات البرمجة واستخداماتها */
+    #languages-section {
+      display: none;
+    }
+    #languages-section .languages {
       display: flex;
       flex-wrap: wrap;
       gap: 20px;
       justify-content: center;
-      position: relative;
-      z-index: 1;
     }
-    .language, .website {
+    .language {
       background: #fafafa;
       border-radius: 10px;
       padding: 20px;
+      width: 280px;
       box-shadow: 0 2px 6px rgba(0,0,0,0.1);
       transition: transform 0.3s;
     }
-    .language:hover, .website:hover { transform: translateY(-5px); }
-    .language { width: 280px; }
+    .language:hover { transform: translateY(-5px); }
     .language h3 {
-      color: #28a745;
       font-size: 1.4rem;
       margin-bottom: 10px;
+      color: #28a745;
     }
-    .language p, .website p {
-      margin-bottom: 10px;
-      text-align: justify;
-    }
-    .language ul, .website ul {
+    .language p { margin-bottom: 10px; text-align: justify; }
+    .language ul {
       list-style: disc;
       margin-left: 20px;
     }
-    .website { width: 300px; text-align: center; }
+
+    /* قسم مواقع التعليم */
+    #websites-section {
+      display: none;
+    }
+    #websites-section .websites {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+    }
+    .website {
+      background: #fafafa;
+      border-radius: 10px;
+      padding: 20px;
+      width: 300px;
+      text-align: center;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      transition: transform 0.3s;
+    }
+    .website:hover { transform: translateY(-5px); }
     .website h3 {
-      color: #e74c3c;
       font-size: 1.4rem;
       margin-bottom: 10px;
+      color: #e74c3c;
     }
+    .website p { margin-bottom: 10px; text-align: justify; }
     .website a {
       color: #3498db;
       font-size: 1.1rem;
@@ -281,9 +300,11 @@
     .website a:hover { color: #2c3e50; }
 
     /* النشرة الإخبارية */
+    #newsletter {
+      margin-bottom: 60px;
+    }
     .newsletter {
       text-align: center;
-      margin: 40px 0;
       position: relative;
       z-index: 1;
     }
@@ -307,6 +328,9 @@
     .newsletter .subscribe-btn:hover { background: #218838; }
 
     /* قسم التفاعل */
+    #interactive-section {
+      display: none;
+    }
     .interactive {
       text-align: center;
       position: relative;
@@ -321,10 +345,12 @@
       color: #fff;
       transition: background 0.3s;
     }
-    .interactive .change-bg-btn:hover { background: darken(var(--secondary-color), 10%); }
+    .interactive .change-bg-btn:hover { background: #d35400; }
 
     /* قسم الهولوجرامات التقنية */
-    #holograms-section { display: none; }
+    #holograms-section {
+      display: none;
+    }
     #hologramContainer {
       width: 100%;
       height: 500px;
@@ -332,6 +358,9 @@
     }
 
     /* قسم الشهادات */
+    #testimonials-section {
+      display: none;
+    }
     .testimonials {
       background: #fafafa;
       padding: 40px 20px;
@@ -347,6 +376,9 @@
     .testimonial span { font-weight: bold; color: var(--primary-color); }
 
     /* قسم من نحن */
+    #about {
+      display: none;
+    }
     .about {
       background: #fafafa;
       padding: 40px 20px;
@@ -360,6 +392,9 @@
     .about p { text-align: justify; margin-bottom: 15px; }
 
     /* قسم سياسة الخصوصية */
+    #privacy {
+      display: none;
+    }
     .privacy {
       background: #fafafa;
       padding: 40px 20px;
@@ -373,6 +408,9 @@
     .privacy p { text-align: justify; margin-bottom: 15px; }
 
     /* قسم التواصل */
+    #contact {
+      display: none;
+    }
     .contact {
       text-align: center;
       padding: 20px;
@@ -408,7 +446,7 @@
       cursor: pointer;
       transition: background 0.3s;
     }
-    .contact form button:hover { background: darken(var(--primary-color), 10%); }
+    .contact form button:hover { background: #0056b3; }
 
     /* تذييل الصفحة */
     footer {
@@ -434,7 +472,7 @@
       z-index: 100;
       transition: background 0.3s;
     }
-    #scrollTopBtn:hover { background: darken(var(--primary-color), 10%); }
+    #scrollTopBtn:hover { background: #0056b3; }
 
     @keyframes fadeInDown {
       from { opacity: 0; transform: translateY(-50px); }
@@ -489,7 +527,7 @@
   <nav>
     <ul>
       <li><a href="#" data-section="news" class="nav-link">الأخبار</a></li>
-      <li><a href="#" data-section="languages" class="nav-link">لغات البرمجة</a></li>
+      <li><a href="#" data-section="languages" class="nav-link">لغات البرمجة واستخداماتها</a></li>
       <li><a href="#" data-section="websites" class="nav-link">مواقع التعليم</a></li>
       <li><a href="#" data-section="interactive" class="nav-link">تفاعل</a></li>
       <li><a href="#" data-section="holograms" class="nav-link">الهولوجرامات التقنية</a></li>
@@ -543,32 +581,144 @@
       </div>
     </section>
 
-    <!-- قسم لغات البرمجة -->
+    <!-- قسم لغات البرمجة واستخداماتها -->
     <section id="languages-section" style="display:none;">
       <h2>لغات البرمجة واستخداماتها</h2>
       <div class="languages">
         <div class="language">
           <h3>HTML</h3>
-          <p>الأساس لبناء صفحات الويب وتنظيم المحتوى.</p>
+          <p>الأساس لبناء صفحات الويب وتنظيم المحتوى الهيكلي للمواقع.</p>
           <ul>
-            <li>إنشاء هيكل الصفحات</li>
-            <li>تنظيم النصوص والصور</li>
+            <li>إنشاء الهيكل العام للصفحات</li>
+            <li>تنظيم النصوص والصور والجداول</li>
           </ul>
         </div>
         <div class="language">
           <h3>CSS</h3>
-          <p>تُستخدم لتنسيق وتصميم صفحات الويب.</p>
+          <p>تُستخدم لتنسيق وتصميم صفحات الويب وجعلها جذابة بصريًا.</p>
           <ul>
             <li>تحسين الواجهة البصرية</li>
-            <li>تصميم متجاوب</li>
+            <li>تصميم متجاوب للشاشات المختلفة</li>
           </ul>
         </div>
         <div class="language">
           <h3>JavaScript</h3>
-          <p>تضيف التفاعلية للمواقع، وتُستخدم في تطوير الواجهات.</p>
+          <p>لغة تضيف التفاعلية للمواقع، مثل النماذج المنبثقة والقوائم الديناميكية.</p>
           <ul>
-            <li>التعامل مع الأحداث</li>
-            <li>تحريك العناصر</li>
+            <li>تحريك العناصر والتعامل مع الأحداث</li>
+            <li>تطوير واجهات تفاعلية لتجربة مستخدم أفضل</li>
+          </ul>
+        </div>
+        <div class="language">
+          <h3>Python</h3>
+          <p>لغة متعددة الاستخدامات في تطوير الويب، تحليل البيانات، والذكاء الاصطناعي.</p>
+          <ul>
+            <li>تحليل البيانات والتعلم الآلي</li>
+            <li>تطوير تطبيقات الويب (Django/Flask)</li>
+          </ul>
+        </div>
+        <div class="language">
+          <h3>Java</h3>
+          <p>من اللغات الأكثر انتشارًا في تطبيقات الأندرويد وتطبيقات المؤسسات.</p>
+          <ul>
+            <li>تطبيقات الهواتف الذكية (Android)</li>
+            <li>أنظمة المؤسسات الضخمة</li>
+          </ul>
+        </div>
+        <div class="language">
+          <h3>C</h3>
+          <p>لغة منخفضة المستوى تُستخدم في برمجة الأنظمة والتطبيقات عالية الأداء.</p>
+          <ul>
+            <li>برمجة أنظمة التشغيل</li>
+            <li>التطبيقات المدمجة (Embedded Systems)</li>
+          </ul>
+        </div>
+        <div class="language">
+          <h3>C++</h3>
+          <p>تُستخدم لتطوير التطبيقات والألعاب ذات الأداء العالي.</p>
+          <ul>
+            <li>تطوير الألعاب (Unreal Engine)</li>
+            <li>البرامج ذات الأداء العالي</li>
+          </ul>
+        </div>
+        <div class="language">
+          <h3>C#</h3>
+          <p>تُستخدم لتطوير تطبيقات ويندوز والألعاب باستخدام Unity.</p>
+          <ul>
+            <li>تطبيقات سطح المكتب (Windows)</li>
+            <li>تطوير الألعاب (Unity)</li>
+          </ul>
+        </div>
+        <div class="language">
+          <h3>PHP</h3>
+          <p>لغة برمجة لتطوير مواقع ويب ديناميكية.</p>
+          <ul>
+            <li>أنظمة إدارة المحتوى (WordPress)</li>
+            <li>التطبيقات الإلكترونية</li>
+          </ul>
+        </div>
+        <div class="language">
+          <h3>Ruby</h3>
+          <p>لغة بسيطة لتطوير تطبيقات الويب عبر إطار Rails.</p>
+          <ul>
+            <li>تطوير سريع (Rapid Development)</li>
+            <li>سهولة الاستخدام والقراءة</li>
+          </ul>
+        </div>
+        <div class="language">
+          <h3>Go</h3>
+          <p>لغة من Google لتطوير الخدمات السحابية وتطبيقات السيرفر.</p>
+          <ul>
+            <li>الخدمات السحابية (Cloud Services)</li>
+            <li>أداء عالي وعمليات متوازية</li>
+          </ul>
+        </div>
+        <div class="language">
+          <h3>Swift</h3>
+          <p>الأساسية لتطوير تطبيقات iOS وmacOS.</p>
+          <ul>
+            <li>تطبيقات iPhone/iPad</li>
+            <li>تصميم واجهات متطورة (UIKit/SwiftUI)</li>
+          </ul>
+        </div>
+        <div class="language">
+          <h3>Kotlin</h3>
+          <p>لغة حديثة لتطوير تطبيقات Android وتطبيقات متعددة المنصات.</p>
+          <ul>
+            <li>تطبيقات Android (بديل Java)</li>
+            <li>تطوير متعدد المنصات (Kotlin Multiplatform)</li>
+          </ul>
+        </div>
+        <div class="language">
+          <h3>R</h3>
+          <p>متخصصة في تحليل البيانات والإحصاء.</p>
+          <ul>
+            <li>تحليل البيانات</li>
+            <li>الإحصاء والبحوث</li>
+          </ul>
+        </div>
+        <div class="language">
+          <h3>TypeScript</h3>
+          <p>امتداد لـJavaScript يضيف مفاهيم الأنواع لكتابة كود أكثر أمانًا.</p>
+          <ul>
+            <li>تطوير تطبيقات Angular</li>
+            <li>المشاريع الكبيرة المنضبطة</li>
+          </ul>
+        </div>
+        <div class="language">
+          <h3>Rust</h3>
+          <p>لغة حديثة تركز على الأمان والسرعة، تُستخدم في تطوير الأنظمة عالية الأداء.</p>
+          <ul>
+            <li>أداء عالي (بديل C++)</li>
+            <li>إدارة الذاكرة الآمنة</li>
+          </ul>
+        </div>
+        <div class="language">
+          <h3>Dart</h3>
+          <p>لغة من Google تُستخدم في تطوير تطبيقات الويب والموبايل عبر إطار Flutter.</p>
+          <ul>
+            <li>تطبيقات متعددة المنصات (iOS/Android)</li>
+            <li>تطوير واجهات رسومية سريعة</li>
           </ul>
         </div>
       </div>
@@ -660,7 +810,7 @@
         نحن فريق من المهتمين بالتقنية والبرمجة، نسعى لتقديم محتوى عربي ثري يساعد المبتدئين والمحترفين في تطوير مهاراتهم.
       </p>
       <p>
-        يضم فريقنا خبراء في مجالات متعددة، نؤمن بأن التعليم المستمر هو مفتاح النجاح في العصر الرقمي.
+        يضم فريقنا خبراء في مجالات متعددة، ونؤمن بأن التعليم المستمر هو مفتاح النجاح في العصر الرقمي.
       </p>
     </section>
 
@@ -838,4 +988,5 @@
   </script>
 </body>
 </html>
+
 
