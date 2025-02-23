@@ -1,43 +1,30 @@
 <!DOCTYPE html>
 <html lang="ar">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
-  <!-- تحسينات SEO -->
-  <meta name="description" content="موقع تقني متطور يقدم أحدث أخبار التقنية، لغات البرمجة، مواقع تعليم البرمجة، وآراء المستخدمين." />
-  <meta name="keywords" content="تقنية, برمجة, تعلم البرمجة, مواقع تعليمية, جافاسكربت, بايثون, HTML, CSS" />
-  <meta name="author" content="YourName" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>الموقع التقني الشامل</title>
 
-  <title>الموقع التقني الشامل - نسخة متطورة</title>
+  <!-- وسم التحقق من جوجل سيرش كونسول -->
+  <meta name="google-site-verification" content="UqSFt1CyIbFCPFVpf5N30mOq-dJoR5YRDBjUqDOmJIU" />
 
-  <!-- خط من Google Fonts -->
-  <link rel="preconnect" href="https://fonts.gstatic.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet" />
-  
-  <!-- كود AdSense الأساسي (معرّف العميل) -->
+  <!-- رمز Google AdSense -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6906663830989419"
      crossorigin="anonymous"></script>
 
   <style>
     /* إعادة تعيين الأنماط الأساسية */
-    * {
-      margin: 0; 
-      padding: 0; 
-      box-sizing: border-box;
-    }
-    html {
-      scroll-behavior: smooth;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
-      font-family: 'Cairo', sans-serif;
+      font-family: Arial, sans-serif;
       background: #f4f4f4;
       color: #333;
       line-height: 1.6;
+      scroll-behavior: smooth;
     }
     a { text-decoration: none; }
     ul { list-style: none; }
-
+    
     /* إعلان الجانب الأيمن الثابت بطول الصفحة */
     #rightAd {
       position: fixed;
@@ -59,68 +46,65 @@
       width: 100%;
       height: auto;
     }
-
-    /* رأس الصفحة مع تأثير Parallax */
+    
+    /* رأس الصفحة */
     header {
       position: relative;
-      height: 80vh;
-      min-height: 400px;
-      background: url('https://th.bing.com/th/id/OIP.n6FzxRreNLHiELvUdgA6iQHaEK?rs=1&pid=ImgDetMain') no-repeat center center;
-      background-size: cover;
-      background-attachment: fixed; /* Parallax */
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
+      height: 600px;
+      background: url('https://th.bing.com/th/id/OIP.n6FzxRreNLHiELvUdgA6iQHaEK?rs=1&pid=ImgDetMain') no-repeat center center/cover;
     }
     header::after {
       content: "";
       position: absolute;
-      top: 0; 
-      left: 0;
-      width: 100%; 
-      height: 100%;
-      background: rgba(0,0,0,0.5);
-      z-index: 1;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.6);
     }
     .header-content {
       position: relative;
       z-index: 2;
       text-align: center;
+      top: 50%;
+      transform: translateY(-50%);
       color: #fff;
-      animation: fadeIn 1.2s ease forwards;
+      padding: 0 20px;
     }
     .header-content h1 {
-      font-size: 3rem;
+      font-size: 4rem;
       margin-bottom: 20px;
-      font-weight: 700;
-      text-shadow: 2px 2px 4px rgba(0,0,0,0.6);
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+      animation: fadeInDown 1s ease;
     }
     .header-content p {
-      font-size: 1.2rem;
+      font-size: 1.5rem;
       margin-bottom: 30px;
-      text-shadow: 1px 1px 3px rgba(0,0,0,0.6);
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
+      animation: fadeInUp 1s ease;
     }
     .header-content button {
       padding: 15px 30px;
-      font-size: 1rem;
+      font-size: 1.2rem;
       border: none;
       border-radius: 5px;
       background: #f39c12;
       color: #fff;
       cursor: pointer;
-      transition: background 0.3s, transform 0.3s;
+      transition: background 0.3s;
+      animation: fadeInUp 1s ease;
     }
     .header-content button:hover {
       background: #d35400;
-      transform: scale(1.05);
     }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
+    
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-50px); }
       to { opacity: 1; transform: translateY(0); }
     }
-
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(50px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
     /* شريط التنقل */
     nav {
       background: #333;
@@ -129,26 +113,25 @@
       position: sticky;
       top: 0;
       z-index: 10;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
     }
     nav a {
       color: #fff;
       margin: 0 20px;
-      font-size: 1rem;
+      font-size: 1.1rem;
       cursor: pointer;
       transition: color 0.3s;
     }
     nav a:hover {
       color: #f39c12;
     }
-
+    
     /* الحاوية الرئيسية */
     .container {
       max-width: 1200px;
       margin: 40px auto;
       padding: 0 20px;
     }
-
+    
     /* أنماط الأقسام */
     section {
       margin: 60px 0;
@@ -158,27 +141,12 @@
       box-shadow: 0 4px 8px rgba(0,0,0,0.1);
       position: relative;
       overflow: hidden;
-      opacity: 0;
-      transform: translateY(40px);
-      animation: sectionFadeIn 1s forwards;
     }
-    section:nth-child(even) {
-      animation-delay: 0.2s;
-    }
-    @keyframes sectionFadeIn {
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
     section::before {
       content: "";
       position: absolute;
-      top: 0; 
-      left: 0;
-      width: 100%; 
-      height: 100%;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
       background: url('https://source.unsplash.com/1600x900/?technology') no-repeat center center/cover;
       opacity: 0.05;
       z-index: 0;
@@ -186,13 +154,12 @@
     section h2 {
       text-align: center;
       margin-bottom: 30px;
-      font-size: 2rem;
+      font-size: 2.8rem;
       color: #333;
       position: relative;
       z-index: 1;
-      font-weight: 700;
     }
-
+    
     /* قسم الأخبار */
     .articles {
       display: flex;
@@ -208,17 +175,13 @@
       padding: 20px;
       width: calc(33.333% - 20px);
       box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-      transition: transform 0.3s, box-shadow 0.3s;
+      transition: transform 0.3s;
     }
-    .article:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    }
+    .article:hover { transform: translateY(-5px); }
     .article h3 {
-      font-size: 1.2rem;
+      font-size: 1.8rem;
       color: #007BFF;
       margin-bottom: 15px;
-      font-weight: 700;
     }
     .article p {
       font-size: 1rem;
@@ -234,10 +197,8 @@
       cursor: pointer;
       transition: background 0.3s;
     }
-    .article button:hover {
-      background: #0056b3;
-    }
-
+    .article button:hover { background: #0056b3; }
+    
     /* قسم لغات البرمجة */
     .languages {
       display: flex;
@@ -258,22 +219,13 @@
     .language:hover { transform: translateY(-5px); }
     .language h3 {
       color: #28a745;
-      font-size: 1.3rem;
+      font-size: 1.8rem;
       margin-bottom: 10px;
-      font-weight: 700;
     }
-    .language p {
-      margin-bottom: 10px;
-      text-align: justify;
-    }
-    .language ul {
-      list-style: disc; 
-      margin-left: 20px;
-    }
-    .language ul li {
-      margin-bottom: 8px;
-    }
-
+    .language p { margin-bottom: 10px; text-align: justify; }
+    .language ul { list-style: disc; margin-left: 20px; }
+    .language ul li { margin-bottom: 8px; }
+    
     /* قسم مواقع التعليم والدورات */
     .websites {
       display: flex;
@@ -295,9 +247,8 @@
     .website:hover { transform: translateY(-5px); }
     .website h3 {
       color: #e74c3c;
-      font-size: 1.3rem;
+      font-size: 1.8rem;
       margin-bottom: 10px;
-      font-weight: 700;
     }
     .website p {
       margin-bottom: 15px;
@@ -308,10 +259,8 @@
       font-size: 1.1rem;
       transition: color 0.3s;
     }
-    .website a:hover {
-      color: #2c3e50;
-    }
-
+    .website a:hover { color: #2c3e50; }
+    
     /* قسم التفاعل */
     .interactive {
       text-align: center;
@@ -322,28 +271,20 @@
       background: #f39c12;
       border: none;
       padding: 15px 25px;
-      font-size: 1.1rem;
+      font-size: 1.2rem;
       border-radius: 5px;
       color: #fff;
       cursor: pointer;
-      transition: background 0.3s, transform 0.3s;
+      transition: background 0.3s;
     }
-    .interactive button:hover {
-      background: #d35400;
-      transform: scale(1.05);
-    }
-
+    .interactive button:hover { background: #d35400; }
+    
     /* قسم النشرة الإخبارية */
     .newsletter {
       text-align: center;
       margin: 40px 0;
       position: relative;
       z-index: 1;
-    }
-    .newsletter h2 {
-      font-size: 1.8rem;
-      margin-bottom: 20px;
-      font-weight: 700;
     }
     .newsletter input[type="email"] {
       padding: 10px;
@@ -363,10 +304,8 @@
       font-size: 1rem;
       transition: background 0.3s;
     }
-    .newsletter button:hover {
-      background: #218838;
-    }
-
+    .newsletter button:hover { background: #218838; }
+    
     /* قسم الشهادات وآراء المستخدمين */
     .testimonials {
       background: #fafafa;
@@ -378,18 +317,10 @@
       position: relative;
       z-index: 1;
     }
-    .testimonial {
-      margin: 20px 0;
-    }
-    .testimonial p {
-      font-style: italic;
-      margin-bottom: 10px;
-    }
-    .testimonial span {
-      font-weight: bold;
-      color: #007BFF;
-    }
-
+    .testimonial { margin: 20px 0; }
+    .testimonial p { font-style: italic; margin-bottom: 10px; }
+    .testimonial span { font-weight: bold; color: #007BFF; }
+    
     /* قسم التواصل */
     .contact {
       text-align: center;
@@ -401,11 +332,7 @@
       position: relative;
       z-index: 1;
     }
-    .contact h3 {
-      margin-bottom: 15px;
-      font-size: 1.5rem;
-      font-weight: 700;
-    }
+    .contact h3 { margin-bottom: 15px; font-size: 1.8rem; }
     .contact form {
       display: flex;
       flex-direction: column;
@@ -427,13 +354,10 @@
       border: none;
       border-radius: 5px;
       cursor: pointer;
-      transition: background 0.3s, transform 0.3s;
+      transition: background 0.3s;
     }
-    .contact form button:hover {
-      background: #0056b3;
-      transform: scale(1.05);
-    }
-
+    .contact form button:hover { background: #0056b3; }
+    
     /* زر العودة للأعلى */
     #scrollTopBtn {
       position: fixed;
@@ -449,10 +373,8 @@
       z-index: 100;
       transition: background 0.3s;
     }
-    #scrollTopBtn:hover {
-      background: #0056b3;
-    }
-
+    #scrollTopBtn:hover { background: #0056b3; }
+    
     /* تذييل الصفحة */
     footer {
       background: #333;
@@ -460,30 +382,23 @@
       text-align: center;
       padding: 20px;
     }
-    footer p {
-      margin: 5px 0;
-      font-size: 0.9rem;
-    }
-
-    /* استجابة الموقع للأجهزة الصغيرة */
+    footer p { margin: 5px 0; }
+    
     @media (max-width: 768px) {
-      header { min-height: 300px; }
-      .header-content h1 { font-size: 2rem; }
-      nav a { margin: 0 10px; font-size: 0.9rem; }
+      header { height: 400px; }
+      .header-content h1 { font-size: 2.5rem; }
+      nav a { margin: 0 10px; font-size: 1rem; }
       .article { width: calc(50% - 20px); }
       .language, .website { width: 90%; }
     }
     @media (max-width: 480px) {
       .article { width: 100%; }
-      .header-content h1 { font-size: 1.6rem; }
-      .header-content p { font-size: 1rem; }
     }
   </style>
 </head>
 <body>
   <!-- قسم الإعلان الثابت على الجانب الأيمن -->
   <div id="rightAd">
-    <!-- استبدل data-ad-slot بقيمة Ad Slot الخاصة بك -->
     <ins class="adsbygoogle"
          style="display:block"
          data-ad-client="ca-pub-6906663830989419"
@@ -491,11 +406,11 @@
          data-ad-format="auto"
          data-full-width-responsive="true"></ins>
     <script>
-      (adsbygoogle = window.adsbygoogle || []).push({});
+         (adsbygoogle = window.adsbygoogle || []).push({});
     </script>
   </div>
-
-  <!-- رأس الصفحة (Hero Section) -->
+  
+  <!-- الهيدر -->
   <header>
     <div class="header-content">
       <h1>الموقع التقني الشامل</h1>
@@ -518,7 +433,7 @@
     <!-- النشرة الإخبارية -->
     <div class="newsletter">
       <h2>اشترك في النشرة الإخبارية</h2>
-      <input type="email" placeholder="أدخل بريدك الإلكتروني" />
+      <input type="email" placeholder="أدخل بريدك الإلكتروني">
       <button onclick="subscribe()">اشترك الآن</button>
     </div>
     
@@ -744,8 +659,8 @@
       <div class="contact">
         <h3>نحن هنا لمساعدتك</h3>
         <form onsubmit="return submitForm();">
-          <input type="text" placeholder="اسمك" required />
-          <input type="email" placeholder="بريدك الإلكتروني" required />
+          <input type="text" placeholder="اسمك" required>
+          <input type="email" placeholder="بريدك الإلكتروني" required>
           <textarea placeholder="رسالتك" rows="4" required></textarea>
           <button type="submit">أرسل</button>
         </form>
@@ -756,7 +671,7 @@
   <!-- زر العودة للأعلى -->
   <button id="scrollTopBtn" onclick="scrollToTop()">&#8679;</button>
   
-  <!-- تذييل الصفحة -->
+  <!-- التذييل -->
   <footer>
     <p>&copy; 2025 الموقع التقني الشامل. جميع الحقوق محفوظة.</p>
   </footer>
@@ -787,7 +702,7 @@
       window.scrollTo(0, 0);
     }
     
-    // تغيير لون الخلفية تفاعلياً
+    // دالة تغيير لون الخلفية تفاعلياً
     function changeBackground() {
       const colors = ['#f4f4f4', '#e0f7fa', '#ffe0b2', '#e1bee7', '#dcedc8'];
       document.body.style.background = colors[Math.floor(Math.random() * colors.length)];
@@ -798,7 +713,7 @@
       alert('شكراً لاشتراكك! سيتم إرسال آخر الأخبار إلى بريدك الإلكتروني.');
     }
     
-    // دالة إرسال نموذج الاتصال
+    // دالة إرسال نموذج التواصل
     function submitForm() {
       alert('تم إرسال رسالتك بنجاح!');
       return false;
@@ -824,5 +739,6 @@
   </script>
 </body>
 </html>
+
 
 
