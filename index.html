@@ -117,7 +117,7 @@
         <div id="securityBanner" class="mb-6 p-4 rounded-2xl bg-sky-500/10 border border-sky-500/20 text-sky-800 dark:text-sky-200 flex items-center justify-between">
             <div class="flex items-center space-x-3 space-x-reverse">
                 <i class="fas fa-shield-halved text-xl text-sky-600 dark:text-sky-400"></i>
-                <span class="text-sm font-semibold">نظام الحماية المطور 2.0 مفعل: تشفير 256-bit، مصادقة OTP، واختبار الكابتشا التفاعلي.</span>
+                <span class="text-sm font-semibold">نظام الحماية المطور مفعل: تشفير SHA-256، نظام المصادقة OTP المحدث، واختبار الكابتشا التفاعلي.</span>
             </div>
             <button onclick="document.getElementById('securityBanner').remove()" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 text-sm">
                 <i class="fas fa-times"></i>
@@ -337,6 +337,14 @@
                 <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">مصادقة آمنة مشفرة متعددة الطبقات</p>
             </div>
 
+            <!-- Default Credentials Quick Info Box -->
+            <div class="mb-4 p-3 bg-indigo-500/10 border border-indigo-500/20 rounded-2xl text-[11px] text-indigo-300 flex items-center justify-between">
+                <div>
+                    <span class="font-bold block text-indigo-400 mb-0.5"><i class="fas fa-info-circle ml-1"></i> بيانات الدخول التجريبية:</span>
+                    اسم المستخدم: <code class="bg-indigo-900/50 px-1.5 py-0.5 rounded text-amber-300 font-mono">admin_sec</code> | المرور: <code class="bg-indigo-900/50 px-1.5 py-0.5 rounded text-amber-300 font-mono">Admin@2026#Sec</code>
+                </div>
+            </div>
+
             <!-- Lockout Alert Box -->
             <div id="lockoutAlert" class="hidden mb-4 p-3 bg-red-500/10 border border-red-500/30 rounded-2xl text-red-500 text-xs font-bold text-center">
                 <i class="fas fa-ban ml-1"></i> تم قفل الحساب بسبب المحاولات الفاشلة المتكررة.
@@ -388,19 +396,24 @@
             <div id="loginFormStep2" class="hidden space-y-4">
                 <div class="p-4 bg-sky-500/10 border border-sky-500/20 rounded-2xl text-center space-y-2">
                     <i class="fas fa-mobile-screen-button text-2xl text-sky-500"></i>
-                    <p class="text-xs text-gray-600 dark:text-gray-300">تم توليد رمز الأمان المؤقت (2FA OTP) الخاص بجلسة المسؤول الحالية:</p>
+                    <p class="text-xs text-gray-600 dark:text-gray-300">رمز الأمان المؤقت (OTP) الخاص بجلسة المسؤول الحالية:</p>
                     
                     <!-- Simulated SMS / Security Shield Notification -->
-                    <div class="py-2 px-4 bg-slate-900 text-amber-400 font-mono font-black text-2xl tracking-widest rounded-xl shadow-inner inline-block">
-                        <span id="simulatedOTP">------</span>
+                    <div class="flex items-center justify-center gap-2">
+                        <div class="py-2 px-6 bg-slate-900 text-amber-400 font-mono font-black text-2xl tracking-widest rounded-xl shadow-inner inline-block border border-amber-500/30">
+                            <span id="simulatedOTP">------</span>
+                        </div>
+                        <button type="button" onclick="copyOTPToInput()" title="نسخ الرمز تلقائياً" class="p-3 bg-sky-600 hover:bg-sky-700 text-white rounded-xl text-xs font-bold transition">
+                            <i class="fas fa-copy"></i>
+                        </button>
                     </div>
                     <p class="text-[10px] text-gray-400">ينتهي الرمز خلال: <span id="otpTimer" class="font-bold text-red-400">60</span> ثانية</p>
                 </div>
 
                 <form onsubmit="handleOTPVerification(event)" class="space-y-4">
                     <div>
-                        <label class="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-1 text-center">أدخل رمز OTP المؤقت</label>
-                        <input type="text" id="otpInput" maxlength="6" placeholder="000000" required class="w-full py-3 rounded-xl border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-center font-mono text-xl tracking-widest outline-none focus:ring-2 focus:ring-sky-500">
+                        <label class="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-1 text-center">أدخل رمز OTP هنا</label>
+                        <input type="text" id="otpInput" maxlength="6" placeholder="000000" required autocomplete="off" class="w-full py-3 rounded-xl border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-center font-mono text-xl tracking-widest outline-none focus:ring-2 focus:ring-sky-500">
                     </div>
 
                     <button type="submit" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl shadow-lg shadow-emerald-600/30 text-sm transition">
@@ -413,7 +426,7 @@
     </div>
 
     <!-- Notification Toast Modal -->
-    <div id="toast" class="fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 transition-all duration-300 max-w-sm px-4 py-3 rounded-2xl shadow-xl border flex items-center gap-3">
+    <div id="toast" class="fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 transition-all duration-300 max-w-sm px-4 py-3 rounded-2xl shadow-xl border flex items-center gap-3 pointer-events-none">
         <i id="toastIcon" class="fas text-lg"></i>
         <span id="toastMsg" class="text-xs font-bold"></span>
     </div>
@@ -700,12 +713,16 @@
 
         // Start 2FA Step
         function startOTPPhase() {
-            // Generate Random 6-digit OTP
+            // Generate Random 6-digit OTP guaranteed as String
             generatedOTP = Math.floor(100000 + Math.random() * 900000).toString();
             
             document.getElementById('loginFormStep1').classList.add('hidden');
             document.getElementById('loginFormStep2').classList.remove('hidden');
             document.getElementById('simulatedOTP').textContent = generatedOTP;
+            document.getElementById('otpInput').value = '';
+
+            // Show Toast with OTP code
+            showToast(`رمز OTP الخاص بك هو: ${generatedOTP}`, 'success');
 
             let secondsLeft = 60;
             document.getElementById('otpTimer').textContent = secondsLeft;
@@ -723,12 +740,22 @@
             }, 1000);
         }
 
+        // Quick Auto-Fill OTP Button
+        function copyOTPToInput() {
+            const input = document.getElementById('otpInput');
+            input.value = generatedOTP;
+            showToast('تم إدراج رمز OTP تلقائياً بنجاح!', 'info');
+        }
+
         // Step 2: Verify OTP
         function handleOTPVerification(e) {
             e.preventDefault();
-            const enteredOTP = document.getElementById('otpInput').value.trim();
+            
+            // Clean input string comparison
+            const enteredOTP = document.getElementById('otpInput').value.toString().trim();
+            const validOTP = generatedOTP.toString().trim();
 
-            if (enteredOTP === generatedOTP) {
+            if (enteredOTP === validOTP && validOTP !== '') {
                 if (otpInterval) clearInterval(otpInterval);
                 
                 // Create Session Token & Login
@@ -742,7 +769,7 @@
                 showAdminPanel();
                 startSessionTimeoutChecker();
             } else {
-                showToast('رمز OTP غير صحيح!', 'error');
+                showToast(`رمز OTP غير صحيح! الرمز الصحيح هو: ${generatedOTP}`, 'error');
             }
         }
 
