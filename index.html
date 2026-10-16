@@ -1,988 +1,1000 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta name="google-site-verification" content="1zux_AYCJE9brocOO6fC1edXnTEvuDkytssHeKlO2yw" />
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>الموقع التقني الشامل</title>
-  <meta name="description" content="موقع تقني شامل يقدم مقالات تقنية متعمقة، شروحات برمجية، ومصادر تعليمية عربية وعالمية.">
-  
-  <!-- وسم التحقق من جوجل سيرش كونسول -->
-  <meta name="google-site-verification" content="UqSFt1CyIbFCPFVpf5N30mOq-dJoR5YRDBjUqDOmJIU" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الموقع التقني الشامل - المنصة الأمنية</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&family=Tajawal:wght@300;400;500;700;900&family=Changa:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            500: '#0284c7',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            900: '#0c4a6e',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .font-tajawal { font-family: 'Tajawal', sans-serif; }
+        .font-changa { font-family: 'Changa', sans-serif; }
+        .font-cairo { font-family: 'Cairo', sans-serif; }
 
-  <!-- رمز Google AdSense -->
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6906663830989419" crossorigin="anonymous"></script>
+        /* Glassmorphic Effects */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .dark .glass-panel {
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        
+        .security-shield-glow {
+            box-shadow: 0 0 25px rgba(2, 132, 199, 0.35);
+        }
 
-  <!-- مكتبة Three.js لتأثير الهولوجرام -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-
-  <!-- تعريف المتغيرات للثيم (Light & Dark) -->
-  <style>
-    :root {
-      --bg-color: #f4f4f4;
-      --text-color: #333;
-      --primary-color: #007BFF;
-      --secondary-color: #f39c12;
-      --header-bg: #000;
-    }
-    body.dark {
-      --bg-color: #1e1e1e;
-      --text-color: #e0e0e0;
-      --primary-color: #4da6ff;
-      --secondary-color: #f1c40f;
-    }
-    /* القيم الأساسية */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    body {
-      font-family: Arial, sans-serif;
-      background: var(--bg-color);
-      color: var(--text-color);
-      line-height: 1.6;
-      scroll-behavior: smooth;
-      transition: background 0.3s, color 0.3s;
-    }
-    a {
-      text-decoration: none;
-      color: inherit;
-      cursor: pointer;
-    }
-    ul { list-style: none; }
-
-    /* شريط مؤشر التمرير */
-    #progressBarContainer {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 5px;
-      background: rgba(0,0,0,0.1);
-      z-index: 9999;
-    }
-    #progressBar {
-      width: 0;
-      height: 100%;
-      background: var(--secondary-color);
-    }
-
-    /* رأس الصفحة */
-    header {
-      position: relative;
-      height: 600px;
-      background: url('https://th.bing.com/th/id/OIP.n6FzxRreNLHiELvUdgA6iQHaEK?rs=1&pid=ImgDetMain') no-repeat center center/cover;
-    }
-    header::after {
-      content: "";
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0,0,0,0.6);
-    }
-    .header-content {
-      position: relative;
-      z-index: 2;
-      text-align: center;
-      top: 50%;
-      transform: translateY(-50%);
-      color: #fff;
-      padding: 0 20px;
-    }
-    .header-content h1 {
-      font-size: 3.5rem;
-      margin-bottom: 20px;
-      text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
-      animation: fadeInDown 1s ease;
-    }
-    .header-content p {
-      font-size: 1.3rem;
-      margin-bottom: 30px;
-      text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
-      animation: fadeInUp 1s ease;
-    }
-    .header-content .cta-btn {
-      padding: 12px 25px;
-      font-size: 1.1rem;
-      border: none;
-      border-radius: 5px;
-      background: var(--secondary-color);
-      color: #fff;
-      transition: background 0.3s;
-      animation: fadeInUp 1s ease;
-    }
-    .header-content .cta-btn:hover {
-      background: #d35400;
-    }
-    .adBanner {
-      margin: 20px auto 0 auto;
-      text-align: center;
-      max-width: 728px;
-      background: #fff;
-      border: 1px solid #ccc;
-      padding: 10px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-    }
-
-    /* شريط التنقل */
-    nav {
-      background: #333;
-      padding: 15px 0;
-      position: sticky;
-      top: 5px; /* أسفل شريط مؤشر التمرير */
-      z-index: 1000;
-    }
-    nav ul {
-      display: flex;
-      justify-content: center;
-      gap: 15px;
-      flex-wrap: wrap;
-    }
-    nav li { display: inline; }
-    nav a {
-      color: #fff;
-      font-size: 1.1rem;
-      transition: color 0.3s;
-    }
-    nav a:hover,
-    nav a.active {
-      color: var(--secondary-color);
-    }
-    /* زر تبديل الوضع الليلي */
-    .theme-toggle {
-      background: transparent;
-      border: 2px solid #fff;
-      padding: 5px 10px;
-      border-radius: 5px;
-      color: #fff;
-      cursor: pointer;
-      font-size: 0.9rem;
-      transition: background 0.3s;
-    }
-    .theme-toggle:hover {
-      background: var(--secondary-color);
-    }
-
-    /* المحتوى الرئيسي */
-    main.container {
-      max-width: 1200px;
-      margin: 40px auto;
-      padding: 0 20px;
-    }
-    /* الأقسام العامة */
-    section {
-      margin: 60px 0;
-      padding: 40px 20px;
-      background: #fff;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-      position: relative;
-      overflow: hidden;
-    }
-    section::before {
-      content: "";
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: url('https://source.unsplash.com/1600x900/?technology') no-repeat center center/cover;
-      opacity: 0.05;
-      z-index: 0;
-    }
-    section h2 {
-      text-align: center;
-      margin-bottom: 30px;
-      font-size: 2.2rem;
-      color: #333;
-      position: relative;
-      z-index: 1;
-    }
-    section p {
-      position: relative;
-      z-index: 1;
-      text-align: justify;
-    }
-
-    /* مقالات تقنية */
-    .articles {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 20px;
-      justify-content: center;
-      position: relative;
-      z-index: 1;
-    }
-    .article {
-      background: #fafafa;
-      border-radius: 10px;
-      padding: 20px;
-      width: calc(33.333% - 20px);
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-      transition: transform 0.3s;
-    }
-    .article:hover { transform: translateY(-5px); }
-    .article h3 {
-      font-size: 1.5rem;
-      color: var(--primary-color);
-      margin-bottom: 10px;
-    }
-    .article p { font-size: 1rem; margin-bottom: 15px; }
-    .article .read-btn {
-      background: var(--primary-color);
-      border: none;
-      padding: 8px 15px;
-      border-radius: 5px;
-      color: #fff;
-      transition: background 0.3s;
-    }
-    .article .read-btn:hover { background: #0056b3; }
-
-    /* قسم لغات البرمجة واستخداماتها */
-    #languages-section {
-      display: none;
-    }
-    #languages-section .languages {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 20px;
-      justify-content: center;
-    }
-    .language {
-      background: #fafafa;
-      border-radius: 10px;
-      padding: 20px;
-      width: 280px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-      transition: transform 0.3s;
-    }
-    .language:hover { transform: translateY(-5px); }
-    .language h3 {
-      font-size: 1.4rem;
-      margin-bottom: 10px;
-      color: #28a745;
-    }
-    .language p { margin-bottom: 10px; text-align: justify; }
-    .language ul {
-      list-style: disc;
-      margin-left: 20px;
-    }
-
-    /* قسم مواقع التعليم */
-    #websites-section {
-      display: none;
-    }
-    #websites-section .websites {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 20px;
-      justify-content: center;
-    }
-    .website {
-      background: #fafafa;
-      border-radius: 10px;
-      padding: 20px;
-      width: 300px;
-      text-align: center;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-      transition: transform 0.3s;
-    }
-    .website:hover { transform: translateY(-5px); }
-    .website h3 {
-      font-size: 1.4rem;
-      margin-bottom: 10px;
-      color: #e74c3c;
-    }
-    .website p { margin-bottom: 10px; text-align: justify; }
-    .website a {
-      color: #3498db;
-      font-size: 1.1rem;
-      transition: color 0.3s;
-    }
-    .website a:hover { color: #2c3e50; }
-
-    /* النشرة الإخبارية */
-    #newsletter {
-      margin-bottom: 60px;
-    }
-    .newsletter {
-      text-align: center;
-      position: relative;
-      z-index: 1;
-    }
-    .newsletter input[type="email"] {
-      padding: 10px;
-      width: 300px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      font-size: 1rem;
-    }
-    .newsletter .subscribe-btn {
-      padding: 10px 20px;
-      border: none;
-      border-radius: 5px;
-      background: #28a745;
-      color: #fff;
-      margin-left: 10px;
-      font-size: 1rem;
-      transition: background 0.3s;
-    }
-    .newsletter .subscribe-btn:hover { background: #218838; }
-
-    /* قسم التفاعل */
-    #interactive-section {
-      display: none;
-    }
-    .interactive {
-      text-align: center;
-      position: relative;
-      z-index: 1;
-    }
-    .interactive .change-bg-btn {
-      background: var(--secondary-color);
-      border: none;
-      padding: 12px 25px;
-      font-size: 1.1rem;
-      border-radius: 5px;
-      color: #fff;
-      transition: background 0.3s;
-    }
-    .interactive .change-bg-btn:hover { background: #d35400; }
-
-    /* قسم الهولوجرامات التقنية */
-    #holograms-section {
-      display: none;
-    }
-    #hologramContainer {
-      width: 100%;
-      height: 500px;
-      background: var(--header-bg);
-    }
-
-    /* قسم الشهادات */
-    #testimonials-section {
-      display: none;
-    }
-    .testimonials {
-      background: #fafafa;
-      padding: 40px 20px;
-      border-radius: 10px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-      margin: 60px 0;
-      text-align: center;
-      position: relative;
-      z-index: 1;
-    }
-    .testimonial { margin: 20px 0; }
-    .testimonial p { font-style: italic; margin-bottom: 10px; }
-    .testimonial span { font-weight: bold; color: var(--primary-color); }
-
-    /* قسم من نحن */
-    #about {
-      display: none;
-    }
-    .about {
-      background: #fafafa;
-      padding: 40px 20px;
-      border-radius: 10px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-      margin: 60px 0;
-      position: relative;
-      z-index: 1;
-    }
-    .about h2 { text-align: center; margin-bottom: 30px; font-size: 2rem; color: #333; }
-    .about p { text-align: justify; margin-bottom: 15px; }
-
-    /* قسم سياسة الخصوصية */
-    #privacy {
-      display: none;
-    }
-    .privacy {
-      background: #fafafa;
-      padding: 40px 20px;
-      border-radius: 10px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-      margin: 60px 0;
-      position: relative;
-      z-index: 1;
-    }
-    .privacy h2 { text-align: center; margin-bottom: 30px; font-size: 2rem; color: #333; }
-    .privacy p { text-align: justify; margin-bottom: 15px; }
-
-    /* قسم التواصل */
-    #contact {
-      display: none;
-    }
-    .contact {
-      text-align: center;
-      padding: 20px;
-      background: #fafafa;
-      border-radius: 10px;
-      margin: 40px 0;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      position: relative;
-      z-index: 1;
-    }
-    .contact h3 { margin-bottom: 15px; font-size: 1.8rem; }
-    .contact form {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 15px;
-      width: 100%;
-    }
-    .contact form input,
-    .contact form textarea {
-      width: 80%;
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      font-size: 1rem;
-    }
-    .contact form button {
-      background: var(--primary-color);
-      color: #fff;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-    .contact form button:hover { background: #0056b3; }
-
-    /* تذييل الصفحة */
-    footer {
-      background: #333;
-      color: #fff;
-      text-align: center;
-      padding: 20px;
-    }
-    footer p { margin: 5px 0; }
-
-    /* زر العودة للأعلى */
-    #scrollTopBtn {
-      position: fixed;
-      bottom: 30px;
-      right: 30px;
-      background: var(--primary-color);
-      color: #fff;
-      padding: 10px 15px;
-      border: none;
-      border-radius: 50%;
-      cursor: pointer;
-      display: none;
-      z-index: 100;
-      transition: background 0.3s;
-    }
-    #scrollTopBtn:hover { background: #0056b3; }
-
-    @keyframes fadeInDown {
-      from { opacity: 0; transform: translateY(-50px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(50px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    @media (max-width: 768px) {
-      header { height: 400px; }
-      .header-content h1 { font-size: 2.5rem; }
-      nav a { font-size: 1rem; }
-      .article { width: calc(50% - 20px); }
-      .language, .website { width: 90%; }
-    }
-    @media (max-width: 480px) {
-      .article { width: 100%; }
-      .header-content h1 { font-size: 2rem; }
-    }
-  </style>
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.05);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(2, 132, 199, 0.4);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(2, 132, 199, 0.7);
+        }
+    </style>
 </head>
-<body>
-  <!-- شريط مؤشر التمرير -->
-  <div id="progressBarContainer">
-    <div id="progressBar"></div>
-  </div>
+<body class="bg-gray-50 text-gray-800 dark:bg-slate-900 dark:text-gray-100 min-h-screen flex flex-col transition-colors duration-200">
 
-  <!-- رأس الصفحة -->
-  <header>
-    <div class="header-content">
-      <h1>الموقع التقني الشامل</h1>
-      <p>مقالات تقنية متعمقة، شروحات برمجية، ومصادر تعليمية عربية وعالمية</p>
-      <button class="cta-btn" id="startBtn">ابدأ الآن</button>
-      <!-- إعلان -->
-      <div class="adBanner" aria-label="إعلان">
-        <ins class="adsbygoogle"
-             style="display:block"
-             data-ad-client="ca-pub-6906663830989419"
-             data-ad-slot="1234567890"
-             data-ad-format="auto"
-             data-full-width-responsive="true"></ins>
-        <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
-        </script>
-      </div>
+    <!-- Header / Navbar -->
+    <header class="sticky top-0 z-40 w-full glass-panel border-b border-gray-200 dark:border-slate-800 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            
+            <!-- Site Identity / Logo -->
+            <div class="flex items-center space-x-3 space-x-reverse">
+                <div id="siteLogoContainer" class="w-12 h-12 rounded-xl bg-gradient-to-tr from-sky-600 to-indigo-600 flex items-center justify-center text-white text-2xl font-bold shadow-lg shadow-sky-500/20">
+                    <i id="siteIcon" class="fas font-icon fa-microchip"></i>
+                </div>
+                <div>
+                    <h1 id="siteTitleText" class="text-xl sm:text-2xl font-extrabold text-gray-900 dark:text-white tracking-tight">
+                        الموقع التقني الشامل
+                    </h1>
+                    <p id="siteSubtitleText" class="text-xs text-sky-600 dark:text-sky-400 font-medium">
+                        بوابتك اليومية لأحدث أخبار التكنولوجيا والأمان
+                    </p>
+                </div>
+            </div>
+
+            <!-- Actions / Controls -->
+            <div class="flex items-center space-x-2 sm:space-x-4 space-x-reverse">
+                <!-- Theme Toggle Button -->
+                <button id="themeToggleBtn" onclick="toggleDarkMode()" class="p-2.5 rounded-xl bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-slate-700 transition" title="تبديل المظهر">
+                    <i class="fas fa-moon dark:hidden"></i>
+                    <i class="fas fa-sun hidden dark:block text-amber-400"></i>
+                </button>
+
+                <!-- Admin Button / Indicator -->
+                <div id="authArea">
+                    <!-- Dynamic rendering based on login status -->
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        
+        <!-- Security Banner Notice -->
+        <div id="securityBanner" class="mb-6 p-4 rounded-2xl bg-sky-500/10 border border-sky-500/20 text-sky-800 dark:text-sky-200 flex items-center justify-between">
+            <div class="flex items-center space-x-3 space-x-reverse">
+                <i class="fas fa-shield-halved text-xl text-sky-600 dark:text-sky-400"></i>
+                <span class="text-sm font-semibold">نظام الحماية المطور 2.0 مفعل: تشفير 256-bit، مصادقة OTP، واختبار الكابتشا التفاعلي.</span>
+            </div>
+            <button onclick="document.getElementById('securityBanner').remove()" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 text-sm">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <!-- News Feed Section -->
+        <section id="publicView" class="space-y-6">
+            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-4 border-b border-gray-200 dark:border-slate-800">
+                <div>
+                    <h2 class="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+                        <i class="fas fa-newspaper text-sky-600"></i> الأخبار والمقالات التقنية
+                    </h2>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">تصفح أحدث الأخبار والتحليلات البرمجية والأمنية</p>
+                </div>
+                
+                <!-- Category Filter -->
+                <div class="flex flex-wrap gap-2" id="categoryFilter">
+                    <button onclick="filterNews('all')" class="cat-filter-btn px-4 py-2 rounded-xl text-xs font-semibold bg-sky-600 text-white shadow-md">الكل</button>
+                    <button onclick="filterNews('security')" class="cat-filter-btn px-4 py-2 rounded-xl text-xs font-semibold bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200">الأمن السيبراني</button>
+                    <button onclick="filterNews('ai')" class="cat-filter-btn px-4 py-2 rounded-xl text-xs font-semibold bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200">الذكاء الاصطناعي</button>
+                    <button onclick="filterNews('dev')" class="cat-filter-btn px-4 py-2 rounded-xl text-xs font-semibold bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200">التطوير والبرمجة</button>
+                </div>
+            </div>
+
+            <!-- Articles Grid -->
+            <div id="articlesGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Articles injected dynamically via JS -->
+            </div>
+        </section>
+
+        <!-- Admin Control Panel Section (Hidden by Default) -->
+        <section id="adminView" class="hidden space-y-8">
+            <div class="bg-gradient-to-r from-sky-900 to-indigo-900 text-white p-6 rounded-3xl shadow-xl flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                <div>
+                    <span class="px-3 py-1 bg-sky-500/20 border border-sky-400/30 text-sky-300 text-xs font-bold rounded-full mb-2 inline-block">
+                        <i class="fas fa-user-shield ml-1"></i> لوحة التحكم المشفرة
+                    </span>
+                    <h2 class="text-2xl font-black">إدارة المنصة التقنية</h2>
+                    <p class="text-xs text-sky-200 mt-1">جلسة مؤمنة بالكامل رمز الجلسة: <span id="sessionTokenDisplay" class="font-mono text-amber-300">...</span></p>
+                </div>
+                <div class="flex items-center gap-3">
+                    <button onclick="showAdminTab('content')" class="admin-tab-btn px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-xs font-bold transition flex items-center gap-2 border border-white/10">
+                        <i class="fas fa-edit"></i> المحتوى والأخبار
+                    </button>
+                    <button onclick="showAdminTab('identity')" class="admin-tab-btn px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-xs font-bold transition flex items-center gap-2 border border-white/10">
+                        <i class="fas fa-palette"></i> الهوية والتخصيص
+                    </button>
+                    <button onclick="showAdminTab('security')" class="admin-tab-btn px-4 py-2 rounded-xl bg-amber-500/20 text-amber-300 border border-amber-500/30 text-xs font-bold transition flex items-center gap-2">
+                        <i class="fas fa-key"></i> إعدادات الأمان
+                    </button>
+                </div>
+            </div>
+
+            <!-- Tab 1: Content Management -->
+            <div id="tabContent" class="admin-tab-content space-y-6">
+                <div class="glass-panel p-6 rounded-3xl shadow-lg border border-gray-100 dark:border-slate-800">
+                    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+                        <i class="fas fa-plus-circle text-sky-600"></i> إضافة خبر تقني جديد
+                    </h3>
+                    <form id="addNewsForm" onsubmit="handleAddNews(event)" class="space-y-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-1">عنوان الخبر</label>
+                                <input type="text" id="newsTitle" required class="w-full px-4 py-2.5 rounded-xl border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm focus:ring-2 focus:ring-sky-500 outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-1">التصنيف</label>
+                                <select id="newsCategory" class="w-full px-4 py-2.5 rounded-xl border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm focus:ring-2 focus:ring-sky-500 outline-none">
+                                    <option value="security">الأمن السيبراني</option>
+                                    <option value="ai">الذكاء الاصطناعي</option>
+                                    <option value="dev">التطوير والبرمجة</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-1">رابط الصورة (URL)</label>
+                            <input type="url" id="newsImage" placeholder="https://images.unsplash.com/..." class="w-full px-4 py-2.5 rounded-xl border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm focus:ring-2 focus:ring-sky-500 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-1">تفاصيل الخبر</label>
+                            <textarea id="newsContent" rows="4" required class="w-full px-4 py-2.5 rounded-xl border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm focus:ring-2 focus:ring-sky-500 outline-none"></textarea>
+                        </div>
+                        <button type="submit" class="px-6 py-3 bg-sky-600 hover:bg-sky-700 text-white font-bold rounded-xl shadow-lg shadow-sky-600/30 text-sm transition">
+                            <i class="fas fa-paper-plane ml-1"></i> نشر الخبر الآن
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Admin List Management -->
+                <div class="glass-panel p-6 rounded-3xl shadow-lg border border-gray-100 dark:border-slate-800">
+                    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">إدارة الأخبار الحالية</h3>
+                    <div id="adminNewsList" class="space-y-3">
+                        <!-- Admin items injected dynamically -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab 2: Identity & Customization -->
+            <div id="tabIdentity" class="admin-tab-content hidden space-y-6">
+                <div class="glass-panel p-6 rounded-3xl shadow-lg border border-gray-100 dark:border-slate-800">
+                    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+                        <i class="fas fa-sliders text-sky-600"></i> تخصيص مظهر الموقع
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-1">اسم الموقع</label>
+                                <input type="text" id="custSiteTitle" class="w-full px-4 py-2.5 rounded-xl border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-1">الوصف الفرعي</label>
+                                <input type="text" id="custSiteSubtitle" class="w-full px-4 py-2.5 rounded-xl border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-1">نوع الخط</label>
+                                <select id="custFont" onchange="applySiteSettings()" class="w-full px-4 py-2.5 rounded-xl border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm outline-none">
+                                    <option value="font-cairo">Cairo (افتراضي)</option>
+                                    <option value="font-tajawal">Tajawal</option>
+                                    <option value="font-changa">Changa</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-1">أيقونة الشعار (FontAwesome Icon)</label>
+                                <select id="custIcon" class="w-full px-4 py-2.5 rounded-xl border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm outline-none">
+                                    <option value="fa-microchip">شريحة معالج (fa-microchip)</option>
+                                    <option value="fa-shield-halved">درع أمان (fa-shield-halved)</option>
+                                    <option value="fa-code">رمز برمجيات (fa-code)</option>
+                                    <option value="fa-robot">ذكاء اصطناعي (fa-robot)</option>
+                                    <option value="fa-laptop-code">حاسوب محمول (fa-laptop-code)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-1">نمط تصميم بطاقات الأخبار</label>
+                                <select id="custCardStyle" class="w-full px-4 py-2.5 rounded-xl border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm outline-none">
+                                    <option value="rounded-2xl">زوايا منحنية قياسية</option>
+                                    <option value="rounded-3xl">زوايا منحنية جداً</option>
+                                    <option value="rounded-none">زوايا حادة (مربع)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 flex justify-end">
+                        <button onclick="saveSiteSettings()" class="px-6 py-2.5 bg-sky-600 hover:bg-sky-700 text-white font-bold rounded-xl text-sm shadow-md transition">
+                            <i class="fas fa-save ml-1"></i> حفظ التغييرات
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab 3: Security Settings -->
+            <div id="tabSecurity" class="admin-tab-content hidden space-y-6">
+                <div class="glass-panel p-6 rounded-3xl shadow-lg border border-amber-500/20">
+                    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2 flex items-center gap-2">
+                        <i class="fas fa-user-lock text-amber-500"></i> تغيير بيانات المسؤول الحالية
+                    </h3>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mb-6">يجب الالتزام بسياسة كلمات المرور القوية (10 أحرف، حروف كبيرة وصغيرة، أرقام، ورموز خاصة).</p>
+
+                    <form onsubmit="handleAdminCredentialsUpdate(event)" class="space-y-4 max-w-xl">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-1">اسم المستخدم الجديد</label>
+                            <input type="text" id="newAdminUser" required class="w-full px-4 py-2.5 rounded-xl border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-1">كلمة المرور الجديدة</label>
+                            <input type="password" id="newAdminPass" required oninput="checkPasswordStrength(this.value)" class="w-full px-4 py-2.5 rounded-xl border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm outline-none">
+                            
+                            <!-- Password Strength Indicator -->
+                            <div class="mt-2 space-y-1">
+                                <div class="w-full h-1.5 bg-gray-200 dark:bg-slate-700 rounded-full overflow-hidden">
+                                    <div id="passStrengthBar" class="h-full bg-red-500 w-0 transition-all duration-300"></div>
+                                </div>
+                                <div id="passStrengthText" class="text-[10px] text-gray-500 font-bold">ضعيفة</div>
+                            </div>
+                        </div>
+
+                        <div class="p-3 bg-gray-50 dark:bg-slate-800/50 rounded-xl text-xs space-y-1 text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-slate-700">
+                            <p class="font-bold mb-1">اشتراطات كلمة المرور:</p>
+                            <div id="reqLen" class="flex items-center gap-1.5"><i class="fas fa-times-circle text-red-500"></i> 10 أحرف على الأقل</div>
+                            <div id="reqUpper" class="flex items-center gap-1.5"><i class="fas fa-times-circle text-red-500"></i> حرف كبير واحد (A-Z)</div>
+                            <div id="reqLower" class="flex items-center gap-1.5"><i class="fas fa-times-circle text-red-500"></i> حرف صغير واحد (a-z)</div>
+                            <div id="reqNum" class="flex items-center gap-1.5"><i class="fas fa-times-circle text-red-500"></i> رقم واحد على الأقل (0-9)</div>
+                            <div id="reqSym" class="flex items-center gap-1.5"><i class="fas fa-times-circle text-red-500"></i> رمز خاص (!@#$%^&*)</div>
+                        </div>
+
+                        <button type="submit" class="px-6 py-2.5 bg-amber-600 hover:bg-amber-700 text-white font-bold rounded-xl text-sm shadow-md transition">
+                            <i class="fas fa-shield-alt ml-1"></i> تحديث البيانات وتشفيرها
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="mt-auto border-t border-gray-200 dark:border-slate-800 bg-white/50 dark:bg-slate-900/50 py-6 text-center text-xs text-gray-500 dark:text-gray-400">
+        <p>© 2026 الموقع التقني الشامل - جميع الحقوق محفوظة | محمي بواسطة آليات الأمان المتقدمة SHA-256 & 2FA</p>
+    </footer>
+
+    <!-- HIGH-SECURITY LOGIN MODAL -->
+    <div id="loginModal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md hidden flex items-center justify-center p-4">
+        <div class="glass-panel w-full max-w-md rounded-3xl p-6 sm:p-8 shadow-2xl border border-sky-500/30 relative security-shield-glow">
+            
+            <button onclick="closeLoginModal()" class="absolute top-4 left-4 text-gray-400 hover:text-gray-200">
+                <i class="fas fa-times text-lg"></i>
+            </button>
+
+            <div class="text-center mb-6">
+                <div class="w-16 h-16 bg-sky-600/20 text-sky-500 border border-sky-500/30 rounded-2xl flex items-center justify-center mx-auto mb-3 text-2xl">
+                    <i class="fas fa-user-shield"></i>
+                </div>
+                <h3 class="text-xl font-black text-gray-900 dark:text-white">تسجيل دخول المسؤول</h3>
+                <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">مصادقة آمنة مشفرة متعددة الطبقات</p>
+            </div>
+
+            <!-- Lockout Alert Box -->
+            <div id="lockoutAlert" class="hidden mb-4 p-3 bg-red-500/10 border border-red-500/30 rounded-2xl text-red-500 text-xs font-bold text-center">
+                <i class="fas fa-ban ml-1"></i> تم قفل الحساب بسبب المحاولات الفاشلة المتكررة.
+                <div id="lockoutTimer" class="text-lg font-black mt-1 font-mono">00:60</div>
+            </div>
+
+            <!-- Login Form Step 1 -->
+            <form id="loginFormStep1" onsubmit="handleLoginStep1(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-1">اسم المستخدم</label>
+                    <div class="relative">
+                        <i class="fas fa-user absolute right-3.5 top-3 text-gray-400 text-sm"></i>
+                        <input type="text" id="loginUsername" required class="w-full pr-10 pl-4 py-2.5 rounded-xl border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm outline-none focus:ring-2 focus:ring-sky-500">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-1">كلمة المرور</label>
+                    <div class="relative">
+                        <i class="fas fa-lock absolute right-3.5 top-3 text-gray-400 text-sm"></i>
+                        <input type="password" id="loginPassword" required class="w-full pr-10 pl-4 py-2.5 rounded-xl border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm outline-none focus:ring-2 focus:ring-sky-500">
+                    </div>
+                </div>
+
+                <!-- Interactive CAPTCHA Challenge -->
+                <div class="p-3 bg-gray-100 dark:bg-slate-800/80 rounded-2xl border border-gray-200 dark:border-slate-700 space-y-2">
+                    <label class="block text-xs font-bold text-gray-700 dark:text-gray-300">اختبار كابتشا الأمان (CAPTCHA)</label>
+                    <div class="flex items-center justify-between gap-2">
+                        <div id="captchaBox" class="px-4 py-2 bg-slate-900 text-sky-400 font-mono font-bold tracking-widest text-lg rounded-xl select-none line-through italic">
+                            <!-- Injected JS -->
+                        </div>
+                        <button type="button" onclick="generateCaptcha()" class="p-2 text-gray-400 hover:text-sky-500">
+                            <i class="fas fa-arrows-rotate"></i>
+                        </button>
+                    </div>
+                    <input type="text" id="captchaInput" placeholder="أدخل الرمز أعلاه" required class="w-full px-3 py-2 rounded-xl border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs text-center outline-none">
+                </div>
+
+                <div class="flex items-center justify-between text-xs text-gray-500">
+                    <span>محاولات متبقية: <strong id="attemptsLeftText" class="text-amber-500">3</strong></span>
+                </div>
+
+                <button type="submit" id="submitLoginBtn" class="w-full py-3 bg-sky-600 hover:bg-sky-700 text-white font-bold rounded-xl shadow-lg shadow-sky-600/30 text-sm transition">
+                    التحقق المبدئي <i class="fas fa-arrow-left mr-1"></i>
+                </button>
+            </form>
+
+            <!-- Login Form Step 2 (2FA / OTP Verification) -->
+            <div id="loginFormStep2" class="hidden space-y-4">
+                <div class="p-4 bg-sky-500/10 border border-sky-500/20 rounded-2xl text-center space-y-2">
+                    <i class="fas fa-mobile-screen-button text-2xl text-sky-500"></i>
+                    <p class="text-xs text-gray-600 dark:text-gray-300">تم توليد رمز الأمان المؤقت (2FA OTP) الخاص بجلسة المسؤول الحالية:</p>
+                    
+                    <!-- Simulated SMS / Security Shield Notification -->
+                    <div class="py-2 px-4 bg-slate-900 text-amber-400 font-mono font-black text-2xl tracking-widest rounded-xl shadow-inner inline-block">
+                        <span id="simulatedOTP">------</span>
+                    </div>
+                    <p class="text-[10px] text-gray-400">ينتهي الرمز خلال: <span id="otpTimer" class="font-bold text-red-400">60</span> ثانية</p>
+                </div>
+
+                <form onsubmit="handleOTPVerification(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-1 text-center">أدخل رمز OTP المؤقت</label>
+                        <input type="text" id="otpInput" maxlength="6" placeholder="000000" required class="w-full py-3 rounded-xl border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-center font-mono text-xl tracking-widest outline-none focus:ring-2 focus:ring-sky-500">
+                    </div>
+
+                    <button type="submit" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl shadow-lg shadow-emerald-600/30 text-sm transition">
+                        تأكيد الدخول النهائي <i class="fas fa-check-circle mr-1"></i>
+                    </button>
+                </form>
+            </div>
+
+        </div>
     </div>
-  </header>
 
-  <!-- شريط التنقل مع زر تبديل الوضع الليلي -->
-  <nav>
-    <ul>
-      <li><a href="#" data-section="news" class="nav-link">الأخبار</a></li>
-      <li><a href="#" data-section="languages" class="nav-link">لغات البرمجة واستخداماتها</a></li>
-      <li><a href="#" data-section="websites" class="nav-link">مواقع التعليم</a></li>
-      <li><a href="#" data-section="interactive" class="nav-link">تفاعل</a></li>
-      <li><a href="#" data-section="holograms" class="nav-link">الهولوجرامات التقنية</a></li>
-      <li><a href="#" data-section="testimonials" class="nav-link">الشهادات</a></li>
-      <li><a href="#" data-section="about" class="nav-link">من نحن</a></li>
-      <li><a href="#" data-section="privacy" class="nav-link">سياسة الخصوصية</a></li>
-      <li><a href="#" data-section="contact" class="nav-link">اتصل بنا</a></li>
-      <li><button class="theme-toggle" id="themeToggle">الوضع الليلي</button></li>
-    </ul>
-  </nav>
+    <!-- Notification Toast Modal -->
+    <div id="toast" class="fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 transition-all duration-300 max-w-sm px-4 py-3 rounded-2xl shadow-xl border flex items-center gap-3">
+        <i id="toastIcon" class="fas text-lg"></i>
+        <span id="toastMsg" class="text-xs font-bold"></span>
+    </div>
 
-  <!-- المحتوى الرئيسي -->
-  <main class="container">
-    <!-- النشرة الإخبارية -->
-    <section id="newsletter">
-      <div class="newsletter">
-        <h2>اشترك في النشرة الإخبارية</h2>
-        <p>انضم إلينا لتصلك آخر المقالات والدروس التقنية مباشرة في بريدك.</p>
-        <input type="email" id="emailInput" placeholder="أدخل بريدك الإلكتروني" required>
-        <button class="subscribe-btn" id="subscribeBtn">اشترك الآن</button>
-      </div>
-    </section>
+    <!-- MAIN LOGIC & SECURITY SCRIPT -->
+    <script>
+        // Default Articles
+        const initialNews = [
+            {
+                id: '1',
+                title: 'إطلاق نماذج الذكاء الاصطناعي الفائقة لعام 2026',
+                category: 'ai',
+                categoryName: 'الذكاء الاصطناعي',
+                date: '2026-10-15',
+                image: 'https://images.unsplash.com/photo-1677442136019-21780efad99a?auto=format&fit=crop&w=600&q=80',
+                content: 'شهد اليوم إطلاق جيل جديد من نماذج الاستدلال الكمي المجهزة بقدرات أمان سيبراني الذاتية مع تقليل استهلاك الطاقة بنسبة 40%.'
+            },
+            {
+                id: '2',
+                title: 'توصيات أمنية جديدة لمنع هجمات التخمين Brute-Force',
+                category: 'security',
+                categoryName: 'الأمن السيبراني',
+                date: '2026-10-14',
+                image: 'https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=600&q=80',
+                content: 'شدد خبراء الأمان على ضرورة استخدام دالة التشفير SHA-256 وفرض المصادقة متعددة العوامل 2FA لمنع الاختراقات المتطورة.'
+            },
+            {
+                id: '3',
+                title: 'مستقبل تطوير التطبيقات باستخدام WebAssembly و WebGPU',
+                category: 'dev',
+                categoryName: 'التطوير والبرمجة',
+                date: '2026-10-12',
+                image: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=600&q=80',
+                content: 'تتيح التقنيات الحديثة للمتصفح تشغيل معالجات رسومية وتشفير معقد مباشرة داخل المتصفح بكفاءة تطابق التطبيقات المكتوبة بـ C++.'
+            }
+        ];
 
-    <!-- قسم الأخبار -->
-    <section id="news-section">
-      <h2>أحدث المقالات التقنية</h2>
-      <div class="articles">
-        <article class="article">
-          <h3>1. الذكاء الاصطناعي وتأثيره على مستقبل العمل</h3>
-          <p>
-            الذكاء الاصطناعي ليس مجرد تقنية جديدة، بل هو ثورة تعيد تشكيل أسواق العمل.
-            تتيح خوارزميات التعلم العميق إمكانية أتمتة الكثير من المهام التقليدية،
-            مما يفتح المجال لإبداع بشري أكبر.
-          </p>
-          <button class="read-btn" data-alert="اقرأ المزيد حول الذكاء الاصطناعي ومستقبل العمل.">اقرأ المزيد</button>
-        </article>
-        <article class="article">
-          <h3>2. تطور شبكات الجيل الخامس (5G)</h3>
-          <p>
-            تعتبر تقنية الجيل الخامس (5G) قفزة نوعية في عالم الاتصالات، حيث تقدم سرعات عالية وزمن استجابة منخفض.
-          </p>
-          <button class="read-btn" data-alert="اقرأ المزيد حول 5G وتأثيرها على الاتصالات.">اقرأ المزيد</button>
-        </article>
-        <article class="article">
-          <h3>3. الأمن السيبراني: حرب رقمية</h3>
-          <p>
-            أصبح الأمن السيبراني من أولويات الحكومات والشركات، مع تزايد الهجمات الإلكترونية وتعقيدها.
-          </p>
-          <button class="read-btn" data-alert="اقرأ المزيد حول الأمن السيبراني والحماية الرقمية.">اقرأ المزيد</button>
-        </article>
-      </div>
-    </section>
+        // Global State & Security Variables
+        let newsData = JSON.parse(localStorage.getItem('tech_site_news')) || initialNews;
+        let siteConfig = JSON.parse(localStorage.getItem('tech_site_config')) || {
+            title: 'الموقع التقني الشامل',
+            subtitle: 'بوابتك اليومية لأحدث أخبار التكنولوجيا والأمان',
+            font: 'font-cairo',
+            icon: 'fa-microchip',
+            cardStyle: 'rounded-2xl'
+        };
 
-    <!-- قسم لغات البرمجة واستخداماتها -->
-    <section id="languages-section" style="display:none;">
-      <h2>لغات البرمجة واستخداماتها</h2>
-      <div class="languages">
-        <div class="language">
-          <h3>HTML</h3>
-          <p>الأساس لبناء صفحات الويب وتنظيم المحتوى الهيكلي للمواقع.</p>
-          <ul>
-            <li>إنشاء الهيكل العام للصفحات</li>
-            <li>تنظيم النصوص والصور والجداول</li>
-          </ul>
-        </div>
-        <div class="language">
-          <h3>CSS</h3>
-          <p>تُستخدم لتنسيق وتصميم صفحات الويب وجعلها جذابة بصريًا.</p>
-          <ul>
-            <li>تحسين الواجهة البصرية</li>
-            <li>تصميم متجاوب للشاشات المختلفة</li>
-          </ul>
-        </div>
-        <div class="language">
-          <h3>JavaScript</h3>
-          <p>لغة تضيف التفاعلية للمواقع، مثل النماذج المنبثقة والقوائم الديناميكية.</p>
-          <ul>
-            <li>تحريك العناصر والتعامل مع الأحداث</li>
-            <li>تطوير واجهات تفاعلية لتجربة مستخدم أفضل</li>
-          </ul>
-        </div>
-        <div class="language">
-          <h3>Python</h3>
-          <p>لغة متعددة الاستخدامات في تطوير الويب، تحليل البيانات، والذكاء الاصطناعي.</p>
-          <ul>
-            <li>تحليل البيانات والتعلم الآلي</li>
-            <li>تطوير تطبيقات الويب (Django/Flask)</li>
-          </ul>
-        </div>
-        <div class="language">
-          <h3>Java</h3>
-          <p>من اللغات الأكثر انتشارًا في تطبيقات الأندرويد وتطبيقات المؤسسات.</p>
-          <ul>
-            <li>تطبيقات الهواتف الذكية (Android)</li>
-            <li>أنظمة المؤسسات الضخمة</li>
-          </ul>
-        </div>
-        <div class="language">
-          <h3>C</h3>
-          <p>لغة منخفضة المستوى تُستخدم في برمجة الأنظمة والتطبيقات عالية الأداء.</p>
-          <ul>
-            <li>برمجة أنظمة التشغيل</li>
-            <li>التطبيقات المدمجة (Embedded Systems)</li>
-          </ul>
-        </div>
-        <div class="language">
-          <h3>C++</h3>
-          <p>تُستخدم لتطوير التطبيقات والألعاب ذات الأداء العالي.</p>
-          <ul>
-            <li>تطوير الألعاب (Unreal Engine)</li>
-            <li>البرامج ذات الأداء العالي</li>
-          </ul>
-        </div>
-        <div class="language">
-          <h3>C#</h3>
-          <p>تُستخدم لتطوير تطبيقات ويندوز والألعاب باستخدام Unity.</p>
-          <ul>
-            <li>تطبيقات سطح المكتب (Windows)</li>
-            <li>تطوير الألعاب (Unity)</li>
-          </ul>
-        </div>
-        <div class="language">
-          <h3>PHP</h3>
-          <p>لغة برمجة لتطوير مواقع ويب ديناميكية.</p>
-          <ul>
-            <li>أنظمة إدارة المحتوى (WordPress)</li>
-            <li>التطبيقات الإلكترونية</li>
-          </ul>
-        </div>
-        <div class="language">
-          <h3>Ruby</h3>
-          <p>لغة بسيطة لتطوير تطبيقات الويب عبر إطار Rails.</p>
-          <ul>
-            <li>تطوير سريع (Rapid Development)</li>
-            <li>سهولة الاستخدام والقراءة</li>
-          </ul>
-        </div>
-        <div class="language">
-          <h3>Go</h3>
-          <p>لغة من Google لتطوير الخدمات السحابية وتطبيقات السيرفر.</p>
-          <ul>
-            <li>الخدمات السحابية (Cloud Services)</li>
-            <li>أداء عالي وعمليات متوازية</li>
-          </ul>
-        </div>
-        <div class="language">
-          <h3>Swift</h3>
-          <p>الأساسية لتطوير تطبيقات iOS وmacOS.</p>
-          <ul>
-            <li>تطبيقات iPhone/iPad</li>
-            <li>تصميم واجهات متطورة (UIKit/SwiftUI)</li>
-          </ul>
-        </div>
-        <div class="language">
-          <h3>Kotlin</h3>
-          <p>لغة حديثة لتطوير تطبيقات Android وتطبيقات متعددة المنصات.</p>
-          <ul>
-            <li>تطبيقات Android (بديل Java)</li>
-            <li>تطوير متعدد المنصات (Kotlin Multiplatform)</li>
-          </ul>
-        </div>
-        <div class="language">
-          <h3>R</h3>
-          <p>متخصصة في تحليل البيانات والإحصاء.</p>
-          <ul>
-            <li>تحليل البيانات</li>
-            <li>الإحصاء والبحوث</li>
-          </ul>
-        </div>
-        <div class="language">
-          <h3>TypeScript</h3>
-          <p>امتداد لـJavaScript يضيف مفاهيم الأنواع لكتابة كود أكثر أمانًا.</p>
-          <ul>
-            <li>تطوير تطبيقات Angular</li>
-            <li>المشاريع الكبيرة المنضبطة</li>
-          </ul>
-        </div>
-        <div class="language">
-          <h3>Rust</h3>
-          <p>لغة حديثة تركز على الأمان والسرعة، تُستخدم في تطوير الأنظمة عالية الأداء.</p>
-          <ul>
-            <li>أداء عالي (بديل C++)</li>
-            <li>إدارة الذاكرة الآمنة</li>
-          </ul>
-        </div>
-        <div class="language">
-          <h3>Dart</h3>
-          <p>لغة من Google تُستخدم في تطوير تطبيقات الويب والموبايل عبر إطار Flutter.</p>
-          <ul>
-            <li>تطبيقات متعددة المنصات (iOS/Android)</li>
-            <li>تطوير واجهات رسومية سريعة</li>
-          </ul>
-        </div>
-      </div>
-    </section>
+        // Security Configuration
+        // Default Credentials: admin_sec / Admin@2026#Sec
+        const DEFAULT_USER = 'admin_sec';
+        const DEFAULT_PASS_HASH = '1fbc4465aa9c608f6ef2a3a5b35ae20023ee45c7eb68f18837e2dae6be608be0'; // SHA-256 for Admin@2026#Sec
 
-    <!-- قسم مواقع التعليم -->
-    <section id="websites-section" style="display:none;">
-      <h2>مواقع تعليمية ودورات برمجة</h2>
-      <div class="websites">
-        <div class="website">
-          <h3>W3Schools</h3>
-          <p>تعلم HTML, CSS, JavaScript بأسلوب سهل.</p>
-          <a href="https://www.w3schools.com" target="_blank" rel="noopener">زيارة الموقع</a>
-        </div>
-        <div class="website">
-          <h3>freeCodeCamp</h3>
-          <p>منصة تفاعلية لتعلم البرمجة مجانًا.</p>
-          <a href="https://www.freecodecamp.org" target="_blank" rel="noopener">زيارة الموقع</a>
-        </div>
-        <div class="website">
-          <h3>Udemy</h3>
-          <p>دورات تعليمية شاملة في المجالات التقنية.</p>
-          <a href="https://www.udemy.com" target="_blank" rel="noopener">زيارة الموقع</a>
-        </div>
-      </div>
-      <h3 style="text-align: center; margin-top: 40px;">مواقع سعودية للتعليم والبرمجة</h3>
-      <div class="websites">
-        <div class="website">
-          <h3>رواق</h3>
-          <p>منصة عربية للتعليم المفتوح تقدم دورات مجانية.</p>
-          <a href="https://www.rwaq.org/" target="_blank" rel="noopener">زيارة الموقع</a>
-        </div>
-        <div class="website">
-          <h3>دروب</h3>
-          <p>منصة تدريب إلكتروني تقدم دورات متنوعة.</p>
-          <a href="https://doroob.sa" target="_blank" rel="noopener">زيارة الموقع</a>
-        </div>
-        <div class="website">
-          <h3>الأكاديمية السعودية الرقمية</h3>
-          <p>مبادرة وطنية للتدريب في مجالات التقنية.</p>
-          <a href="https://sda.edu.sa" target="_blank" rel="noopener">زيارة الموقع</a>
-        </div>
-        <div class="website">
-          <h3>معسكر طويق</h3>
-          <p>معسكرات مكثفة في البرمجة والتقنية.</p>
-          <a href="https://tuwaiq.edu.sa" target="_blank" rel="noopener">زيارة الموقع</a>
-        </div>
-      </div>
-    </section>
+        let failedAttempts = parseInt(localStorage.getItem('sec_failed_attempts') || '0');
+        let lockoutUntil = parseInt(localStorage.getItem('sec_lockout_until') || '0');
+        let currentCaptcha = '';
+        let generatedOTP = '';
+        let otpInterval = null;
+        let sessionTimeoutTimer = null;
+        let activeSessionToken = localStorage.getItem('sec_session_token') || null;
 
-    <!-- القسم التفاعلي -->
-    <section id="interactive-section" style="display:none;">
-      <h2>تفاعل مع الموقع</h2>
-      <div class="interactive">
-        <p>جرب تغيير لون خلفية الموقع بطريقة تفاعلية!</p>
-        <button class="change-bg-btn" id="changeBgBtn">غير اللون</button>
-      </div>
-    </section>
-
-    <!-- قسم الهولوجرامات التقنية -->
-    <section id="holograms-section" style="display:none;">
-      <h2>الهولوجرامات التقنية</h2>
-      <div id="hologramContainer" aria-label="عرض هولوجرام تقني"></div>
-    </section>
-
-    <!-- قسم الشهادات -->
-    <section id="testimonials-section" style="display:none;">
-      <h2>آراء المستخدمين</h2>
-      <div class="testimonials">
-        <div class="testimonial">
-          <p>"الموقع التقني الشامل ساعدني على فهم أساسيات البرمجة بخطوات واضحة."</p>
-          <span>- أحمد</span>
-        </div>
-        <div class="testimonial">
-          <p>"أفضل موقع عربي يجمع المصادر المحلية والعالمية لتعلم البرمجة."</p>
-          <span>- ليلى</span>
-        </div>
-        <div class="testimonial">
-          <p>"محتوى متجدد وتصميم رائع، أنصح به للجميع!"</p>
-          <span>- محمد</span>
-        </div>
-      </div>
-    </section>
-
-    <!-- قسم من نحن -->
-    <section id="about" class="about" style="display:none;">
-      <h2>من نحن</h2>
-      <p>
-        نحن فريق من المهتمين بالتقنية والبرمجة، نسعى لتقديم محتوى عربي ثري يساعد المبتدئين والمحترفين في تطوير مهاراتهم.
-      </p>
-      <p>
-        يضم فريقنا خبراء في مجالات متعددة، ونؤمن بأن التعليم المستمر هو مفتاح النجاح في العصر الرقمي.
-      </p>
-    </section>
-
-    <!-- قسم سياسة الخصوصية -->
-    <section id="privacy" class="privacy" style="display:none;">
-      <h2>سياسة الخصوصية</h2>
-      <p>
-        نحرص على حماية خصوصية زوارنا، وتُجمع المعلومات فقط لتحسين تجربة المستخدم.
-      </p>
-      <p>
-        لا نقوم بمشاركة بياناتك الشخصية مع أي جهة خارجية دون موافقتك.
-      </p>
-    </section>
-
-    <!-- قسم التواصل -->
-    <section id="contact" class="contact" style="display:none;">
-      <div style="text-align: center; margin: 20px 0;">
-    <a href="https://x.com/y818gfaj" target="_blank" style="text-decoration: none;">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/X_logo_2023_original.svg" alt="شعار X" width="50" height="50">
-        <h2>حسابي على منصة X</h2>
-    </a>
-</div>
-
-    </section>
-  </main>
-
-  <!-- زر العودة للأعلى -->
-  <button id="scrollTopBtn" aria-label="العودة للأعلى">&#8679;</button>
-
-  <!-- التذييل -->
-  <footer>
-    <p>&copy; 2025 الموقع التقني الشامل. جميع الحقوق محفوظة.</p>
-  </footer>
-
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const sections = {
-        news: document.getElementById('news-section'),
-        languages: document.getElementById('languages-section'),
-        websites: document.getElementById('websites-section'),
-        interactive: document.getElementById('interactive-section'),
-        holograms: document.getElementById('holograms-section'),
-        testimonials: document.getElementById('testimonials-section'),
-        about: document.getElementById('about'),
-        privacy: document.getElementById('privacy'),
-        contact: document.getElementById('contact')
-      };
-
-      const navLinks = document.querySelectorAll('.nav-link');
-      let hologramInitialized = false; // لمنع إعادة التهيئة
-
-      // دالة التنقل بين الأقسام
-      const navigateTo = (sectionKey) => {
-        Object.keys(sections).forEach(key => {
-          sections[key].style.display = (key === sectionKey) ? 'block' : 'none';
+        // Initialize App
+        window.addEventListener('DOMContentLoaded', () => {
+            initSecurityCredentials();
+            renderAuthArea();
+            renderNews(newsData);
+            applySiteSettings();
+            checkSessionTimeout();
         });
-        navLinks.forEach(link => {
-          link.classList.toggle('active', link.dataset.section === sectionKey);
-        });
-        window.scrollTo(0, 0);
-        if(sectionKey === 'holograms' && !hologramInitialized) {
-          initializeHologram();
-          hologramInitialized = true;
+
+        // Initialize Admin Security Credentials Hash if not set
+        async function initSecurityCredentials() {
+            if (!localStorage.getItem('sec_admin_user')) {
+                localStorage.setItem('sec_admin_user', DEFAULT_USER);
+            }
+            if (!localStorage.getItem('sec_admin_pass_hash')) {
+                localStorage.setItem('sec_admin_pass_hash', DEFAULT_PASS_HASH);
+            }
         }
-      };
 
-      // ربط أحداث التنقل
-      navLinks.forEach(link => {
-        link.addEventListener('click', (e) => {
-          e.preventDefault();
-          navigateTo(link.dataset.section);
-        });
-      });
-      navigateTo('news');
-
-      // زر بدء الموقع
-      document.getElementById('startBtn').addEventListener('click', (e) => {
-        e.preventDefault();
-        navigateTo('news');
-      });
-
-      // زر تغيير لون الخلفية
-      const changeBgBtn = document.getElementById('changeBgBtn');
-      if(changeBgBtn){
-        changeBgBtn.addEventListener('click', () => {
-          const colors = ['#f4f4f4', '#e0f7fa', '#ffe0b2', '#e1bee7', '#dcedc8'];
-          document.body.style.background = colors[Math.floor(Math.random() * colors.length)];
-        });
-      }
-
-      // الاشتراك بالنشرة الإخبارية
-      document.getElementById('subscribeBtn').addEventListener('click', () => {
-        const emailInput = document.getElementById('emailInput');
-        if(emailInput.value.trim()){
-          alert('شكراً لاشتراكك! سيتم إرسال آخر الأخبار إلى بريدك الإلكتروني.');
-          emailInput.value = '';
-        } else {
-          alert('يرجى إدخال بريدك الإلكتروني.');
+        // SHA-256 Hashing helper function using crypto.subtle
+        async function hashSHA256(text) {
+            const encoder = new TextEncoder();
+            const data = encoder.encode(text);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
         }
-      });
 
-      // نموذج التواصل
-      document.getElementById('contactForm').addEventListener('submit', (e) => {
-        e.preventDefault();
-        alert('تم إرسال رسالتك بنجاح!');
-        e.target.reset();
-      });
-
-      // زر العودة للأعلى
-      const scrollTopBtn = document.getElementById('scrollTopBtn');
-      scrollTopBtn.addEventListener('click', () => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      });
-      window.addEventListener('scroll', () => {
-        // تحديث مؤشر التمرير
-        const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-        const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-        const scrolled = (winScroll / height) * 100;
-        document.getElementById('progressBar').style.width = scrolled + "%";
-        // إظهار زر العودة للأعلى
-        scrollTopBtn.style.display = (document.documentElement.scrollTop > 200) ? 'block' : 'none';
-      });
-
-      // التعامل مع أزرار "اقرأ المزيد"
-      document.querySelectorAll('.read-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-          alert(btn.dataset.alert);
-        });
-      });
-
-      // تهيئة قسم الهولوجرامات باستخدام Three.js
-      function initializeHologram() {
-        const container = document.getElementById('hologramContainer');
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(75, container.offsetWidth / container.offsetHeight, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-        renderer.setSize(container.offsetWidth, container.offsetHeight);
-        container.appendChild(renderer.domElement);
-
-        const geometry = new THREE.BoxGeometry(2, 2, 2);
-        const material = new THREE.MeshBasicMaterial({
-          color: 0x00ffff,
-          wireframe: true,
-          opacity: 0.7,
-          transparent: true
-        });
-        const cube = new THREE.Mesh(geometry, material);
-        scene.add(cube);
-
-        camera.position.z = 5;
-        function animate() {
-          requestAnimationFrame(animate);
-          cube.rotation.x += 0.01;
-          cube.rotation.y += 0.01;
-          renderer.render(scene, camera);
+        // Dark Mode Toggle
+        function toggleDarkMode() {
+            document.documentElement.classList.toggle('dark');
         }
-        animate();
-        window.addEventListener('resize', () => {
-          camera.aspect = container.offsetWidth / container.offsetHeight;
-          camera.updateProjectionMatrix();
-          renderer.setSize(container.offsetWidth, container.offsetHeight);
-        });
-      }
 
-      // تبديل الوضع الليلي
-      const themeToggle = document.getElementById('themeToggle');
-      themeToggle.addEventListener('click', () => {
-        document.body.classList.toggle('dark');
-        themeToggle.textContent = document.body.classList.contains('dark') ? 'الوضع النهاري' : 'الوضع الليلي';
-      });
-    });
-  </script>
+        // Render Navbar Auth Indicator / Button
+        function renderAuthArea() {
+            const container = document.getElementById('authArea');
+            if (activeSessionToken) {
+                container.innerHTML = `
+                    <div class="flex items-center gap-2">
+                        <button onclick="toggleAdminPanel()" class="px-4 py-2 rounded-xl bg-sky-600 text-white text-xs font-bold hover:bg-sky-700 shadow-md transition flex items-center gap-1.5">
+                            <i class="fas fa-gauge-high"></i> لوحة التحكم
+                        </button>
+                        <button onclick="handleLogout()" class="px-3 py-2 rounded-xl bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white text-xs font-bold transition" title="تسجيل الخروج">
+                            <i class="fas fa-right-from-bracket"></i>
+                        </button>
+                    </div>
+                `;
+            } else {
+                container.innerHTML = `
+                    <button onclick="openLoginModal()" class="px-4 py-2 rounded-xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-xs font-bold hover:opacity-90 transition flex items-center gap-1.5 shadow-md">
+                        <i class="fas fa-lock text-sky-400 dark:text-sky-600"></i> دخول المسؤول
+                    </button>
+                `;
+            }
+        }
+
+        // Render News Cards
+        function renderNews(items) {
+            const grid = document.getElementById('articlesGrid');
+            grid.innerHTML = '';
+
+            if (items.length === 0) {
+                grid.innerHTML = `<div class="col-span-full text-center py-12 text-gray-400">لا يوجد مقالات في هذا التصنيف حالياً.</div>`;
+                return;
+            }
+
+            items.forEach(item => {
+                const card = document.createElement('article');
+                card.className = `glass-panel ${siteConfig.cardStyle} overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 dark:border-slate-800 flex flex-col`;
+                card.innerHTML = `
+                    <div class="relative h-48 overflow-hidden bg-slate-800">
+                        <img src="${item.image}" alt="${item.title}" onerror="this.src='https://placehold.co/600x400/0f172a/ffffff?text=Tech+News'" class="w-full h-full object-cover transition-transform duration-500 hover:scale-105">
+                        <span class="absolute top-3 right-3 px-3 py-1 bg-slate-900/80 backdrop-blur-md text-sky-400 text-[11px] font-bold rounded-full border border-sky-500/20">
+                            ${item.categoryName}
+                        </span>
+                    </div>
+                    <div class="p-5 flex-grow flex flex-col justify-between space-y-4">
+                        <div>
+                            <div class="text-[11px] text-gray-400 mb-1 flex items-center gap-1">
+                                <i class="far fa-calendar"></i> ${item.date}
+                            </div>
+                            <h3 class="text-base font-bold text-gray-900 dark:text-white leading-snug hover:text-sky-600 transition">
+                                ${item.title}
+                            </h3>
+                            <p class="text-xs text-gray-600 dark:text-gray-300 mt-2 line-clamp-3 leading-relaxed">
+                                ${item.content}
+                            </p>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // Filter News Categories
+        function filterNews(cat) {
+            document.querySelectorAll('.cat-filter-btn').forEach(btn => {
+                btn.className = "cat-filter-btn px-4 py-2 rounded-xl text-xs font-semibold bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200";
+            });
+            event.target.className = "cat-filter-btn px-4 py-2 rounded-xl text-xs font-semibold bg-sky-600 text-white shadow-md";
+
+            if (cat === 'all') {
+                renderNews(newsData);
+            } else {
+                renderNews(newsData.filter(n => n.category === cat));
+            }
+        }
+
+        /* ==================== HIGH-SECURITY AUTHENTICATION SYSTEM ==================== */
+
+        function openLoginModal() {
+            checkLockoutState();
+            generateCaptcha();
+            document.getElementById('loginModal').classList.remove('hidden');
+            document.getElementById('loginFormStep1').classList.remove('hidden');
+            document.getElementById('loginFormStep2').classList.add('hidden');
+            document.getElementById('attemptsLeftText').textContent = 3 - failedAttempts;
+        }
+
+        function closeLoginModal() {
+            document.getElementById('loginModal').classList.add('hidden');
+            if (otpInterval) clearInterval(otpInterval);
+        }
+
+        // Generate Interactive CAPTCHA
+        function generateCaptcha() {
+            const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+            let code = '';
+            for (let i = 0; i < 5; i++) {
+                code += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            currentCaptcha = code;
+            document.getElementById('captchaBox').textContent = code;
+        }
+
+        // Check if Account is currently Locked out
+        function checkLockoutState() {
+            const now = Date.now();
+            if (lockoutUntil > now) {
+                const remainingSec = Math.ceil((lockoutUntil - now) / 1000);
+                triggerLockoutUI(remainingSec);
+                return true;
+            } else {
+                if (lockoutUntil !== 0) {
+                    // Reset lockout
+                    failedAttempts = 0;
+                    lockoutUntil = 0;
+                    localStorage.setItem('sec_failed_attempts', '0');
+                    localStorage.setItem('sec_lockout_until', '0');
+                }
+                document.getElementById('lockoutAlert').classList.add('hidden');
+                document.getElementById('submitLoginBtn').disabled = false;
+                return false;
+            }
+        }
+
+        function triggerLockoutUI(seconds) {
+            document.getElementById('lockoutAlert').classList.remove('hidden');
+            document.getElementById('submitLoginBtn').disabled = true;
+            let timerVal = seconds;
+
+            const timerElem = document.getElementById('lockoutTimer');
+            timerElem.textContent = `00:${timerVal < 10 ? '0' : ''}${timerVal}`;
+
+            const interval = setInterval(() => {
+                timerVal--;
+                if (timerVal <= 0) {
+                    clearInterval(interval);
+                    checkLockoutState();
+                } else {
+                    timerElem.textContent = `00:${timerVal < 10 ? '0' : ''}${timerVal}`;
+                }
+            }, 1000);
+        }
+
+        // Login Step 1: User/Pass + CAPTCHA Verification
+        async function handleLoginStep1(e) {
+            e.preventDefault();
+
+            if (checkLockoutState()) return;
+
+            const userInput = document.getElementById('loginUsername').value.trim();
+            const passInput = document.getElementById('loginPassword').value;
+            const captchaInput = document.getElementById('captchaInput').value.trim().toUpperCase();
+
+            // Verify CAPTCHA
+            if (captchaInput !== currentCaptcha) {
+                showToast('رمز الكابتشا غير صحيح، حاول مجدداً', 'error');
+                generateCaptcha();
+                document.getElementById('captchaInput').value = '';
+                return;
+            }
+
+            const storedUser = localStorage.getItem('sec_admin_user') || DEFAULT_USER;
+            const storedHash = localStorage.getItem('sec_admin_pass_hash') || DEFAULT_PASS_HASH;
+
+            const enteredHash = await hashSHA256(passInput);
+
+            // Verify Credentials
+            if (userInput === storedUser && enteredHash === storedHash) {
+                // Success Step 1 - Reset failed attempts
+                failedAttempts = 0;
+                localStorage.setItem('sec_failed_attempts', '0');
+
+                // Move to Step 2 (OTP / 2FA)
+                startOTPPhase();
+            } else {
+                // Failed Attempt
+                failedAttempts++;
+                localStorage.setItem('sec_failed_attempts', failedAttempts.toString());
+                document.getElementById('attemptsLeftText').textContent = Math.max(0, 3 - failedAttempts);
+
+                if (failedAttempts >= 3) {
+                    lockoutUntil = Date.now() + 60000; // 60 Seconds lockout
+                    localStorage.setItem('sec_lockout_until', lockoutUntil.toString());
+                    triggerLockoutUI(60);
+                    showToast('تم تجاوز المحاولات المسموحة! قفل الحساب لمدة 60 ثانية.', 'error');
+                } else {
+                    showToast(`بيانات الدخول غير صحيحة! محاولات متبقية: ${3 - failedAttempts}`, 'error');
+                }
+                generateCaptcha();
+            }
+        }
+
+        // Start 2FA Step
+        function startOTPPhase() {
+            // Generate Random 6-digit OTP
+            generatedOTP = Math.floor(100000 + Math.random() * 900000).toString();
+            
+            document.getElementById('loginFormStep1').classList.add('hidden');
+            document.getElementById('loginFormStep2').classList.remove('hidden');
+            document.getElementById('simulatedOTP').textContent = generatedOTP;
+
+            let secondsLeft = 60;
+            document.getElementById('otpTimer').textContent = secondsLeft;
+
+            if (otpInterval) clearInterval(otpInterval);
+
+            otpInterval = setInterval(() => {
+                secondsLeft--;
+                document.getElementById('otpTimer').textContent = secondsLeft;
+                if (secondsLeft <= 0) {
+                    clearInterval(otpInterval);
+                    showToast('انتهت صلاحية رمز OTP. يرجى إعادة محاولة تسجيل الدخول.', 'error');
+                    openLoginModal();
+                }
+            }, 1000);
+        }
+
+        // Step 2: Verify OTP
+        function handleOTPVerification(e) {
+            e.preventDefault();
+            const enteredOTP = document.getElementById('otpInput').value.trim();
+
+            if (enteredOTP === generatedOTP) {
+                if (otpInterval) clearInterval(otpInterval);
+                
+                // Create Session Token & Login
+                activeSessionToken = 'SEC-TOKEN-' + Math.random().toString(36).substring(2) + Date.now().toString(36);
+                localStorage.setItem('sec_session_token', activeSessionToken);
+                localStorage.setItem('sec_last_activity', Date.now().toString());
+
+                showToast('تمت المصادقة بنجاح! مرحباً بك في لوحة التحكم', 'success');
+                closeLoginModal();
+                renderAuthArea();
+                showAdminPanel();
+                startSessionTimeoutChecker();
+            } else {
+                showToast('رمز OTP غير صحيح!', 'error');
+            }
+        }
+
+        // Session Timeout & Inactivity Management
+        function startSessionTimeoutChecker() {
+            if (sessionTimeoutTimer) clearInterval(sessionTimeoutTimer);
+
+            // Check every 30 seconds
+            sessionTimeoutTimer = setInterval(() => {
+                const lastAct = parseInt(localStorage.getItem('sec_last_activity') || '0');
+                const now = Date.now();
+                // 15 Minutes Inactivity Limit
+                if (now - lastAct > 15 * 60 * 1000) {
+                    handleLogout('تم إنهاء الجلسة تلقائياً بسبب عدم النشاط لإنعاش الأمان.');
+                }
+            }, 30000);
+        }
+
+        function checkSessionTimeout() {
+            if (activeSessionToken) {
+                startSessionTimeoutChecker();
+            }
+        }
+
+        // Update Last Activity Timestamp
+        ['click', 'mousemove', 'keypress'].forEach(evt => {
+            window.addEventListener(evt, () => {
+                if (activeSessionToken) {
+                    localStorage.setItem('sec_last_activity', Date.now().toString());
+                }
+            });
+        });
+
+        function handleLogout(msg = 'تم تسجيل الخروج بنجاح') {
+            activeSessionToken = null;
+            localStorage.removeItem('sec_session_token');
+            if (sessionTimeoutTimer) clearInterval(sessionTimeoutTimer);
+            
+            renderAuthArea();
+            document.getElementById('adminView').classList.add('hidden');
+            document.getElementById('publicView').classList.remove('hidden');
+            showToast(msg, 'info');
+        }
+
+        /* ==================== ADMIN PANEL FUNCTIONS ==================== */
+
+        function toggleAdminPanel() {
+            const adminSec = document.getElementById('adminView');
+            const publicSec = document.getElementById('publicView');
+
+            if (adminSec.classList.contains('hidden')) {
+                showAdminPanel();
+            } else {
+                adminSec.classList.add('hidden');
+                publicSec.classList.remove('hidden');
+            }
+        }
+
+        function showAdminPanel() {
+            document.getElementById('adminView').classList.remove('hidden');
+            document.getElementById('publicView').classList.add('hidden');
+            document.getElementById('sessionTokenDisplay').textContent = activeSessionToken || 'N/A';
+            renderAdminNewsList();
+            showAdminTab('content');
+        }
+
+        function showAdminTab(tab) {
+            document.querySelectorAll('.admin-tab-content').forEach(el => el.classList.add('hidden'));
+            if (tab === 'content') document.getElementById('tabContent').classList.remove('hidden');
+            if (tab === 'identity') document.getElementById('tabIdentity').classList.remove('hidden');
+            if (tab === 'security') document.getElementById('tabSecurity').classList.remove('hidden');
+        }
+
+        // Add News Functionality
+        function handleAddNews(e) {
+            e.preventDefault();
+            const newArticle = {
+                id: Date.now().toString(),
+                title: document.getElementById('newsTitle').value,
+                category: document.getElementById('newsCategory').value,
+                categoryName: document.getElementById('newsCategory').options[document.getElementById('newsCategory').selectedIndex].text,
+                date: new Date().toISOString().split('T')[0],
+                image: document.getElementById('newsImage').value || 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=600&q=80',
+                content: document.getElementById('newsContent').value
+            };
+
+            newsData.unshift(newArticle);
+            localStorage.setItem('tech_site_news', JSON.stringify(newsData));
+            renderNews(newsData);
+            renderAdminNewsList();
+
+            document.getElementById('addNewsForm').reset();
+            showToast('تم نشر الخبر بنجاح', 'success');
+        }
+
+        function deleteNews(id) {
+            newsData = newsData.filter(n => n.id !== id);
+            localStorage.setItem('tech_site_news', JSON.stringify(newsData));
+            renderNews(newsData);
+            renderAdminNewsList();
+            showToast('تم حذف الخبر', 'info');
+        }
+
+        function renderAdminNewsList() {
+            const list = document.getElementById('adminNewsList');
+            list.innerHTML = '';
+            newsData.forEach(item => {
+                const div = document.createElement('div');
+                div.className = "flex items-center justify-between p-3 bg-gray-50 dark:bg-slate-800 rounded-xl text-xs";
+                div.innerHTML = `
+                    <div class="flex items-center space-x-3 space-x-reverse overflow-hidden">
+                        <img src="${item.image}" class="w-10 h-10 rounded-lg object-cover">
+                        <div class="truncate">
+                            <h4 class="font-bold text-gray-800 dark:text-gray-200 truncate">${item.title}</h4>
+                            <span class="text-[10px] text-sky-500">${item.categoryName}</span>
+                        </div>
+                    </div>
+                    <button onclick="deleteNews('${item.id}')" class="px-3 py-1.5 bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white rounded-lg transition font-bold">
+                        <i class="fas fa-trash-can"></i>
+                    </button>
+                `;
+                list.appendChild(div);
+            });
+        }
+
+        // Customization Settings
+        function saveSiteSettings() {
+            siteConfig.title = document.getElementById('custSiteTitle').value || siteConfig.title;
+            siteConfig.subtitle = document.getElementById('custSiteSubtitle').value || siteConfig.subtitle;
+            siteConfig.font = document.getElementById('custFont').value;
+            siteConfig.icon = document.getElementById('custIcon').value;
+            siteConfig.cardStyle = document.getElementById('custCardStyle').value;
+
+            localStorage.setItem('tech_site_config', JSON.stringify(siteConfig));
+            applySiteSettings();
+            renderNews(newsData);
+            showToast('تم حفظ إعدادات الهوية بنجاح', 'success');
+        }
+
+        function applySiteSettings() {
+            document.getElementById('siteTitleText').textContent = siteConfig.title;
+            document.getElementById('siteSubtitleText').textContent = siteConfig.subtitle;
+            document.getElementById('siteIcon').className = `fas ${siteConfig.icon}`;
+            
+            // Apply Font
+            document.body.classList.remove('font-cairo', 'font-tajawal', 'font-changa');
+            document.body.classList.add(siteConfig.font);
+
+            // Populate form values in admin
+            document.getElementById('custSiteTitle').value = siteConfig.title;
+            document.getElementById('custSiteSubtitle').value = siteConfig.subtitle;
+            document.getElementById('custFont').value = siteConfig.font;
+            document.getElementById('custIcon').value = siteConfig.icon;
+            document.getElementById('custCardStyle').value = siteConfig.cardStyle;
+        }
+
+        /* Password Strength & Security Credentials Update */
+        function checkPasswordStrength(pass) {
+            let score = 0;
+            const hasLen = pass.length >= 10;
+            const hasUpper = /[A-Z]/.test(pass);
+            const hasLower = /[a-z]/.test(pass);
+            const hasNum = /[0-9]/.test(pass);
+            const hasSym = /[!@#$%^&*]/.test(pass);
+
+            // Update UI requirements indicators
+            updateReqUI('reqLen', hasLen);
+            updateReqUI('reqUpper', hasUpper);
+            updateReqUI('reqLower', hasLower);
+            updateReqUI('reqNum', hasNum);
+            updateReqUI('reqSym', hasSym);
+
+            if (hasLen) score++;
+            if (hasUpper) score++;
+            if (hasLower) score++;
+            if (hasNum) score++;
+            if (hasSym) score++;
+
+            const bar = document.getElementById('passStrengthBar');
+            const text = document.getElementById('passStrengthText');
+
+            if (score <= 2) {
+                bar.className = 'h-full bg-red-500 w-1/4 transition-all duration-300';
+                text.textContent = 'ضعيفة جداً';
+                text.className = 'text-[10px] text-red-500 font-bold';
+            } else if (score <= 4) {
+                bar.className = 'h-full bg-amber-500 w-3/4 transition-all duration-300';
+                text.textContent = 'متوسطة (غير مكتملة)';
+                text.className = 'text-[10px] text-amber-500 font-bold';
+            } else {
+                bar.className = 'h-full bg-emerald-500 w-full transition-all duration-300';
+                text.textContent = 'ممتازة - آمنة للغاية';
+                text.className = 'text-[10px] text-emerald-500 font-bold';
+            }
+
+            return score === 5;
+        }
+
+        function updateReqUI(elemId, valid) {
+            const elem = document.getElementById(elemId);
+            if (valid) {
+                elem.innerHTML = `<i class="fas fa-check-circle text-emerald-500"></i> ${elem.innerText.substring(2)}`;
+                elem.classList.add('text-emerald-600', 'dark:text-emerald-400');
+            } else {
+                elem.innerHTML = `<i class="fas fa-times-circle text-red-500"></i> ${elem.innerText.substring(2)}`;
+                elem.classList.remove('text-emerald-600', 'dark:text-emerald-400');
+            }
+        }
+
+        async function handleAdminCredentialsUpdate(e) {
+            e.preventDefault();
+            const newUser = document.getElementById('newAdminUser').value.trim();
+            const newPass = document.getElementById('newAdminPass').value;
+
+            if (!checkPasswordStrength(newPass)) {
+                showToast('كلمة المرور لا تستوفي كافة الشروط الأمنية الصارمة المطلوبة!', 'error');
+                return;
+            }
+
+            // Hash new password using SHA-256
+            const newPassHash = await hashSHA256(newPass);
+
+            localStorage.setItem('sec_admin_user', newUser);
+            localStorage.setItem('sec_admin_pass_hash', newPassHash);
+
+            showToast('تم تحديث بيانات المسؤول وتشفيرها بنجاح!', 'success');
+            document.getElementById('newAdminPass').value = '';
+        }
+
+        // Helper Toast Notification
+        function showToast(msg, type = 'info') {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toastMsg');
+            const toastIcon = document.getElementById('toastIcon');
+
+            toastMsg.textContent = msg;
+
+            if (type === 'success') {
+                toast.className = "fixed bottom-5 right-5 z-50 transform translate-y-0 opacity-100 transition-all duration-300 max-w-sm px-4 py-3 rounded-2xl shadow-xl bg-emerald-900/90 text-emerald-200 border border-emerald-500/30 flex items-center gap-3";
+                toastIcon.className = "fas fa-shield-check text-emerald-400";
+            } else if (type === 'error') {
+                toast.className = "fixed bottom-5 right-5 z-50 transform translate-y-0 opacity-100 transition-all duration-300 max-w-sm px-4 py-3 rounded-2xl shadow-xl bg-red-900/90 text-red-200 border border-red-500/30 flex items-center gap-3";
+                toastIcon.className = "fas fa-triangle-exclamation text-red-400";
+            } else {
+                toast.className = "fixed bottom-5 right-5 z-50 transform translate-y-0 opacity-100 transition-all duration-300 max-w-sm px-4 py-3 rounded-2xl shadow-xl bg-slate-900/90 text-sky-200 border border-sky-500/30 flex items-center gap-3";
+                toastIcon.className = "fas fa-info-circle text-sky-400";
+            }
+
+            setTimeout(() => {
+                toast.className = toast.className.replace('translate-y-0 opacity-100', 'translate-y-20 opacity-0');
+            }, 4000);
+        }
+    </script>
 </body>
 </html>
