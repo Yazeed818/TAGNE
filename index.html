@@ -133,76 +133,7 @@
     </section>
 
     <!-- الأدوات -->
-    <section id="tools-section" class="content-section" style="display:none;">
-      <h2>مختبر الأدوات والرموز</h2>
-      <div class="tool-box">
-        <h3>مولد كلمات المرور الآمنة</h3>
-        <button onclick="generatePassword()">توليد كلمة مرور جديدة</button>
-        <p id="generatedPassword" style="margin-top:10px; font-weight:bold; color:var(--primary-color);"></p>
-      </div>
-      <div class="tool-box">
-        <h3>مشفّر / فك تشفير النصوص (Base64)</h3>
-        <input type="text" id="encodeInput" placeholder="أدخل النص هنا..." style="width:100%; margin-bottom:8px;">
-        <button onclick="encodeText()">تشفير</button>
-        <button onclick="decodeText()">فك التشفير</button>
-        <p id="encodeResult" style="margin-top:10px; font-weight:bold;"></p>
-      </div>
-    </section>
 
-    <!-- الهولوجرام -->
-    <section id="holograms-section" class="content-section" style="display:none;">
-      <h2>عرض ثلاثي الأبعاد تفاعلي (Three.js)</h2>
-      <div id="hologramContainer"></div>
-    </section>
-
-    <!-- اتصل بنا -->
-    <section id="contact-section" class="content-section" style="display:none;">
-      <h2>التواصل والدعم الفني</h2>
-      <div style="text-align: center;">
-        <p>تواصل معنا عبر منصة X لخدمة العملاء:</p><br>
-        <a href="https://x.com/y818gfaj" target="_blank" style="text-decoration:none; font-weight:bold; color:var(--secondary-color);">حساب خدمة العملاء على X</a>
-      </div>
-    </section>
-
-  </main>
-
-  <!-- نافذة لوحة التحكم -->
-  <div class="modal" id="adminModal">
-    <div class="modal-content">
-      <span class="close-btn" onclick="toggleAdminModal()">&times;</span>
-      
-      <!-- تسجيل الدخول -->
-      <div id="loginFormContainer">
-        <h2 style="margin-bottom:20px;">تسجيل دخول مدير التأجير</h2>
-        
-        <div id="step1">
-          <div class="form-group">
-            <label>اسم المستخدم</label>
-            <input type="text" id="usernameInput">
-          </div>
-          <div class="form-group">
-            <label>كلمة المرور</label>
-            <input type="password" id="passwordInput">
-          </div>
-          <button class="cta-btn" style="width:100%;" onclick="processLoginStep1()">متابعة</button>
-        </div>
-
-        <div id="step2" style="display:none;">
-          <p style="margin-bottom:15px; color:green;">تم التحقق! أدخل رمز OTP المؤقت التالي: <b id="otpDisplay"></b></p>
-          <div class="form-group">
-            <label>رمز التحقق (OTP)</label>
-            <input type="text" id="otpInput">
-          </div>
-          <button class="cta-btn" style="width:100%;" onclick="processLoginStep2()">تسجيل الدخول</button>
-        </div>
-      </div>
-
-      <!-- لوحة التحكم الإدارية -->
-      <div id="dashboardContainer" style="display:none;">
-        <h2>لوحة إدارة أسطول تأجير السيارات</h2>
-        <p style="margin-bottom:20px; font-size:0.9rem; color:gray;">مرحباً بك، مدير النظام!</p>
-        
-        <!-- التبويبات -->
         <div style="display:flex; gap:10px; margin-bottom:20px; flex-wrap:wrap;">
           <button class="tool-box button" onclick="switchAdminTab('tab-bookings')">إدارة الحجوزات (<span id="bookingCountBadge">0</span>)</button>
           <button class="tool-box button" onclick="switchAdminTab('tab-add-car')">إضافة سيارة جديدة</button>
@@ -414,15 +345,6 @@
       document.getElementById('bookingForm').reset();
       updateBookingBadge();
       
-      alert(`تم تقديم طلب حجز السيارة بنجاح!\nالرقم المرجعي للحجز هو: ${refNumber}\nيرجى حفظ هذا الرقم للاستعلام عن حالة الطلب.`);
-    }
-
-    function trackBookingStatus() {
-      const ref = document.getElementById('trackRefInput').value.trim();
-      const container = document.getElementById('trackResultContainer');
-      if (!ref) return alert('يرجى إدخال الرقم المرجعي!');
-
-      const bookings = getBookings();
       const found = bookings.find(item => item.ref.toUpperCase() === ref.toUpperCase());
 
       container.style.display = 'block';
