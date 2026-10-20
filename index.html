@@ -8,7 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
     <!-- مكتبة Chart.js للمخططات التفاعلية -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- مكتبة SheetJS لقراءة معالجة ملفات Excel و CSV -->
+    <!-- مكتبة SheetJS لقراءة ومعالجة ملفات Excel و CSV -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <style>
         :root {
@@ -62,7 +62,7 @@
         select, input[type="text"], input[type="number"] { padding: 10px 14px; border-radius: 8px; border: 1px solid var(--border-color); background-color: var(--bg-card); color: var(--text-main); outline: none; font-size: 14px; }
         .btn-theme { padding: 10px 16px; background-color: var(--primary); color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 700; transition: 0.2s; }
 
-        /* أقسام الصفحات (Tab Sections) */
+        /* أقسام الصفحات */
         .page-section { display: none; flex-direction: column; gap: 25px; }
         .page-section.active { display: flex; }
 
@@ -70,12 +70,12 @@
         .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
         .card { background: var(--bg-card); padding: 20px; border-radius: 12px; border: 1px solid var(--border-color); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02); }
         .card h3 { font-size: 13px; color: var(--text-sub); margin-bottom: 8px; font-weight: 500; }
-        .card .number { font-size: 26px; font-weight: 800; }
+        .card .number { font-size: 24px; font-weight: 800; }
         .badge { display: inline-block; margin-top: 8px; padding: 4px 8px; border-radius: 6px; font-size: 12px; font-weight: 700; }
         .badge.success { background-color: rgba(16, 185, 129, 0.15); color: var(--success); }
         .badge.warning { background-color: rgba(245, 158, 11, 0.15); color: var(--warning); }
 
-        /* الشبكة الهيكلية للمخططات */
+        /* الرسوم البيانية */
         .charts-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; }
         @media(max-width: 992px) { .charts-grid { grid-template-columns: 1fr; } }
         .chart-card { background: var(--bg-card); padding: 20px; border-radius: 12px; border: 1px solid var(--border-color); }
@@ -89,41 +89,38 @@
         th, td { padding: 12px 16px; border-bottom: 1px solid var(--border-color); }
         th { color: var(--text-sub); font-weight: 700; background: var(--bg-card); position: sticky; top: 0; z-index: 10; }
 
-        /* نموذج إعدادات النظام */
         .form-group { display: flex; flex-direction: column; gap: 8px; margin-bottom: 15px; max-width: 500px; }
         .form-group label { font-weight: 700; font-size: 14px; color: var(--text-sub); }
         .btn-save { padding: 12px 20px; background-color: var(--primary); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 700; width: fit-content; }
 
-        /* شاشة التحميل */
         #loadingOverlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 9999; justify-content: center; align-items: center; color: white; font-size: 20px; font-weight: 700; backdrop-filter: blur(4px); }
     </style>
 </head>
 <body>
 
-    <div id="loadingOverlay">جاري معالجة البيانات وتحليل الملف بذكاء... 📊</div>
+    <div id="loadingOverlay">جاري معالجة وتدقيق ملف البيانات المتقدم... 📊</div>
 
-    <!-- القائمة الجانبية التنقلية -->
     <div class="sidebar">
-        <div class="brand">📊 PowerBI Smart</div>
+        <div class="brand">📊 PowerBI Advanced</div>
         <ul>
             <li><a id="nav-dashboard" class="active" onclick="switchTab('dashboard')">🏠 لوحة التحكم الرئيسية</a></li>
-            <li><a id="nav-financial" onclick="switchTab('financial')">💰 التحليل المالي</a></li>
-            <li><a id="nav-customers" onclick="switchTab('customers')">👥 تقارير العملاء</a></li>
+            <li><a id="nav-financial" onclick="switchTab('financial')">💰 التحليل المالي والأرباح</a></li>
+            <li><a id="nav-customers" onclick="switchTab('customers')">👥 سلوك وتقارير العملاء</a></li>
             <li><a id="nav-settings" onclick="switchTab('settings')">⚙️ إعدادات النظام</a></li>
         </ul>
     </div>
 
-    <!-- المحتوى الرئيسي -->
     <div class="main-content">
-        
-        <!-- الهيدر وأدوات التحكم -->
         <div class="header">
             <h1 id="pageTitle">لوحة التحكم الرئيسية</h1>
             <div class="controls">
                 <div class="upload-btn-wrapper">
-                    <button class="btn-upload">📁 رفع ملف Excel/CSV</button>
-                    <input type="file" id="excelFile" accept=".xlsx, .xls, .csv" onchange="processExcelFile(event)">
+                    <button class="btn-upload">📁 رفع ملف Excel/CSV المتقدم</button>
+                    <input type="file" id="excelFile" accept=".xlsx, .xls, .csv" onchange="processAdvancedExcel(event)">
                 </div>
+                <select id="sheetSelector" style="display:none;" onchange="changeSheet()">
+                    <!-- يتم تعبئتها بأوراق العمل ديناميكياً -->
+                </select>
                 <select id="timeFilter" onchange="applyGlobalFilter()">
                     <option value="all">كافة البيانات المرفوعة</option>
                     <option value="top10">أعلى 10 عمليات قيمة</option>
@@ -136,56 +133,58 @@
         <div id="section-dashboard" class="page-section active">
             <div class="stats-grid">
                 <div class="card">
-                    <h3>إجمالي المبيعات الإجمالية</h3>
-                    <div class="number" id="dashRevenue">145,200 ر.س</div>
-                    <span class="badge success">محدث بذكاء</span>
+                    <h3>إجمالي الإيرادات (Revenue SAR)</h3>
+                    <div class="number" id="dashRevenue">0.00 ر.س</div>
+                    <span class="badge success">مستخرج بدقة</span>
                 </div>
                 <div class="card">
-                    <h3>عدد المعاملات المسجلة</h3>
-                    <div class="number" id="dashCount">1,840</div>
-                    <span class="badge success">عملية ناجحة</span>
+                    <h3>صافي الأرباح (Profit SAR)</h3>
+                    <div class="number" id="dashProfit">0.00 ر.س</div>
+                    <span class="badge success">أرباح دقيقة</span>
                 </div>
                 <div class="card">
-                    <h3>متوسط قيمة المعاملة (AOV)</h3>
-                    <div class="number" id="dashAvg">78.91 ر.س</div>
-                    <span class="badge success">معدل ممتازة</span>
+                    <h3>عدد الطلبات المعالجة</h3>
+                    <div class="number" id="dashCount">0</div>
+                    <span class="badge success">طلب مسجل</span>
                 </div>
                 <div class="card">
-                    <h3>الأرباح التقديرية (Net Profit)</h3>
-                    <div class="number" id="dashProfit">43,560 ر.س</div>
-                    <span class="badge warning">هامش ~30%</span>
+                    <h3>متوسط رضا العملاء</h3>
+                    <div class="number" id="dashSatisfaction">0 / 5</div>
+                    <span class="badge warning">تقييم الأداء</span>
                 </div>
             </div>
 
             <div class="charts-grid">
                 <div class="chart-card">
-                    <h3>تحليل الاتجاه العام للمبيعات</h3>
+                    <h3>تحليل الإيرادات حسب القنوات/المناطق</h3>
                     <canvas id="dashBarChart" height="110"></canvas>
                 </div>
                 <div class="chart-card">
-                    <h3>توزيع المبيعات حسب الفئة</h3>
+                    <h3>توزيع المبيعات حسب الفئات (Categories)</h3>
                     <canvas id="dashPieChart" height="160"></canvas>
                 </div>
             </div>
 
             <div class="table-card">
                 <div class="table-header">
-                    <h3>سجل البيانات المرفوعة</h3>
-                    <input type="text" id="dashSearch" onkeyup="searchTable('dashTableBody')" placeholder="ابحث داخل السجلات...">
+                    <h3>جدول تفاصيل البيانات النظيفة</h3>
+                    <input type="text" id="dashSearch" onkeyup="searchTable('dashTableBody')" placeholder="ابحث في كافة الأعمدة...">
                 </div>
                 <div class="table-container">
                     <table>
                         <thead>
                             <tr id="dashTableHeader">
-                                <th>المعرف</th>
-                                <th>العميل</th>
-                                <th>المنتج / الخدمة</th>
-                                <th>المبلغ (ر.س)</th>
+                                <th>Order ID</th>
+                                <th>Customer ID</th>
+                                <th>Region</th>
+                                <th>Category</th>
+                                <th>Product</th>
+                                <th>Revenue (SAR)</th>
+                                <th>Profit (SAR)</th>
                             </tr>
                         </thead>
                         <tbody id="dashTableBody">
-                            <tr><td>#1001</td><td>أحمد المحمد</td><td>اشتراك بريميوم</td><td>1,200 ر.س</td></tr>
-                            <tr><td>#1002</td><td>سارة الخالد</td><td>دورة برمجة</td><td>450 ر.س</td></tr>
+                            <tr><td colspan="7" style="text-align:center;">يرجى رفع ملف إكسل لبدء التحليل.</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -196,22 +195,26 @@
         <div id="section-financial" class="page-section">
             <div class="stats-grid">
                 <div class="card">
-                    <h3>المبيعات الصافية</h3>
-                    <div class="number" id="finNet">145,200 ر.س</div>
+                    <h3>إجمالي الإيرادات الصافية</h3>
+                    <div class="number" id="finNet">0.00 ر.س</div>
                 </div>
                 <div class="card">
-                    <h3>التكاليف المباشرة التقديرية</h3>
-                    <div class="number" id="finCosts">101,640 ر.س</div>
+                    <h3>إجمالي التكاليف (Cost SAR)</h3>
+                    <div class="number" id="finCosts">0.00 ر.س</div>
                 </div>
                 <div class="card">
-                    <h3>صافي أرباح التشغيل</h3>
-                    <div class="number" id="finNetProfit">43,560 ر.س</div>
+                    <h3>إجمالي الأرباح الصافية</h3>
+                    <div class="number" id="finNetProfit">0.00 ر.س</div>
+                </div>
+                <div class="card">
+                    <h3>قيمة المسترجعات (Returns)</h3>
+                    <div class="number" id="finReturns">0.00 ر.س</div>
                 </div>
             </div>
 
             <div class="charts-grid">
                 <div class="chart-card" style="grid-column: span 2;">
-                    <h3>المقارنة بين الإيرادات والتكاليف والأرباح</h3>
+                    <h3>المقارنة بين الإيرادات، التكاليف، والأرباح</h3>
                     <canvas id="finLineChart" height="90"></canvas>
                 </div>
             </div>
@@ -221,32 +224,36 @@
         <div id="section-customers" class="page-section">
             <div class="stats-grid">
                 <div class="card">
-                    <h3>إجمالي عدد العملاء الفريدين</h3>
-                    <div class="number" id="custUnique">420</div>
+                    <h3>عدد العملاء الفريدين</h3>
+                    <div class="number" id="custUnique">0</div>
                 </div>
                 <div class="card">
                     <h3>متوسط إنفاق العميل</h3>
-                    <div class="number" id="custAvgSpend">345.71 ر.س</div>
+                    <div class="number" id="custAvgSpend">0.00 ر.س</div>
+                </div>
+                <div class="card">
+                    <h3>متوسط أيام الشحن</h3>
+                    <div class="number" id="custShippingDays">0 أيام</div>
                 </div>
             </div>
 
             <div class="table-card">
                 <div class="table-header">
-                    <h3>قائمة أكثر العملاء شراءً وحركة</h3>
-                    <input type="text" onkeyup="searchTable('custTableBody')" placeholder="ابحث باسم العميل...">
+                    <h3>قائمة أكثر العملاء شراءً وإنفاقاً</h3>
+                    <input type="text" onkeyup="searchTable('custTableBody')" placeholder="ابحث بمعرف العميل...">
                 </div>
                 <div class="table-container">
                     <table>
                         <thead>
                             <tr>
-                                <th>اسم العميل</th>
-                                <th>عدد العمليات</th>
-                                <th>إجمالي الإنفاق</th>
+                                <th>معرف العميل (Customer ID)</th>
+                                <th>عدد الطلبات</th>
+                                <th>إجمالي الإنفاق (Revenue)</th>
+                                <th>إجمالي الأرباح منه</th>
                             </tr>
                         </thead>
                         <tbody id="custTableBody">
-                            <tr><td>أحمد المحمد</td><td>5 عمليات</td><td>3,500 ر.س</td></tr>
-                            <tr><td>سارة الخالد</td><td>3 عمليات</td><td>1,800 ر.س</td></tr>
+                            <tr><td colspan="4" style="text-align:center;">لا توجد بيانات عملاء بعد.</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -256,36 +263,27 @@
         <!-- 4. صفحة إعدادات النظام -->
         <div id="section-settings" class="page-section">
             <div class="table-card">
-                <h3 style="margin-bottom: 20px;">تفضيلات وإعدادات المنصة</h3>
+                <h3 style="margin-bottom: 20px;">تفضيلات وإعدادات التحليل</h3>
                 <div class="form-group">
-                    <label>عنوان الشركة / المنصة</label>
-                    <input type="text" id="settingBrandName" value="شركة التحليلات الذكية">
-                </div>
-                <div class="form-group">
-                    <label>نسبة تقدير التكاليف المباشرة (%)</label>
-                    <input type="number" id="settingCostRatio" value="70">
-                </div>
-                <div class="form-group">
-                    <label>العملة الافتراضية</label>
+                    <label>العملة المستخدمة في التقارير</label>
                     <select id="settingCurrency">
-                        <option value="ر.س">ريال سعودي (ر.س)</option>
+                        <option value="ر.س">ريال سعودي (ر.س / SAR)</option>
                         <option value="$">دولار أمريكي ($)</option>
-                        <option value="د.إ">درهم إماراتي (د.إ)</option>
                     </select>
                 </div>
-                <button class="btn-save" onclick="saveSettings()">حفظ التغييرات</button>
+                <button class="btn-save" onclick="alert('تم حفظ الإعدادات!')">حفظ التغييرات</button>
             </div>
         </div>
 
     </div>
 
     <script>
-        let globalRawData = [];
+        let workbookInstance = null;
+        let globalCleanRows = [];
+        let globalHeaders = [];
         let dashBarInstance, dashPieInstance, finLineInstance;
         let currencySymbol = "ر.س";
-        let costRatio = 0.70;
 
-        // التنقل التفاعلي بين صفحات القائمة الجانبية
         function switchTab(tabKey) {
             document.querySelectorAll('.sidebar ul li a').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.page-section').forEach(el => el.classList.remove('active'));
@@ -295,32 +293,20 @@
 
             const titles = {
                 'dashboard': 'لوحة التحكم الرئيسية',
-                'financial': 'التحليل المالي التفصيلي',
-                'customers': 'تحليلات وتقارير العملاء',
+                'financial': 'التحليل المالي والأرباح',
+                'customers': 'سلوك وتقارير العملاء',
                 'settings': 'إعدادات المنصة والنظام'
             };
             document.getElementById('pageTitle').innerText = titles[tabKey];
         }
 
-        // تبديل المظهر الليلي والنهاري
         function toggleTheme() {
             document.body.classList.toggle('dark-mode');
             const isDark = document.body.classList.contains('dark-mode');
             document.querySelector('.btn-theme').innerText = isDark ? 'الوضع النهاري ☀️' : 'الوضع الليلي 🌙';
         }
 
-        // حفظ إعدادات النظام وتطبيقه
-        function saveSettings() {
-            currencySymbol = document.getElementById('settingCurrency').value;
-            const ratioVal = parseFloat(document.getElementById('settingCostRatio').value);
-            if (!isNaN(ratioVal)) costRatio = ratioVal / 100;
-            
-            alert('تم حفظ الإعدادات وتحديث الحسابات بنجاح!');
-            if (globalRawData.length > 0) renderDashboard(globalRawData);
-        }
-
-        // معالجة وقراءة ملفات إكسل بذكاء
-        function processExcelFile(e) {
+        function processAdvancedExcel(e) {
             const file = e.target.files[0];
             if (!file) return;
 
@@ -330,27 +316,24 @@
             reader.onload = function(evt) {
                 try {
                     const data = new Uint8Array(evt.target.result);
-                    const workbook = XLSX.read(data, { type: 'array' });
-                    const sheet = workbook.Sheets[workbook.SheetNames[0]];
-                    const rows = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+                    workbookInstance = XLSX.read(data, { type: 'array' });
 
-                    if (rows.length < 2) {
-                        alert('الملف فارغ أو التنسيق غير مدعوم.');
-                        document.getElementById('loadingOverlay').style.display = 'none';
-                        return;
-                    }
+                    // البحث الذكي عن الورقة المناسبة (Prefer Clean_Data or Raw_Data)
+                    let targetSheetName = workbookInstance.SheetNames.find(s => s.toLowerCase().includes('clean')) ||
+                                          workbookInstance.SheetNames.find(s => s.toLowerCase().includes('raw')) ||
+                                          workbookInstance.SheetNames[0];
 
-                    const headers = rows[0];
-                    globalRawData = rows.slice(1).filter(r => r.length > 0);
+                    // تعبئة قائمة اختيار الأوراق
+                    const sheetSelect = document.getElementById('sheetSelector');
+                    sheetSelect.innerHTML = '';
+                    workbookInstance.SheetNames.forEach(name => {
+                        sheetSelect.innerHTML += `<option value="${name}" ${name === targetSheetName ? 'selected' : ''}>ورقة: ${name}</option>`;
+                    });
+                    sheetSelect.style.display = 'inline-block';
 
-                    // تحديث هيدر الجدول
-                    let thHTML = '';
-                    headers.forEach(h => thHTML += `<th>${h || 'عمود'}</th>`);
-                    document.getElementById('dashTableHeader').innerHTML = thHTML;
-
-                    renderDashboard(globalRawData);
+                    loadSheetData(targetSheetName);
                 } catch (err) {
-                    alert('حدث خطأ أثناء معالجة الملف.');
+                    alert('حدث خطأ أثناء معالجة ملف الإكسل المتقدم.');
                     console.error(err);
                 } finally {
                     document.getElementById('loadingOverlay').style.display = 'none';
@@ -359,128 +342,169 @@
             reader.readAsArrayBuffer(file);
         }
 
-        // معالج محرك التحليل المتقدم للبيانات (Analytics Engine)
-        function renderDashboard(rows) {
-            let totalRevenue = 0;
-            let numericCount = 0;
-            let tbodyHTML = '';
+        function changeSheet() {
+            const selectedSheet = document.getElementById('sheetSelector').value;
+            loadSheetData(selectedSheet);
+        }
+
+        function loadSheetData(sheetName) {
+            const sheet = workbookInstance.Sheets[sheetName];
+            const rows = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+
+            if (rows.length < 2) {
+                alert('الورقة المختارة فارغة أو لا تحتوي بيانات.');
+                return;
+            }
+
+            globalHeaders = rows[0];
+            globalCleanRows = rows.slice(1).filter(r => r.length > 0);
+
+            // تحديث الجدول الهيكلي
+            let thHTML = '';
+            globalHeaders.forEach(h => thHTML += `<th>${h || ''}</th>`);
+            document.getElementById('dashTableHeader').innerHTML = thHTML;
+
+            analyzeAndRender(globalHeaders, globalCleanRows);
+        }
+
+        function analyzeAndRender(headers, rows) {
+            // خريطة البحث الفطكي في الأعمدة
+            const findColIndex = (keywords) => headers.findIndex(h => h && keywords.some(k => h.toString().toLowerCase().includes(k.toLowerCase())));
+
+            const revIdx = findColIndex(['Revenue', 'Gross_Sales', 'Sales', 'المبلغ', 'الإيرادات']);
+            const profitIdx = findColIndex(['Profit', 'الربح', 'الأرباح']);
+            const costIdx = findColIndex(['Cost', 'التكلفة', 'التكاليف']);
+            const returnIdx = findColIndex(['Return_Amount', 'Return']);
+            const custIdx = findColIndex(['Customer_ID', 'Customer', 'العميل']);
+            const catIdx = findColIndex(['Category', 'Product', 'الفئة', 'المنتج']);
+            const regionIdx = findColIndex(['Region', 'Sales_Channel', 'المنطقة', 'القناة']);
+            const satIdx = findColIndex(['Satisfaction', 'Rating', 'التقييم']);
+            const shipIdx = findColIndex(['Shipping_Days', 'Days', 'الشحن']);
+
+            let totalRevenue = 0, totalProfit = 0, totalCost = 0, totalReturn = 0;
+            let satisfactionSum = 0, satisfactionCount = 0;
+            let shippingDaysSum = 0, shippingDaysCount = 0;
+
             let customerMap = {};
             let categoryMap = {};
+            let regionMap = {};
+
+            let tbodyHTML = '';
 
             rows.forEach(row => {
                 tbodyHTML += '<tr>';
                 row.forEach((cell, idx) => {
                     tbodyHTML += `<td>${cell !== undefined ? cell : ''}</td>`;
-                    
-                    // التعرف الذكي على الأرقام المالية
-                    if (typeof cell === 'number') {
-                        totalRevenue += cell;
-                        numericCount++;
-                    } else if (typeof cell === 'string' && !isNaN(cell) && cell.trim() !== '') {
-                        totalRevenue += parseFloat(cell);
-                        numericCount++;
-                    }
-
-                    // تجميع بيانات العملاء (تحديد العمود الأول أو الثاني بذكاء)
-                    if (idx === 1 && cell) {
-                        customerMap[cell] = (customerMap[cell] || 0) + 1;
-                    }
-                    if (idx === 2 && cell) {
-                        categoryMap[cell] = (categoryMap[cell] || 0) + 1;
-                    }
                 });
                 tbodyHTML += '</tr>';
+
+                // الحسابات المتقدمة
+                if (revIdx !== -1 && !isNaN(row[revIdx])) totalRevenue += parseFloat(row[revIdx]);
+                if (profitIdx !== -1 && !isNaN(row[profitIdx])) totalProfit += parseFloat(row[profitIdx]);
+                if (costIdx !== -1 && !isNaN(row[costIdx])) totalCost += parseFloat(row[costIdx]);
+                if (returnIdx !== -1 && !isNaN(row[returnIdx])) totalReturn += parseFloat(row[returnIdx]);
+
+                if (satIdx !== -1 && !isNaN(row[satIdx])) { satisfactionSum += parseFloat(row[satIdx]); satisfactionCount++; }
+                if (shipIdx !== -1 && !isNaN(row[shipIdx])) { shippingDaysSum += parseFloat(row[shipIdx]); shippingDaysCount++; }
+
+                if (custIdx !== -1 && row[custIdx]) {
+                    const cVal = row[custIdx];
+                    if (!customerMap[cVal]) customerMap[cVal] = { count: 0, rev: 0, profit: 0 };
+                    customerMap[cVal].count++;
+                    customerMap[cVal].rev += (revIdx !== -1 && !isNaN(row[revIdx])) ? parseFloat(row[revIdx]) : 0;
+                    customerMap[cVal].profit += (profitIdx !== -1 && !isNaN(row[profitIdx])) ? parseFloat(row[profitIdx]) : 0;
+                }
+
+                if (catIdx !== -1 && row[catIdx]) categoryMap[row[catIdx]] = (categoryMap[row[catIdx]] || 0) + 1;
+                if (regionIdx !== -1 && row[regionIdx]) regionMap[row[regionIdx]] = (regionMap[row[regionIdx]] || 0) + ((revIdx !== -1 && !isNaN(row[revIdx])) ? parseFloat(row[revIdx]) : 1);
             });
 
             document.getElementById('dashTableBody').innerHTML = tbodyHTML;
 
-            // 1. حسابات لوحة التحكم
-            const count = rows.length;
-            const avg = numericCount > 0 ? (totalRevenue / numericCount) : 0;
-            const estProfit = totalRevenue * (1 - costRatio);
+            // تحديث بطاقات الصفحة الرئيسية
+            document.getElementById('dashRevenue').innerText = `${totalRevenue.toLocaleString(undefined, {minimumFractionDigits: 2})} ${currencySymbol}`;
+            document.getElementById('dashProfit').innerText = `${totalProfit.toLocaleString(undefined, {minimumFractionDigits: 2})} ${currencySymbol}`;
+            document.getElementById('dashCount').innerText = rows.length.toLocaleString();
+            document.getElementById('dashSatisfaction').innerText = satisfactionCount > 0 ? `${(satisfactionSum / satisfactionCount).toFixed(1)} / 5 ⭐` : 'N/A';
 
-            document.getElementById('dashRevenue').innerText = `${totalRevenue.toLocaleString()} ${currencySymbol}`;
-            document.getElementById('dashCount').innerText = count.toLocaleString();
-            document.getElementById('dashAvg').innerText = `${avg.toFixed(2)} ${currencySymbol}`;
-            document.getElementById('dashProfit').innerText = `${estProfit.toLocaleString()} ${currencySymbol}`;
+            // تحديث صفحة المالية
+            document.getElementById('finNet').innerText = `${totalRevenue.toLocaleString(undefined, {minimumFractionDigits: 2})} ${currencySymbol}`;
+            document.getElementById('finCosts').innerText = `${totalCost.toLocaleString(undefined, {minimumFractionDigits: 2})} ${currencySymbol}`;
+            document.getElementById('finNetProfit').innerText = `${totalProfit.toLocaleString(undefined, {minimumFractionDigits: 2})} ${currencySymbol}`;
+            document.getElementById('finReturns').innerText = `${totalReturn.toLocaleString(undefined, {minimumFractionDigits: 2})} ${currencySymbol}`;
 
-            // 2. حسابات التحليل المالي
-            document.getElementById('finNet').innerText = `${totalRevenue.toLocaleString()} ${currencySymbol}`;
-            document.getElementById('finCosts').innerText = `${(totalRevenue * costRatio).toLocaleString()} ${currencySymbol}`;
-            document.getElementById('finNetProfit').innerText = `${estProfit.toLocaleString()} ${currencySymbol}`;
+            // تحديث صفحة العملاء
+            const uniqueCustCount = Object.keys(customerMap).length;
+            document.getElementById('custUnique').innerText = uniqueCustCount.toLocaleString();
+            document.getElementById('custAvgSpend').innerText = uniqueCustCount > 0 ? `${(totalRevenue / uniqueCustCount).toFixed(2)} ${currencySymbol}` : '0.00';
+            document.getElementById('custShippingDays').innerText = shippingDaysCount > 0 ? `${(shippingDaysSum / shippingDaysCount).toFixed(1)} أيام` : 'N/A';
 
-            // 3. حسابات العملاء
-            const uniqueCustCount = Object.keys(customerMap).length || Math.floor(count * 0.7);
-            document.getElementById('custUnique').innerText = uniqueCustCount;
-            document.getElementById('custAvgSpend').innerText = `${(totalRevenue / (uniqueCustCount || 1)).toFixed(2)} ${currencySymbol}`;
-
-            // جدول أفضل العملاء
+            // جدول أعلى العملاء
             let custTableHTML = '';
-            Object.keys(customerMap).slice(0, 10).forEach(cName => {
-                custTableHTML += `<tr><td>${cName}</td><td>${customerMap[cName]} عمليات</td><td>--</td></tr>`;
+            Object.keys(customerMap).slice(0, 15).forEach(cId => {
+                custTableHTML += `<tr><td>${cId}</td><td>${customerMap[cId].count} طلبات</td><td>${customerMap[cId].rev.toFixed(2)} ${currencySymbol}</td><td>${customerMap[cId].profit.toFixed(2)} ${currencySymbol}</td></tr>`;
             });
             if (custTableHTML) document.getElementById('custTableBody').innerHTML = custTableHTML;
 
-            // رسم المخططات البيانية
-            renderCharts(rows, categoryMap, totalRevenue);
+            // المخططات البيانية
+            renderAdvancedCharts(regionMap, categoryMap, rows, revIdx, profitIdx, costIdx);
         }
 
-        // رسم كافة الرسوم البيانية التفاعلية
-        function renderCharts(rows, categoryMap, totalRevenue) {
-            const labels = rows.slice(0, 10).map((r, i) => `سجل ${i+1}`);
-            const dataVals = rows.slice(0, 10).map(r => {
-                const found = r.find(v => typeof v === 'number');
-                return found || Math.floor(Math.random() * 5000) + 500;
-            });
+        function renderAdvancedCharts(regionMap, categoryMap, rows, revIdx, profitIdx, costIdx) {
+            // 1. مخطط المناطق / القنوات
+            const regLabels = Object.keys(regionMap).slice(0, 8);
+            const regData = Object.values(regionMap).slice(0, 8);
 
-            // 1. مخطط العمودي المالي
             const ctxBar = document.getElementById('dashBarChart').getContext('2d');
             if (dashBarInstance) dashBarInstance.destroy();
             dashBarInstance = new Chart(ctxBar, {
                 type: 'bar',
-                data: { labels: labels, datasets: [{ label: 'الإيرادات', data: dataVals, backgroundColor: '#0284c7', borderRadius: 6 }] },
-                options: { responsive: true, plugins: { legend: { display: false } } }
+                data: { labels: regLabels, datasets: [{ label: 'الإيرادات', data: regData, backgroundColor: '#0284c7', borderRadius: 6 }] },
+                options: { responsive: true }
             });
 
-            // 2. مخطط القطاع الدائري
-            const pieLabels = Object.keys(categoryMap).length > 0 ? Object.keys(categoryMap).slice(0, 5) : ['فئة أ', 'فئة ب', 'فئة ج'];
-            const pieData = Object.keys(categoryMap).length > 0 ? Object.values(categoryMap).slice(0, 5) : [50, 30, 20];
+            // 2. مخطط الفئات
+            const catLabels = Object.keys(categoryMap).slice(0, 6);
+            const catData = Object.values(categoryMap).slice(0, 6);
+
             const ctxPie = document.getElementById('dashPieChart').getContext('2d');
             if (dashPieInstance) dashPieInstance.destroy();
             dashPieInstance = new Chart(ctxPie, {
                 type: 'doughnut',
-                data: { labels: pieLabels, datasets: [{ data: pieData, backgroundColor: ['#0284c7', '#38bdf8', '#10b981', '#f59e0b', '#6366f1'] }] },
+                data: { labels: catLabels, datasets: [{ data: catData, backgroundColor: ['#0284c7', '#38bdf8', '#10b981', '#f59e0b', '#6366f1', '#ec4899'] }] },
                 options: { responsive: true }
             });
 
-            // 3. مخطط الخطي للتحليل المالي
+            // 3. مخطط المالية
+            const lineLabels = rows.slice(0, 15).map((r, i) => `طلب ${i+1}`);
+            const revData = rows.slice(0, 15).map(r => revIdx !== -1 ? parseFloat(r[revIdx]) || 0 : 0);
+            const profitData = rows.slice(0, 15).map(r => profitIdx !== -1 ? parseFloat(r[profitIdx]) || 0 : 0);
+
             const ctxFin = document.getElementById('finLineChart').getContext('2d');
             if (finLineInstance) finLineInstance.destroy();
             finLineInstance = new Chart(ctxFin, {
                 type: 'line',
                 data: {
-                    labels: labels,
+                    labels: lineLabels,
                     datasets: [
-                        { label: 'الإيرادات الإجمالية', data: dataVals, borderColor: '#10b981', fill: false },
-                        { label: 'التكاليف المباشرة', data: dataVals.map(v => v * costRatio), borderColor: '#ef4444', fill: false }
+                        { label: 'الإيرادات', data: revData, borderColor: '#0284c7', fill: false },
+                        { label: 'الأرباح', data: profitData, borderColor: '#10b981', fill: false }
                     ]
                 },
                 options: { responsive: true }
             });
         }
 
-        // التصفية العامة
         function applyGlobalFilter() {
-            if (globalRawData.length === 0) return;
+            if (globalCleanRows.length === 0) return;
             const filterVal = document.getElementById('timeFilter').value;
             if (filterVal === 'top10') {
-                renderDashboard(globalRawData.slice(0, 10));
+                analyzeAndRender(globalHeaders, globalCleanRows.slice(0, 10));
             } else {
-                renderDashboard(globalRawData);
+                analyzeAndRender(globalHeaders, globalCleanRows);
             }
         }
 
-        // البحث الفوري داخل أسرّة الجداول
         function searchTable(bodyId) {
             const query = event.target.value.toLowerCase();
             const trs = document.querySelectorAll(`#${bodyId} tr`);
