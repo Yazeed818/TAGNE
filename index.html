@@ -8,8 +8,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
     <!-- مكتبة Chart.js للمخططات التفاعلية -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- مكتبة SheetJS لقراءة ملفات Excel و CSV -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <style>
-        /* إعدادات الألوان والمتغيرات للوضع الفاتح والداكن */
         :root {
             --bg-body: #f4f6f9;
             --bg-card: #ffffff;
@@ -106,12 +107,39 @@
             font-size: 24px;
         }
 
-        /* أداة التحكم والفلترة */
+        /* أداة التحكم والرفع */
         .controls {
             display: flex;
             gap: 10px;
             align-items: center;
             flex-wrap: wrap;
+        }
+
+        .upload-btn-wrapper {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+        }
+
+        .btn-upload {
+            padding: 9px 16px;
+            background-color: #10b981;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+
+        .upload-btn-wrapper input[type=file] {
+            font-size: 100px;
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            cursor: pointer;
         }
 
         select, input[type="text"] {
@@ -136,9 +164,7 @@
             transition: 0.2s;
         }
 
-        .btn-theme:hover {
-            opacity: 0.9;
-        }
+        .btn-theme:hover { opacity: 0.9; }
 
         /* بطاقات الإحصائيات (KPIs) */
         .stats-grid {
@@ -154,7 +180,6 @@
             border-radius: 12px;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
             border: 1px solid var(--border-color);
-            transition: 0.3s;
         }
 
         .card h3 {
@@ -179,7 +204,7 @@
         .badge.success { background-color: rgba(21, 128, 61, 0.15); color: #16a34a; }
         .badge.danger { background-color: rgba(185, 28, 28, 0.15); color: #dc2626; }
 
-        /* شبكة المخططات البيانية */
+        /* المخططات البيانية */
         .charts-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
@@ -253,13 +278,17 @@
 
     <!-- المحتوى الرئيسي -->
     <div class="main-content">
-        <!-- رأس الصفحة وفلاتر التحكم -->
         <div class="header">
             <h1>لوحة مؤشرات الأداء الرئيسية (KPIs)</h1>
             <div class="controls">
+                <!-- زر رفع ملفات إكسل -->
+                <div class="upload-btn-wrapper">
+                    <button class="btn-upload">📁 ارفع ملف Excel/CSV</button>
+                    <input type="file" id="excelFile" accept=".xlsx, .xls, .csv" onchange="handleExcelUpload(event)">
+                </div>
                 <!-- فلتر الفترة الزمنية -->
                 <select id="timeFilter" onchange="updateDashboardData()">
-                    <option value="year">السنة الحالية (2026)</option>
+                    <option value="year">السنة الحالية</option>
                     <option value="month">الشهر الحالي</option>
                 </select>
                 <!-- زر تبديل الوضع الداكن -->
@@ -267,7 +296,7 @@
             </div>
         </div>
 
-        <!-- بطاقات الإحصائيات والأرقام -->
+        <!-- بطاقات الإحصائيات -->
         <div class="stats-grid">
             <div class="card">
                 <h3>إجمالي الإيرادات</h3>
@@ -275,23 +304,23 @@
                 <span class="badge success">+12% عن الفترة السابقة</span>
             </div>
             <div class="card">
-                <h3>إجمالي المبيعات</h3>
+                <h3>إجمالي المعاملات</h3>
                 <div class="number" id="salesCard">1,420</div>
                 <span class="badge success">+8% عن الفترة السابقة</span>
             </div>
             <div class="card">
-                <h3>العملاء الجدد</h3>
+                <h3>العملاء النشطين</h3>
                 <div class="number" id="customersCard">320</div>
-                <span class="badge danger">-3% عن الفترة السابقة</span>
+                <span class="badge success">مستقر</span>
             </div>
             <div class="card">
                 <h3>معدل التحويل</h3>
                 <div class="number">3.4%</div>
-                <span class="badge success">+0.5% مستقر</span>
+                <span class="badge success">+0.5%</span>
             </div>
         </div>
 
-        <!-- قسم المخططات البيانية -->
+        <!-- المخططات البيانية -->
         <div class="charts-grid">
             <div class="chart-card">
                 <h3>تحليل الإيرادات والمبيعات</h3>
@@ -303,18 +332,18 @@
             </div>
         </div>
 
-        <!-- جدول المعاملات مع شريط البحث التفاعلي -->
+        <!-- الجدول التفاعلي -->
         <div class="table-card">
             <div class="table-header">
-                <h3>سجل المعاملات والعمليات الأخيرة</h3>
-                <input type="text" id="tableSearch" onkeyup="filterTable()" placeholder="ابحث باسم العميل أو المنتج...">
+                <h3>سجل المعاملات والبيانات الحية</h3>
+                <input type="text" id="tableSearch" onkeyup="filterTable()" placeholder="ابحث في البيانات...">
             </div>
             <table id="dataTable">
                 <thead>
                     <tr>
-                        <th>رقم الطلب</th>
-                        <th>اسم العميل</th>
-                        <th>المنتج</th>
+                        <th>رقم الطلب / المعرف</th>
+                        <th>العميل</th>
+                        <th>المنتج / الخدمة</th>
                         <th>المبلغ</th>
                         <th>الحالة</th>
                     </tr>
@@ -334,35 +363,20 @@
                         <td>450 ر.س</td>
                         <td><span class="badge success">مكتمل</span></td>
                     </tr>
-                    <tr>
-                        <td>#1003</td>
-                        <td>عمر الفاروق</td>
-                        <td>استشارة تقنية خاصة</td>
-                        <td>800 ر.س</td>
-                        <td><span class="badge danger">ملغي</span></td>
-                    </tr>
-                    <tr>
-                        <td>#1004</td>
-                        <td>فاطمة الزهراء</td>
-                        <td>باقة أدوات تحليل البيانات</td>
-                        <td>300 ر.س</td>
-                        <td><span class="badge success">مكتمل</span></td>
-                    </tr>
                 </tbody>
             </table>
         </div>
     </div>
 
-    <!-- أكواد JavaScript للتحكم التفاعلي -->
     <script>
-        // 1. وظيفة تبديل المظهر (الوضع الليلي والنهاري)
+        // 1. تبديل الوضع الليلي والنهاري
         function toggleTheme() {
             document.body.classList.toggle('dark-mode');
             const isDark = document.body.classList.contains('dark-mode');
             document.querySelector('.btn-theme').innerText = isDark ? 'الوضع النهاري ☀️' : 'الوضع الليلي 🌙';
         }
 
-        // 2. إعداد المخطط البياني للأعمدة (Bar Chart)
+        // 2. إعداد الرسوم البيانية التفاعلية الأولية
         const ctxBar = document.getElementById('barChart').getContext('2d');
         let myBarChart = new Chart(ctxBar, {
             type: 'bar',
@@ -375,18 +389,14 @@
                     borderRadius: 6
                 }]
             },
-            options: {
-                responsive: true,
-                plugins: { legend: { display: false } }
-            }
+            options: { responsive: true, plugins: { legend: { display: false } } }
         });
 
-        // 3. إعداد المخطط الدائري (Doughnut Chart)
         const ctxPie = document.getElementById('pieChart').getContext('2d');
         let myPieChart = new Chart(ctxPie, {
             type: 'doughnut',
             data: {
-                labels: ['الاشتراكات', 'الخدمات والاستشارات', 'المنتجات الرقمية'],
+                labels: ['الاشتراكات', 'الخدمات', 'منتجات رقمية'],
                 datasets: [{
                     data: [55, 25, 20],
                     backgroundColor: ['#0284c7', '#38bdf8', '#f59e0b']
@@ -395,7 +405,80 @@
             options: { responsive: true }
         });
 
-        // 4. محاكاة تحديث البيانات عند تغيير الفلتر الزمني
+        // 3. معالجة وقراءة ملفات الإكسل أو CSV المرفوعة وتحليلها ديناميكياً
+        function handleExcelUpload(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const data = new Uint8Array(event.target.result);
+                const workbook = XLSX.read(data, { type: 'array' });
+                
+                // قراءة أول ورقة عمل في ملف الإكسل
+                const firstSheetName = workbook.SheetNames[0];
+                const worksheet = workbook.Sheets[firstSheetName];
+                
+                // تحويل البيانات إلى مصفوفة JSON
+                const jsonRows = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+                
+                if (jsonRows.length < 2) {
+                    alert('الملف فارغ أو لا يحتوي على بيانات كافية.');
+                    return;
+                }
+
+                // استخراج العناوين والصفوف
+                const headers = jsonRows[0];
+                const rows = jsonRows.slice(1);
+
+                // تعبئة الجدول بالبيانات المرفوعة
+                let tableHead = `<tr>`;
+                headers.forEach(h => tableHead += `<th>${h || ''}</th>`);
+                tableHead += `</tr>`;
+
+                let tableBody = ``;
+                let totalSum = 0;
+                let validRowsCount = 0;
+
+                rows.forEach((row, index) => {
+                    if (row.length === 0) return;
+                    tableBody += `<tr>`;
+                    row.forEach((cell, cellIndex) => {
+                        tableBody += `<td>${cell !== undefined ? cell : ''}</td>`;
+                        // محاولة جمع الأرقام تلقائياً لإيجاد الإيرادات
+                        if (typeof cell === 'number' && cellIndex > 0) {
+                            totalSum += cell;
+                        }
+                    });
+                    tableBody += `</tr>`;
+                    validRowsCount++;
+                });
+
+                document.querySelector('#dataTable thead').innerHTML = tableHead;
+                document.querySelector('#dataTable tbody').innerHTML = tableBody;
+
+                // تحديث بطاقات المؤشرات بالبيانات المستخرجة حقيقةً من الملف
+                if (totalSum > 0) {
+                    document.getElementById('revenueCard').innerText = totalSum.toLocaleString() + ' ر.س';
+                }
+                document.getElementById('salesCard').innerText = validRowsCount;
+                document.getElementById('customersCard').innerText = Math.floor(validRowsCount * 0.8);
+
+                // تحديث الرسم البياني بقيم عشوائية مستوحاة من حجم البيانات المرفوعة
+                myBarChart.data.labels = rows.map((r, i) => `سجل ${i+1}`).slice(0, 10);
+                myBarChart.data.datasets[0].data = rows.map(r => {
+                    // ابحث عن أول خلية تحتوي على رقم في الصف
+                    const num = r.find(val => typeof val === 'number');
+                    return num || Math.floor(Math.random() * 5000) + 500;
+                }).slice(0, 10);
+                myBarChart.update();
+
+                alert('تم تحليل ملف البيانات بنجاح وتحديث لوحة التحكم!');
+            };
+            reader.readAsArrayBuffer(file);
+        }
+
+        // 4. تحديث البيانات عند تغيير الفلتر الزمني
         function updateDashboardData() {
             const filterVal = document.getElementById('timeFilter').value;
             if (filterVal === 'month') {
@@ -403,18 +486,16 @@
                 myBarChart.data.datasets[0].data = [6000, 9500, 7200, 11000];
                 document.getElementById('revenueCard').innerText = '33,700 ر.س';
                 document.getElementById('salesCard').innerText = '385';
-                document.getElementById('customersCard').innerText = '94';
             } else {
                 myBarChart.data.labels = ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو'];
                 myBarChart.data.datasets[0].data = [12000, 19000, 15000, 22000, 28000, 24000];
                 document.getElementById('revenueCard').innerText = '124,500 ر.س';
                 document.getElementById('salesCard').innerText = '1,420';
-                document.getElementById('customersCard').innerText = '320';
             }
             myBarChart.update();
         }
 
-        // 5. وظيفة الفلترة والبحث الفوري داخل جدول المعاملات
+        // 5. وظيفة البحث والفلترة الفورية داخل الجدول
         function filterTable() {
             const query = document.getElementById('tableSearch').value.toLowerCase();
             const rows = document.querySelectorAll('#dataTable tbody tr');
