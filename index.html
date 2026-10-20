@@ -39,7 +39,6 @@
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Tajawal', sans-serif; }
         body { background-color: var(--bg-body); color: var(--text-main); display: flex; min-height: 100vh; transition: background-color 0.3s, color 0.3s; }
 
-        /* القائمة الجانبية */
         .sidebar { width: 270px; background-color: var(--sidebar-bg); color: #fff; padding: 25px 20px; display: flex; flex-direction: column; border-left: 1px solid var(--border-color); flex-shrink: 0; }
         .sidebar .brand { font-size: 22px; font-weight: 800; color: var(--primary); text-align: center; margin-bottom: 35px; display: flex; align-items: center; justify-content: center; gap: 10px; }
         .sidebar ul { list-style: none; }
@@ -47,7 +46,6 @@
         .sidebar ul li a { color: #94a3b8; text-decoration: none; font-size: 15px; font-weight: 500; display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 10px; transition: 0.2s; cursor: pointer; }
         .sidebar ul li a:hover, .sidebar ul li a.active { background-color: var(--primary); color: #fff; font-weight: 700; }
 
-        /* المحتوى الرئيسي */
         .main-content { flex: 1; padding: 30px; overflow-y: auto; display: flex; flex-direction: column; gap: 25px; }
         
         .header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
@@ -62,11 +60,9 @@
         select, input[type="text"], input[type="number"] { padding: 10px 14px; border-radius: 8px; border: 1px solid var(--border-color); background-color: var(--bg-card); color: var(--text-main); outline: none; font-size: 14px; }
         .btn-theme { padding: 10px 16px; background-color: var(--primary); color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 700; transition: 0.2s; }
 
-        /* أقسام الصفحات */
         .page-section { display: none; flex-direction: column; gap: 25px; }
         .page-section.active { display: flex; }
 
-        /* بطاقات الإحصائيات (KPIs) */
         .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
         .card { background: var(--bg-card); padding: 20px; border-radius: 12px; border: 1px solid var(--border-color); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02); }
         .card h3 { font-size: 13px; color: var(--text-sub); margin-bottom: 8px; font-weight: 500; }
@@ -75,13 +71,11 @@
         .badge.success { background-color: rgba(16, 185, 129, 0.15); color: var(--success); }
         .badge.warning { background-color: rgba(245, 158, 11, 0.15); color: var(--warning); }
 
-        /* الرسوم البيانية */
         .charts-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; }
         @media(max-width: 992px) { .charts-grid { grid-template-columns: 1fr; } }
         .chart-card { background: var(--bg-card); padding: 20px; border-radius: 12px; border: 1px solid var(--border-color); }
         .chart-card h3 { margin-bottom: 15px; font-size: 16px; color: var(--text-sub); font-weight: 700; }
 
-        /* الجداول */
         .table-card { background: var(--bg-card); padding: 20px; border-radius: 12px; border: 1px solid var(--border-color); }
         .table-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; flex-wrap: wrap; gap: 10px; }
         .table-container { max-height: 420px; overflow-y: auto; }
@@ -98,7 +92,7 @@
 </head>
 <body>
 
-    <div id="loadingOverlay">جاري معالجة وتدقيق ملف البيانات المتقدم... 📊</div>
+    <div id="loadingOverlay">جاري قراءة ومعالجة البيانات دقيقاً... 📊</div>
 
     <div class="sidebar">
         <div class="brand">📊 PowerBI Advanced</div>
@@ -115,32 +109,27 @@
             <h1 id="pageTitle">لوحة التحكم الرئيسية</h1>
             <div class="controls">
                 <div class="upload-btn-wrapper">
-                    <button class="btn-upload">📁 رفع ملف Excel/CSV المتقدم</button>
+                    <button class="btn-upload">📁 رفع ملف Excel/CSV</button>
                     <input type="file" id="excelFile" accept=".xlsx, .xls, .csv" onchange="processAdvancedExcel(event)">
                 </div>
                 <select id="sheetSelector" style="display:none;" onchange="changeSheet()">
-                    <!-- يتم تعبئتها بأوراق العمل ديناميكياً -->
-                </select>
-                <select id="timeFilter" onchange="applyGlobalFilter()">
-                    <option value="all">كافة البيانات المرفوعة</option>
-                    <option value="top10">أعلى 10 عمليات قيمة</option>
                 </select>
                 <button class="btn-theme" onclick="toggleTheme()">الوضع الليلي 🌙</button>
             </div>
         </div>
 
-        <!-- 1. صفحة لوحة التحكم الرئيسية -->
+        <!-- 1. لوحة التحكم الرئيسية -->
         <div id="section-dashboard" class="page-section active">
             <div class="stats-grid">
                 <div class="card">
                     <h3>إجمالي الإيرادات (Revenue SAR)</h3>
                     <div class="number" id="dashRevenue">0.00 ر.س</div>
-                    <span class="badge success">مستخرج بدقة</span>
+                    <span class="badge success">دقيق 100%</span>
                 </div>
                 <div class="card">
                     <h3>صافي الأرباح (Profit SAR)</h3>
                     <div class="number" id="dashProfit">0.00 ر.س</div>
-                    <span class="badge success">أرباح دقيقة</span>
+                    <span class="badge success">مستخرج من الملف</span>
                 </div>
                 <div class="card">
                     <h3>عدد الطلبات المعالجة</h3>
@@ -191,7 +180,7 @@
             </div>
         </div>
 
-        <!-- 2. صفحة التحليل المالي -->
+        <!-- 2. التحليل المالي -->
         <div id="section-financial" class="page-section">
             <div class="stats-grid">
                 <div class="card">
@@ -220,7 +209,7 @@
             </div>
         </div>
 
-        <!-- 3. صفحة تقارير العملاء -->
+        <!-- 3. تقارير العملاء -->
         <div id="section-customers" class="page-section">
             <div class="stats-grid">
                 <div class="card">
@@ -260,7 +249,7 @@
             </div>
         </div>
 
-        <!-- 4. صفحة إعدادات النظام -->
+        <!-- 4. إعدادات النظام -->
         <div id="section-settings" class="page-section">
             <div class="table-card">
                 <h3 style="margin-bottom: 20px;">تفضيلات وإعدادات التحليل</h3>
@@ -279,7 +268,7 @@
 
     <script>
         let workbookInstance = null;
-        let globalCleanRows = [];
+        let globalJsonObjectRows = [];
         let globalHeaders = [];
         let dashBarInstance, dashPieInstance, finLineInstance;
         let currencySymbol = "ر.س";
@@ -306,6 +295,15 @@
             document.querySelector('.btn-theme').innerText = isDark ? 'الوضع النهاري ☀️' : 'الوضع الليلي 🌙';
         }
 
+        // تحويل النص المحتوي على رموز إلى رقم نقي
+        function cleanNum(val) {
+            if (val === null || val === undefined) return 0;
+            if (typeof val === 'number') return isNaN(val) ? 0 : val;
+            let str = val.toString().replace(/[^0-9.-]/g, '');
+            let parsed = parseFloat(str);
+            return isNaN(parsed) ? 0 : parsed;
+        }
+
         function processAdvancedExcel(e) {
             const file = e.target.files[0];
             if (!file) return;
@@ -318,12 +316,11 @@
                     const data = new Uint8Array(evt.target.result);
                     workbookInstance = XLSX.read(data, { type: 'array' });
 
-                    // البحث الذكي عن الورقة المناسبة (Prefer Clean_Data or Raw_Data)
+                    // البحث عن صفحة البيانات النظيفة أولاً
                     let targetSheetName = workbookInstance.SheetNames.find(s => s.toLowerCase().includes('clean')) ||
                                           workbookInstance.SheetNames.find(s => s.toLowerCase().includes('raw')) ||
                                           workbookInstance.SheetNames[0];
 
-                    // تعبئة قائمة اختيار الأوراق
                     const sheetSelect = document.getElementById('sheetSelector');
                     sheetSelect.innerHTML = '';
                     workbookInstance.SheetNames.forEach(name => {
@@ -349,37 +346,38 @@
 
         function loadSheetData(sheetName) {
             const sheet = workbookInstance.Sheets[sheetName];
-            const rows = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+            
+            // قراءة البيانات كـ JSON Objects لضمان الدقة
+            globalJsonObjectRows = XLSX.utils.sheet_to_json(sheet, { defval: "" });
 
-            if (rows.length < 2) {
+            if (globalJsonObjectRows.length === 0) {
                 alert('الورقة المختارة فارغة أو لا تحتوي بيانات.');
                 return;
             }
 
-            globalHeaders = rows[0];
-            globalCleanRows = rows.slice(1).filter(r => r.length > 0);
+            globalHeaders = Object.keys(globalJsonObjectRows[0]);
 
-            // تحديث الجدول الهيكلي
+            // بناء ترويسة الجدول
             let thHTML = '';
             globalHeaders.forEach(h => thHTML += `<th>${h || ''}</th>`);
             document.getElementById('dashTableHeader').innerHTML = thHTML;
 
-            analyzeAndRender(globalHeaders, globalCleanRows);
+            analyzeAndRenderData(globalHeaders, globalJsonObjectRows);
         }
 
-        function analyzeAndRender(headers, rows) {
-            // خريطة البحث الفطكي في الأعمدة
-            const findColIndex = (keywords) => headers.findIndex(h => h && keywords.some(k => h.toString().toLowerCase().includes(k.toLowerCase())));
+        function analyzeAndRenderData(headers, rows) {
+            // كاشف أسماء الأعمدة بذكاء
+            const findKey = (keywords) => headers.find(h => keywords.some(k => h.toString().toLowerCase().trim() === k.toLowerCase().trim() || h.toString().toLowerCase().includes(k.toLowerCase())));
 
-            const revIdx = findColIndex(['Revenue', 'Gross_Sales', 'Sales', 'المبلغ', 'الإيرادات']);
-            const profitIdx = findColIndex(['Profit', 'الربح', 'الأرباح']);
-            const costIdx = findColIndex(['Cost', 'التكلفة', 'التكاليف']);
-            const returnIdx = findColIndex(['Return_Amount', 'Return']);
-            const custIdx = findColIndex(['Customer_ID', 'Customer', 'العميل']);
-            const catIdx = findColIndex(['Category', 'Product', 'الفئة', 'المنتج']);
-            const regionIdx = findColIndex(['Region', 'Sales_Channel', 'المنطقة', 'القناة']);
-            const satIdx = findColIndex(['Satisfaction', 'Rating', 'التقييم']);
-            const shipIdx = findColIndex(['Shipping_Days', 'Days', 'الشحن']);
+            const revKey = findKey(['Revenue_SAR', 'Revenue', 'Gross_Sales_SAR', 'Gross_Sales', 'Sales', 'المبلغ', 'الإيرادات']);
+            const profitKey = findKey(['Profit_SAR', 'Profit', 'الربح', 'الأرباح']);
+            const costKey = findKey(['Cost_SAR', 'Cost', 'التكلفة', 'التكاليف']);
+            const returnKey = findKey(['Return_Amount_SAR', 'Return_Amount', 'Return']);
+            const custKey = findKey(['Customer_ID', 'Customer', 'العميل']);
+            const catKey = findKey(['Category', 'Product', 'الفئة', 'المنتج']);
+            const regionKey = findKey(['Region', 'Sales_Channel', 'المنطقة', 'القناة']);
+            const satKey = findKey(['Customer_Satisfaction', 'Satisfaction', 'Rating', 'التقييم']);
+            const shipKey = findKey(['Shipping_Days', 'Days', 'الشحن']);
 
             let totalRevenue = 0, totalProfit = 0, totalCost = 0, totalReturn = 0;
             let satisfactionSum = 0, satisfactionCount = 0;
@@ -393,65 +391,65 @@
 
             rows.forEach(row => {
                 tbodyHTML += '<tr>';
-                row.forEach((cell, idx) => {
-                    tbodyHTML += `<td>${cell !== undefined ? cell : ''}</td>`;
+                headers.forEach(h => {
+                    tbodyHTML += `<td>${row[h] !== undefined ? row[h] : ''}</td>`;
                 });
                 tbodyHTML += '</tr>';
 
-                // الحسابات المتقدمة
-                if (revIdx !== -1 && !isNaN(row[revIdx])) totalRevenue += parseFloat(row[revIdx]);
-                if (profitIdx !== -1 && !isNaN(row[profitIdx])) totalProfit += parseFloat(row[profitIdx]);
-                if (costIdx !== -1 && !isNaN(row[costIdx])) totalCost += parseFloat(row[costIdx]);
-                if (returnIdx !== -1 && !isNaN(row[returnIdx])) totalReturn += parseFloat(row[returnIdx]);
+                // الحسابات والجمع الدقيق
+                const rowRev = revKey ? cleanNum(row[revKey]) : 0;
+                const rowProfit = profitKey ? cleanNum(row[profitKey]) : 0;
+                const rowCost = costKey ? cleanNum(row[costKey]) : 0;
+                const rowReturn = returnKey ? cleanNum(row[returnKey]) : 0;
 
-                if (satIdx !== -1 && !isNaN(row[satIdx])) { satisfactionSum += parseFloat(row[satIdx]); satisfactionCount++; }
-                if (shipIdx !== -1 && !isNaN(row[shipIdx])) { shippingDaysSum += parseFloat(row[shipIdx]); shippingDaysCount++; }
+                totalRevenue += rowRev;
+                totalProfit += rowProfit;
+                totalCost += rowCost;
+                totalReturn += rowReturn;
 
-                if (custIdx !== -1 && row[custIdx]) {
-                    const cVal = row[custIdx];
+                if (satKey && row[satKey] !== "") { satisfactionSum += cleanNum(row[satKey]); satisfactionCount++; }
+                if (shipKey && row[shipKey] !== "") { shippingDaysSum += cleanNum(row[shipKey]); shippingDaysCount++; }
+
+                if (custKey && row[custKey]) {
+                    const cVal = row[custKey];
                     if (!customerMap[cVal]) customerMap[cVal] = { count: 0, rev: 0, profit: 0 };
                     customerMap[cVal].count++;
-                    customerMap[cVal].rev += (revIdx !== -1 && !isNaN(row[revIdx])) ? parseFloat(row[revIdx]) : 0;
-                    customerMap[cVal].profit += (profitIdx !== -1 && !isNaN(row[profitIdx])) ? parseFloat(row[profitIdx]) : 0;
+                    customerMap[cVal].rev += rowRev;
+                    customerMap[cVal].profit += rowProfit;
                 }
 
-                if (catIdx !== -1 && row[catIdx]) categoryMap[row[catIdx]] = (categoryMap[row[catIdx]] || 0) + 1;
-                if (regionIdx !== -1 && row[regionIdx]) regionMap[row[regionIdx]] = (regionMap[row[regionIdx]] || 0) + ((revIdx !== -1 && !isNaN(row[revIdx])) ? parseFloat(row[revIdx]) : 1);
+                if (catKey && row[catKey]) categoryMap[row[catKey]] = (categoryMap[row[catKey]] || 0) + 1;
+                if (regionKey && row[regionKey]) regionMap[row[regionKey]] = (regionMap[row[regionKey]] || 0) + (rowRev > 0 ? rowRev : 1);
             });
 
             document.getElementById('dashTableBody').innerHTML = tbodyHTML;
 
-            // تحديث بطاقات الصفحة الرئيسية
-            document.getElementById('dashRevenue').innerText = `${totalRevenue.toLocaleString(undefined, {minimumFractionDigits: 2})} ${currencySymbol}`;
-            document.getElementById('dashProfit').innerText = `${totalProfit.toLocaleString(undefined, {minimumFractionDigits: 2})} ${currencySymbol}`;
+            // تحديث البطاقات بملء المخرجات المالية الصريحة
+            document.getElementById('dashRevenue').innerText = `${totalRevenue.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})} ${currencySymbol}`;
+            document.getElementById('dashProfit').innerText = `${totalProfit.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})} ${currencySymbol}`;
             document.getElementById('dashCount').innerText = rows.length.toLocaleString();
             document.getElementById('dashSatisfaction').innerText = satisfactionCount > 0 ? `${(satisfactionSum / satisfactionCount).toFixed(1)} / 5 ⭐` : 'N/A';
 
-            // تحديث صفحة المالية
-            document.getElementById('finNet').innerText = `${totalRevenue.toLocaleString(undefined, {minimumFractionDigits: 2})} ${currencySymbol}`;
-            document.getElementById('finCosts').innerText = `${totalCost.toLocaleString(undefined, {minimumFractionDigits: 2})} ${currencySymbol}`;
-            document.getElementById('finNetProfit').innerText = `${totalProfit.toLocaleString(undefined, {minimumFractionDigits: 2})} ${currencySymbol}`;
-            document.getElementById('finReturns').innerText = `${totalReturn.toLocaleString(undefined, {minimumFractionDigits: 2})} ${currencySymbol}`;
+            document.getElementById('finNet').innerText = `${totalRevenue.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})} ${currencySymbol}`;
+            document.getElementById('finCosts').innerText = `${totalCost.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})} ${currencySymbol}`;
+            document.getElementById('finNetProfit').innerText = `${totalProfit.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})} ${currencySymbol}`;
+            document.getElementById('finReturns').innerText = `${totalReturn.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})} ${currencySymbol}`;
 
-            // تحديث صفحة العملاء
             const uniqueCustCount = Object.keys(customerMap).length;
             document.getElementById('custUnique').innerText = uniqueCustCount.toLocaleString();
             document.getElementById('custAvgSpend').innerText = uniqueCustCount > 0 ? `${(totalRevenue / uniqueCustCount).toFixed(2)} ${currencySymbol}` : '0.00';
             document.getElementById('custShippingDays').innerText = shippingDaysCount > 0 ? `${(shippingDaysSum / shippingDaysCount).toFixed(1)} أيام` : 'N/A';
 
-            // جدول أعلى العملاء
             let custTableHTML = '';
             Object.keys(customerMap).slice(0, 15).forEach(cId => {
                 custTableHTML += `<tr><td>${cId}</td><td>${customerMap[cId].count} طلبات</td><td>${customerMap[cId].rev.toFixed(2)} ${currencySymbol}</td><td>${customerMap[cId].profit.toFixed(2)} ${currencySymbol}</td></tr>`;
             });
             if (custTableHTML) document.getElementById('custTableBody').innerHTML = custTableHTML;
 
-            // المخططات البيانية
-            renderAdvancedCharts(regionMap, categoryMap, rows, revIdx, profitIdx, costIdx);
+            renderAdvancedCharts(regionMap, categoryMap, rows, revKey, profitKey);
         }
 
-        function renderAdvancedCharts(regionMap, categoryMap, rows, revIdx, profitIdx, costIdx) {
-            // 1. مخطط المناطق / القنوات
+        function renderAdvancedCharts(regionMap, categoryMap, rows, revKey, profitKey) {
             const regLabels = Object.keys(regionMap).slice(0, 8);
             const regData = Object.values(regionMap).slice(0, 8);
 
@@ -463,7 +461,6 @@
                 options: { responsive: true }
             });
 
-            // 2. مخطط الفئات
             const catLabels = Object.keys(categoryMap).slice(0, 6);
             const catData = Object.values(categoryMap).slice(0, 6);
 
@@ -475,10 +472,9 @@
                 options: { responsive: true }
             });
 
-            // 3. مخطط المالية
             const lineLabels = rows.slice(0, 15).map((r, i) => `طلب ${i+1}`);
-            const revData = rows.slice(0, 15).map(r => revIdx !== -1 ? parseFloat(r[revIdx]) || 0 : 0);
-            const profitData = rows.slice(0, 15).map(r => profitIdx !== -1 ? parseFloat(r[profitIdx]) || 0 : 0);
+            const revData = rows.slice(0, 15).map(r => revKey ? cleanNum(r[revKey]) : 0);
+            const profitData = rows.slice(0, 15).map(r => profitKey ? cleanNum(r[profitKey]) : 0);
 
             const ctxFin = document.getElementById('finLineChart').getContext('2d');
             if (finLineInstance) finLineInstance.destroy();
@@ -493,16 +489,6 @@
                 },
                 options: { responsive: true }
             });
-        }
-
-        function applyGlobalFilter() {
-            if (globalCleanRows.length === 0) return;
-            const filterVal = document.getElementById('timeFilter').value;
-            if (filterVal === 'top10') {
-                analyzeAndRender(globalHeaders, globalCleanRows.slice(0, 10));
-            } else {
-                analyzeAndRender(globalHeaders, globalCleanRows);
-            }
         }
 
         function searchTable(bodyId) {
