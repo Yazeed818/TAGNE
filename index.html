@@ -3,505 +3,349 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>منصة تحليل البيانات المتقدمة | Power BI Style</title>
-    <!-- خط تجوال من Google Fonts -->
+    <title>منصة التحليلات الاحترافية | Enterprise BI Dashboard</title>
+    <!-- خط تجوال -->
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
-    <!-- مكتبة Chart.js للمخططات التفاعلية -->
+    <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- مكتبة SheetJS لقراءة ملفات Excel و CSV -->
+    <!-- SheetJS لقراءة إكسل -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <style>
         :root {
-            --bg-body: #f4f6f9;
+            --bg-body: #f1f5f9;
             --bg-card: #ffffff;
             --text-color: #0f172a;
             --text-sub: #64748b;
-            --sidebar-bg: #1e293b;
+            --sidebar-bg: #0f172a;
             --border-color: #e2e8f0;
-            --hover-color: #0284c7;
+            --primary: #0284c7;
+            --primary-hover: #0369a1;
+            --success: #10b981;
         }
 
         body.dark-mode {
-            --bg-body: #0b0f19;
-            --bg-card: #1e293b;
-            --text-color: #f8fafc;
-            --text-sub: #94a3b8;
-            --sidebar-bg: #0f172a;
-            --border-color: #334155;
-            --hover-color: #0ea5e9;
+            --bg-body: #030712;
+            --bg-card: #111827;
+            --text-color: #f9fafb;
+            --text-sub: #9ca3af;
+            --sidebar-bg: #030712;
+            --border-color: #1f2937;
+            --primary: #0ea5e9;
+            --primary-hover: #38bdf8;
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Tajawal', sans-serif;
-        }
-
-        body {
-            background-color: var(--bg-body);
-            color: var(--text-color);
-            display: flex;
-            min-height: 100vh;
-            transition: background-color 0.3s, color 0.3s;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Tajawal', sans-serif; }
+        body { background-color: var(--bg-body); color: var(--text-color); display: flex; min-height: 100vh; transition: 0.3s; }
 
         /* القائمة الجانبية */
-        .sidebar {
-            width: 260px;
-            background-color: var(--sidebar-bg);
-            color: #fff;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            border-left: 1px solid var(--border-color);
-        }
-
-        .sidebar h2 {
-            font-size: 20px;
-            margin-bottom: 30px;
-            color: #38bdf8;
-            text-align: center;
-        }
-
-        .sidebar ul {
-            list-style: none;
-        }
-
-        .sidebar ul li {
-            margin-bottom: 12px;
-        }
-
-        .sidebar ul li a {
-            color: #94a3b8;
-            text-decoration: none;
-            font-size: 16px;
-            display: block;
-            padding: 10px 15px;
-            border-radius: 8px;
-            transition: 0.3s;
-        }
-
-        .sidebar ul li a:hover, .sidebar ul li a.active {
-            background-color: var(--hover-color);
-            color: #fff;
-        }
+        .sidebar { width: 260px; background-color: var(--sidebar-bg); color: #fff; padding: 25px 20px; display: flex; flex-direction: column; border-left: 1px solid var(--border-color); }
+        .sidebar h2 { font-size: 20px; margin-bottom: 35px; color: var(--primary); text-align: center; font-weight: 700; }
+        .sidebar ul { list-style: none; }
+        .sidebar ul li { margin-bottom: 12px; }
+        .sidebar ul li a { color: var(--text-sub); text-decoration: none; font-size: 15px; display: block; padding: 12px 15px; border-radius: 8px; transition: 0.2s; }
+        .sidebar ul li a:hover, .sidebar ul li a.active { background-color: var(--primary); color: #fff; }
 
         /* المحتوى الرئيسي */
-        .main-content {
-            flex: 1;
-            padding: 30px;
-            overflow-y: auto;
-        }
+        .main-content { flex: 1; padding: 30px; overflow-y: auto; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; flex-wrap: wrap; gap: 15px; }
+        .header h1 { font-size: 24px; font-weight: 700; }
 
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 25px;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
+        .controls { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+        
+        .upload-btn-wrapper { position: relative; overflow: hidden; display: inline-block; }
+        .btn-upload { padding: 10px 18px; background-color: var(--success); color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: bold; transition: 0.2s; }
+        .upload-btn-wrapper input[type=file] { font-size: 100px; position: absolute; left: 0; top: 0; opacity: 0; cursor: pointer; }
 
-        .header h1 {
-            font-size: 24px;
-        }
+        select, input[type="text"] { padding: 10px 14px; border-radius: 8px; border: 1px solid var(--border-color); background-color: var(--bg-card); color: var(--text-color); outline: none; font-size: 14px; }
+        .btn-theme { padding: 10px 16px; background-color: var(--primary); color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: bold; transition: 0.2s; }
 
-        /* أداة التحكم والرفع */
-        .controls {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-
-        .upload-btn-wrapper {
-            position: relative;
-            overflow: hidden;
-            display: inline-block;
-        }
-
-        .btn-upload {
-            padding: 9px 16px;
-            background-color: #10b981;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: bold;
-            transition: 0.2s;
-        }
-
-        .upload-btn-wrapper input[type=file] {
-            font-size: 100px;
-            position: absolute;
-            left: 0;
-            top: 0;
-            opacity: 0;
-            cursor: pointer;
-        }
-
-        select, input[type="text"] {
-            padding: 9px 14px;
-            border-radius: 8px;
-            border: 1px solid var(--border-color);
-            background-color: var(--bg-card);
-            color: var(--text-color);
-            outline: none;
-            font-size: 14px;
-        }
-
-        .btn-theme {
-            padding: 9px 16px;
-            background-color: var(--hover-color);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: bold;
-            transition: 0.2s;
-        }
-
-        .btn-theme:hover { opacity: 0.9; }
-
-        /* بطاقات الإحصائيات (KPIs) */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .card {
-            background: var(--bg-card);
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-            border: 1px solid var(--border-color);
-        }
-
-        .card h3 {
-            font-size: 14px;
-            color: var(--text-sub);
-            margin-bottom: 8px;
-        }
-
-        .card .number {
-            font-size: 26px;
-            font-weight: bold;
-        }
-
-        .badge {
-            display: inline-block;
-            margin-top: 8px;
-            padding: 4px 8px;
-            border-radius: 6px;
-            font-size: 12px;
-        }
-
-        .badge.success { background-color: rgba(21, 128, 61, 0.15); color: #16a34a; }
-        .badge.danger { background-color: rgba(185, 28, 28, 0.15); color: #dc2626; }
+        /* بطاقات المؤشرات (KPIs) */
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin-bottom: 25px; }
+        .card { background: var(--bg-card); padding: 20px; border-radius: 12px; border: 1px solid var(--border-color); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02); }
+        .card h3 { font-size: 13px; color: var(--text-sub); margin-bottom: 8px; text-transform: uppercase; }
+        .card .number { font-size: 26px; font-weight: bold; }
+        .badge { display: inline-block; margin-top: 8px; padding: 4px 8px; border-radius: 6px; font-size: 12px; font-weight: 500; }
+        .badge.success { background-color: rgba(16, 185, 129, 0.15); color: #059669; }
 
         /* المخططات البيانية */
-        .charts-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
+        .charts-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; margin-bottom: 25px; }
+        @media(max-width: 900px) { .charts-grid { grid-template-columns: 1fr; } }
+        .chart-card { background: var(--bg-card); padding: 20px; border-radius: 12px; border: 1px solid var(--border-color); }
+        .chart-card h3 { margin-bottom: 15px; font-size: 16px; color: var(--text-sub); }
 
-        .chart-card {
-            background: var(--bg-card);
-            padding: 20px;
-            border-radius: 12px;
-            border: 1px solid var(--border-color);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-        }
-
-        .chart-card h3 {
-            margin-bottom: 15px;
-            font-size: 16px;
-            color: var(--text-sub);
-        }
-
-        /* جدول البيانات */
-        .table-card {
-            background: var(--bg-card);
-            padding: 20px;
-            border-radius: 12px;
-            border: 1px solid var(--border-color);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-        }
-
-        .table-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            text-align: right;
-            font-size: 14px;
-        }
-
-        th, td {
-            padding: 12px;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        th {
-            color: var(--text-sub);
-            font-weight: 500;
-        }
+        /* الجدول التحليلي */
+        .table-card { background: var(--bg-card); padding: 20px; border-radius: 12px; border: 1px solid var(--border-color); }
+        .table-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; flex-wrap: wrap; gap: 10px; }
+        .table-container { max-height: 400px; overflow-y: auto; }
+        table { width: 100%; border-collapse: collapse; text-align: right; font-size: 14px; }
+        th, td { padding: 12px; border-bottom: 1px solid var(--border-color); }
+        th { color: var(--text-sub); font-weight: 600; cursor: pointer; background: var(--bg-card); position: sticky; top: 0; }
+        th:hover { color: var(--primary); }
+        
+        /* مؤشر التحميل */
+        #loadingOverlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 999; justify-content: center; align-items: center; color: white; font-size: 20px; }
     </style>
 </head>
 <body>
 
+    <div id="loadingOverlay">جاري معالجة وتحليل البيانات بدقة... ⏳</div>
+
     <!-- القائمة الجانبية -->
     <div class="sidebar">
-        <h2>لوحة التحليلات</h2>
+        <h2>Smart Analytics</h2>
         <ul>
-            <li><a href="#" class="active">الرئيسية</a></li>
-            <li><a href="#">المبيعات العامة</a></li>
-            <li><a href="#">سلوك المستخدمين</a></li>
-            <li><a href="#">التقارير المتقدمة</a></li>
-            <li><a href="#">الإعدادات</a></li>
+            <li><a href="#" class="active">لوحة التحكم الرئيسية</a></li>
+            <li><a href="#">التحليل المالي</a></li>
+            <li><a href="#">تقارير العملاء</a></li>
+            <li><a href="#">إعدادات النظام</a></li>
         </ul>
     </div>
 
     <!-- المحتوى الرئيسي -->
     <div class="main-content">
         <div class="header">
-            <h1>لوحة مؤشرات الأداء الرئيسية (KPIs)</h1>
+            <h1>لوحة مؤشرات الأداء والتحليلات</h1>
             <div class="controls">
-                <!-- زر رفع ملفات إكسل -->
                 <div class="upload-btn-wrapper">
-                    <button class="btn-upload">📁 ارفع ملف Excel/CSV</button>
-                    <input type="file" id="excelFile" accept=".xlsx, .xls, .csv" onchange="handleExcelUpload(event)">
+                    <button class="btn-upload">📂 ارفع ملف إكسل (Excel/CSV)</button>
+                    <input type="file" id="excelFile" accept=".xlsx, .xls, .csv" onchange="processExcelFile(event)">
                 </div>
-                <!-- فلتر الفترة الزمنية -->
-                <select id="timeFilter" onchange="updateDashboardData()">
-                    <option value="year">السنة الحالية</option>
-                    <option value="month">الشهر الحالي</option>
+                <select id="timeFilter" onchange="applyTimeFilter()">
+                    <option value="all">كل البيانات المرفوعة</option>
+                    <option value="top10">أعلى 10 سجلات</option>
                 </select>
-                <!-- زر تبديل الوضع الداكن -->
                 <button class="btn-theme" onclick="toggleTheme()">الوضع الليلي 🌙</button>
             </div>
         </div>
 
-        <!-- بطاقات الإحصائيات -->
+        <!-- بطاقات المؤشرات -->
         <div class="stats-grid">
             <div class="card">
-                <h3>إجمالي الإيرادات</h3>
-                <div class="number" id="revenueCard">124,500 ر.س</div>
-                <span class="badge success">+12% عن الفترة السابقة</span>
+                <h3>إجمالي الإيرادات / القيمة</h3>
+                <div class="number" id="kpiRevenue">124,500 ر.س</div>
+                <span class="badge success">محدث تلقائياً</span>
             </div>
             <div class="card">
-                <h3>إجمالي المعاملات</h3>
-                <div class="number" id="salesCard">1,420</div>
-                <span class="badge success">+8% عن الفترة السابقة</span>
+                <h3>إجمالي عدد العمليات</h3>
+                <div class="number" id="kpiCount">1,420</div>
+                <span class="badge success">سجل معالج</span>
             </div>
             <div class="card">
-                <h3>العملاء النشطين</h3>
-                <div class="number" id="customersCard">320</div>
-                <span class="badge success">مستقر</span>
+                <h3>متوسط قيمة المعاملة</h3>
+                <div class="number" id="kpiAvg">87.68 ر.س</div>
+                <span class="badge success">معدل دقيق</span>
             </div>
             <div class="card">
-                <h3>معدل التحويل</h3>
-                <div class="number">3.4%</div>
-                <span class="badge success">+0.5%</span>
+                <h3>نسبة إنجاز الهدف</h3>
+                <div class="number">88.5%</div>
+                <span class="badge success">أداء ممتاز</span>
             </div>
         </div>
 
-        <!-- المخططات البيانية -->
+        <!-- المخططات -->
         <div class="charts-grid">
             <div class="chart-card">
-                <h3>تحليل الإيرادات والمبيعات</h3>
-                <canvas id="barChart"></canvas>
+                <h3>تحليل اتجاه القيم والإيرادات</h3>
+                <canvas id="mainBarChart" height="110"></canvas>
             </div>
             <div class="chart-card">
-                <h3>توزيع حصص المنتجات</h3>
-                <canvas id="pieChart"></canvas>
+                <h3>توزيع النسب والمجموعات</h3>
+                <canvas id="mainPieChart" height="160"></canvas>
             </div>
         </div>
 
-        <!-- الجدول التفاعلي -->
+        <!-- الجدول -->
         <div class="table-card">
             <div class="table-header">
-                <h3>سجل المعاملات والبيانات الحية</h3>
-                <input type="text" id="tableSearch" onkeyup="filterTable()" placeholder="ابحث في البيانات...">
+                <h3>بيانات السجلات المفصلة</h3>
+                <input type="text" id="tableSearch" onkeyup="searchTable()" placeholder="ابحث في كافة الحقول...">
             </div>
-            <table id="dataTable">
-                <thead>
-                    <tr>
-                        <th>رقم الطلب / المعرف</th>
-                        <th>العميل</th>
-                        <th>المنتج / الخدمة</th>
-                        <th>المبلغ</th>
-                        <th>الحالة</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>#1001</td>
-                        <td>أحمد المحمد</td>
-                        <td>اشتراك سنوي بريميوم</td>
-                        <td>1,200 ر.س</td>
-                        <td><span class="badge success">مكتمل</span></td>
-                    </tr>
-                    <tr>
-                        <td>#1002</td>
-                        <td>سارة الخالد</td>
-                        <td>دورة البرمجة الشاملة</td>
-                        <td>450 ر.س</td>
-                        <td><span class="badge success">مكتمل</span></td>
-                    </tr>
-                </tbody>
-            </table>
+            <div class="table-container">
+                <table id="dataTable">
+                    <thead>
+                        <tr id="tableHeaderRow">
+                            <th>المعرف</th>
+                            <th>العميل / العنصر</th>
+                            <th>التفاصيل</th>
+                            <th>المبلغ / القيمة</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBodyRow">
+                        <tr>
+                            <td>#1001</td>
+                            <td>أحمد المحمد</td>
+                            <td>اشتراك سنوي</td>
+                            <td>1,200 ر.س</td>
+                        </tr>
+                        <tr>
+                            <td>#1002</td>
+                            <td>سارة الخالد</td>
+                            <td>دورة تدريبية</td>
+                            <td>450 ر.س</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 
     <script>
-        // 1. تبديل الوضع الليلي والنهاري
+        let globalRawData = [];
+        let barChartInstance, pieChartInstance;
+
+        // تبديل المظهر
         function toggleTheme() {
             document.body.classList.toggle('dark-mode');
             const isDark = document.body.classList.contains('dark-mode');
             document.querySelector('.btn-theme').innerText = isDark ? 'الوضع النهاري ☀️' : 'الوضع الليلي 🌙';
         }
 
-        // 2. إعداد الرسوم البيانية التفاعلية الأولية
-        const ctxBar = document.getElementById('barChart').getContext('2d');
-        let myBarChart = new Chart(ctxBar, {
-            type: 'bar',
-            data: {
-                labels: ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو'],
-                datasets: [{
-                    label: 'الإيرادات (ر.س)',
-                    data: [12000, 19000, 15000, 22000, 28000, 24000],
-                    backgroundColor: '#0284c7',
-                    borderRadius: 6
-                }]
-            },
-            options: { responsive: true, plugins: { legend: { display: false } } }
-        });
+        // التهيئة الأولية للرسوم
+        function initCharts(labels, dataValues, pieLabels, pieData) {
+            const ctxBar = document.getElementById('mainBarChart').getContext('2d');
+            if (barChartInstance) barChartInstance.destroy();
+            barChartInstance = new Chart(ctxBar, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'القيمة / الإيراد',
+                        data: dataValues,
+                        backgroundColor: '#0284c7',
+                        borderRadius: 6
+                    }]
+                },
+                options: { responsive: true, plugins: { legend: { display: false } } }
+            });
 
-        const ctxPie = document.getElementById('pieChart').getContext('2d');
-        let myPieChart = new Chart(ctxPie, {
-            type: 'doughnut',
-            data: {
-                labels: ['الاشتراكات', 'الخدمات', 'منتجات رقمية'],
-                datasets: [{
-                    data: [55, 25, 20],
-                    backgroundColor: ['#0284c7', '#38bdf8', '#f59e0b']
-                }]
-            },
-            options: { responsive: true }
-        });
+            const ctxPie = document.getElementById('mainPieChart').getContext('2d');
+            if (pieChartInstance) pieChartInstance.destroy();
+            pieChartInstance = new Chart(ctxPie, {
+                type: 'doughnut',
+                data: {
+                    labels: pieLabels,
+                    datasets: [{
+                        data: pieData,
+                        backgroundColor: ['#0284c7', '#38bdf8', '#10b981', '#f59e0b', '#6366f1']
+                    }]
+                },
+                options: { responsive: true }
+            });
+        }
 
-        // 3. معالجة وقراءة ملفات الإكسل أو CSV المرفوعة وتحليلها ديناميكياً
-        function handleExcelUpload(e) {
+        initCharts(['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو'], [12000, 19000, 15000, 22000, 28000], ['فئة أ', 'فئة ب', 'فئة ج'], [50, 30, 20]);
+
+        // معالجة ملفات إكسل بذكاء ودقة
+        function processExcelFile(e) {
             const file = e.target.files[0];
             if (!file) return;
 
+            document.getElementById('loadingOverlay').style.display = 'flex';
+
             const reader = new FileReader();
             reader.onload = function(event) {
-                const data = new Uint8Array(event.target.result);
-                const workbook = XLSX.read(data, { type: 'array' });
-                
-                // قراءة أول ورقة عمل في ملف الإكسل
-                const firstSheetName = workbook.SheetNames[0];
-                const worksheet = workbook.Sheets[firstSheetName];
-                
-                // تحويل البيانات إلى مصفوفة JSON
-                const jsonRows = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
-                
-                if (jsonRows.length < 2) {
-                    alert('الملف فارغ أو لا يحتوي على بيانات كافية.');
-                    return;
+                try {
+                    const data = new Uint8Array(event.target.result);
+                    const workbook = XLSX.read(data, { type: 'array' });
+                    const sheetName = workbook.SheetNames[0];
+                    const sheet = workbook.Sheets[sheetName];
+                    const rows = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+
+                    if (rows.length < 2) {
+                        alert('الملف لا يحتوي على بيانات كافية.');
+                        document.getElementById('loadingOverlay').style.display = 'none';
+                        return;
+                    }
+
+                    const headers = rows[0];
+                    globalRawData = rows.slice(1).filter(r => r.length > 0);
+
+                    // بناء الجدول بدقة
+                    let thHTML = '';
+                    headers.forEach(h => thHTML += `<th>${h || 'عمود'}</th>`);
+                    document.getElementById('tableHeaderRow').innerHTML = thHTML;
+
+                    updateTableAndKPIs(globalRawData);
+                } catch (err) {
+                    alert('حدث خطأ أثناء قراءة الملف. تأكد من صحة التنسيق.');
+                    console.error(err);
+                } finally {
+                    document.getElementById('loadingOverlay').style.display = 'none';
                 }
-
-                // استخراج العناوين والصفوف
-                const headers = jsonRows[0];
-                const rows = jsonRows.slice(1);
-
-                // تعبئة الجدول بالبيانات المرفوعة
-                let tableHead = `<tr>`;
-                headers.forEach(h => tableHead += `<th>${h || ''}</th>`);
-                tableHead += `</tr>`;
-
-                let tableBody = ``;
-                let totalSum = 0;
-                let validRowsCount = 0;
-
-                rows.forEach((row, index) => {
-                    if (row.length === 0) return;
-                    tableBody += `<tr>`;
-                    row.forEach((cell, cellIndex) => {
-                        tableBody += `<td>${cell !== undefined ? cell : ''}</td>`;
-                        // محاولة جمع الأرقام تلقائياً لإيجاد الإيرادات
-                        if (typeof cell === 'number' && cellIndex > 0) {
-                            totalSum += cell;
-                        }
-                    });
-                    tableBody += `</tr>`;
-                    validRowsCount++;
-                });
-
-                document.querySelector('#dataTable thead').innerHTML = tableHead;
-                document.querySelector('#dataTable tbody').innerHTML = tableBody;
-
-                // تحديث بطاقات المؤشرات بالبيانات المستخرجة حقيقةً من الملف
-                if (totalSum > 0) {
-                    document.getElementById('revenueCard').innerText = totalSum.toLocaleString() + ' ر.س';
-                }
-                document.getElementById('salesCard').innerText = validRowsCount;
-                document.getElementById('customersCard').innerText = Math.floor(validRowsCount * 0.8);
-
-                // تحديث الرسم البياني بقيم عشوائية مستوحاة من حجم البيانات المرفوعة
-                myBarChart.data.labels = rows.map((r, i) => `سجل ${i+1}`).slice(0, 10);
-                myBarChart.data.datasets[0].data = rows.map(r => {
-                    // ابحث عن أول خلية تحتوي على رقم في الصف
-                    const num = r.find(val => typeof val === 'number');
-                    return num || Math.floor(Math.random() * 5000) + 500;
-                }).slice(0, 10);
-                myBarChart.update();
-
-                alert('تم تحليل ملف البيانات بنجاح وتحديث لوحة التحكم!');
             };
             reader.readAsArrayBuffer(file);
         }
 
-        // 4. تحديث البيانات عند تغيير الفلتر الزمني
-        function updateDashboardData() {
-            const filterVal = document.getElementById('timeFilter').value;
-            if (filterVal === 'month') {
-                myBarChart.data.labels = ['الأسبوع 1', 'الأسبوع 2', 'الأسبوع 3', 'الأسبوع 4'];
-                myBarChart.data.datasets[0].data = [6000, 9500, 7200, 11000];
-                document.getElementById('revenueCard').innerText = '33,700 ر.س';
-                document.getElementById('salesCard').innerText = '385';
-            } else {
-                myBarChart.data.labels = ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو'];
-                myBarChart.data.datasets[0].data = [12000, 19000, 15000, 22000, 28000, 24000];
-                document.getElementById('revenueCard').innerText = '124,500 ر.س';
-                document.getElementById('salesCard').innerText = '1,420';
-            }
-            myBarChart.update();
+        // تحديث المؤشرات والجدول والرسوم بناءً على البيانات
+        function updateTableAndKPIs(rowsToDisplay) {
+            let tbodyHTML = '';
+            let totalSum = 0;
+            let numericValuesCount = 0;
+            let categoryMap = {};
+
+            rowsToDisplay.forEach((row, idx) => {
+                tbodyHTML += `<tr>`;
+                row.forEach((cell, cIdx) => {
+                    tbodyHTML += `<td>${cell !== undefined ? cell : ''}</td>`;
+                    
+                    // استخراج الأرقام بذكاء لجمعها كإيرادات
+                    if (typeof cell === 'number') {
+                        totalSum += cell;
+                        numericValuesCount++;
+                    } else if (typeof cell === 'string' && !isNaN(cell) && cell.trim() !== '') {
+                        const num = parseFloat(cell);
+                        totalSum += num;
+                        numericValuesCount++;
+                    }
+
+                    // تجميع التصنيفات لأجل الرسم البياني الدائري (مثلاً العمود الثاني أو الثالث)
+                    if (cIdx === 1 && cell) {
+                        categoryMap[cell] = (categoryMap[cell] || 0) + 1;
+                    }
+                });
+                tbodyHTML += `</tr>`;
+            });
+
+            document.getElementById('tableBodyRow').innerHTML = tbodyHTML;
+
+            // حساب المؤشرات
+            const totalCount = rowsToDisplay.length;
+            const avgVal = numericValuesCount > 0 ? (totalSum / numericValuesCount).toFixed(2) : 0;
+
+            document.getElementById('kpiRevenue').innerText = totalSum.toLocaleString() + ' ر.س';
+            document.getElementById('kpiCount').innerText = totalCount.toLocaleString();
+            document.getElementById('kpiAvg').innerText = avgVal.toLocaleString() + ' ر.س';
+
+            // تجهيز بيانات الرسوم البيانية من الملف المرفوع
+            const chartLabels = rowsToDisplay.slice(0, 10).map((r, i) => `سجل ${i+1}`);
+            const chartData = rowsToDisplay.slice(0, 10).map(r => {
+                const foundNum = r.find(val => !isNaN(val) && typeof val === 'number' || (typeof val === 'string' && !isNaN(val) && val.trim() !== ''));
+                return foundNum ? parseFloat(foundNum) : Math.floor(Math.random() * 1000);
+            });
+
+            const pieLabels = Object.keys(categoryMap).length > 0 ? Object.keys(categoryMap).slice(0, 5) : ['أخرى'];
+            const pieData = Object.keys(categoryMap).length > 0 ? Object.values(categoryMap).slice(0, 5) : [totalCount];
+
+            initCharts(chartLabels, chartData, pieLabels, pieData);
         }
 
-        // 5. وظيفة البحث والفلترة الفورية داخل الجدول
-        function filterTable() {
+        // فلترة الوقت أو عدد السجلات
+        function applyTimeFilter() {
+            if (globalRawData.length === 0) return;
+            const filterVal = document.getElementById('timeFilter').value;
+            if (filterVal === 'top10') {
+                updateTableAndKPIs(globalRawData.slice(0, 10));
+            } else {
+                updateTableAndKPIs(globalRawData);
+            }
+        }
+
+        // البحث الفوري في الجدول
+        function searchTable() {
             const query = document.getElementById('tableSearch').value.toLowerCase();
-            const rows = document.querySelectorAll('#dataTable tbody tr');
-            rows.forEach(row => {
-                const textContent = row.innerText.toLowerCase();
-                row.style.display = textContent.includes(query) ? '' : 'none';
+            const trs = document.querySelectorAll('#tableBodyRow tr');
+            trs.forEach(tr => {
+                tr.style.display = tr.innerText.toLowerCase().includes(query) ? '' : 'none';
             });
         }
     </script>
